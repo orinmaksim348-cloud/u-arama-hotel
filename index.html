@@ -1137,6 +1137,14 @@
         <!-- Фильтры категорий для быстрого переключения -->
         <div class="reveal flex flex-wrap items-center gap-2 mb-6 sm:mb-8 pb-1">
           <button type="button" data-catalog-filter="all" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white border border-brand-600 shadow-sm transition-all">Все варианты (6)</button>
+          <button type="button" data-catalog-filter="addr-sovetskaya" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all inline-flex items-center gap-1.5">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+            <span>ул. Советская, 94 (4)</span>
+          </button>
+          <button type="button" data-catalog-filter="addr-tyumenskiy" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all inline-flex items-center gap-1.5">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+            <span>пер. Тюменский, 21 (2)</span>
+          </button>
           <button type="button" data-catalog-filter="studio" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">Студии и лофты (3)</button>
           <button type="button" data-catalog-filter="1room" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">1-комнатные (1)</button>
           <button type="button" data-catalog-filter="2room" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">2-комнатные (1)</button>
@@ -1332,6 +1340,10 @@
                 <span id="summary-room-meta" class="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate"></span>
               </div>
               <div id="summary-room-title" class="text-[15px] font-bold text-brand-900 dark:text-white leading-snug"></div>
+              <div class="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-600 dark:text-brand-400 mt-1">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0"></i>
+                <span id="summary-room-address"></span>
+              </div>
             </div>
             <div class="text-right shrink-0">
               <div id="summary-room-price" class="text-base font-extrabold text-brand-600 dark:text-brand-400 leading-tight"></div>
@@ -1569,6 +1581,9 @@
       {
         id: 'studio-comfort',
         category: 'studio',
+        addressKey: 'sovetskaya',
+        addressBadge: 'ул. Советская, 94',
+        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
         badge: 'Студия',
         title: 'Студия комфорт',
         price: 3000,
@@ -1589,6 +1604,9 @@
       {
         id: 'room-1',
         category: '1room',
+        addressKey: 'sovetskaya',
+        addressBadge: 'ул. Советская, 94',
+        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
         badge: '1 комнатная',
         title: '1-комнатная квартира',
         price: 2200,
@@ -1608,6 +1626,9 @@
       {
         id: 'room-2-comfort',
         category: '2room',
+        addressKey: 'sovetskaya',
+        addressBadge: 'ул. Советская, 94',
+        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
         badge: '2-х комнатная',
         title: '2-х комнатная комфорт+',
         price: 3500,
@@ -1628,6 +1649,9 @@
       {
         id: 'room-3-comfort',
         category: 'family',
+        addressKey: 'sovetskaya',
+        addressBadge: 'ул. Советская, 94',
+        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
         badge: '3-х комнатная',
         title: '3-х комнатная комфорт',
         price: 4000,
@@ -1649,6 +1673,9 @@
       {
         id: 'studio-loft',
         category: 'studio',
+        addressKey: 'tyumenskiy',
+        addressBadge: 'пер. Тюменский, 21',
+        addressFull: 'пер. Тюменский, 21 (Лофт-апартаменты)',
         badge: 'Студия-лофт',
         title: 'Студия-лофт',
         price: 3200,
@@ -1669,6 +1696,9 @@
       {
         id: 'studio-loft-premium',
         category: 'studio',
+        addressKey: 'tyumenskiy',
+        addressBadge: 'пер. Тюменский, 21',
+        addressFull: 'пер. Тюменский, 21 (Лофт Премиум)',
         badge: 'Лофт Премиум',
         title: 'Студия-лофт премиум',
         price: 3800,
@@ -1791,7 +1821,13 @@
     function renderRooms(filter = 'all') {
       clearCarouselTimers();
       const grid = document.getElementById('rooms-grid');
-      const filtered = filter === 'all' ? ROOMS : ROOMS.filter(r => r.category === filter);
+      const filtered = filter === 'all'
+        ? ROOMS
+        : (filter === 'addr-sovetskaya'
+            ? ROOMS.filter(r => r.addressKey === 'sovetskaya')
+            : (filter === 'addr-tyumenskiy'
+                ? ROOMS.filter(r => r.addressKey === 'tyumenskiy')
+                : ROOMS.filter(r => r.category === filter)));
 
       grid.innerHTML = filtered.map((room, cardIdx) => {
         const slides = room.images.length ? room.images : [''];
@@ -1834,6 +1870,10 @@
               <span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg bg-white/92 dark:bg-slate-900/90 backdrop-blur-[2px] text-[11px] font-bold text-brand-800 dark:text-brand-300 border border-brand-100 dark:border-slate-700 shadow-sm">
                 ${room.badge}
               </span>
+              <span class="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-white/95 dark:bg-slate-900/95 backdrop-blur-[2px] text-[11px] font-bold text-slate-800 dark:text-slate-100 border border-slate-200/90 dark:border-slate-700 shadow-sm flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                ${room.addressBadge}
+              </span>
               <div class="carousel-track">${slidesHtml}</div>
               ${arrowsHtml}
               ${dotsHtml}
@@ -1842,6 +1882,12 @@
             <div class="p-4 sm:p-6 flex-1 flex flex-col justify-between gap-4">
               <div class="space-y-2.5">
                 <h3 class="text-base sm:text-lg font-bold text-brand-900 dark:text-white leading-snug">${room.title}</h3>
+                
+                <div class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-800 dark:text-brand-300 bg-brand-50/80 dark:bg-slate-800/80 px-2.5 py-1 rounded-xl border border-brand-100 dark:border-slate-700">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                  <span>${room.addressFull}</span>
+                </div>
+
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                   <span class="inline-flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.guests}</span>
                   <span class="inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.feature}</span>
@@ -2417,7 +2463,7 @@
             isCur
               ? 'bg-brand-600 text-white border-brand-600'
               : 'bg-white dark:bg-slate-900 text-brand-900 dark:text-slate-200 border-brand-200/80 dark:border-slate-700 hover:border-brand-400'
-          }">${r.title} · ${r.price.toLocaleString('ru-RU')} ₽</button>`;
+          }">${r.title} · ${r.addressBadge} · ${r.price.toLocaleString('ru-RU')} ₽</button>`;
         }).join('');
       }
 
@@ -2429,6 +2475,8 @@
         document.getElementById('summary-room-title').textContent = selectedRoom.title;
         document.getElementById('summary-room-price').textContent = `${selectedRoom.price.toLocaleString('ru-RU')} ₽`;
         document.getElementById('summary-room-unit').textContent = selectedRoom.priceUnit;
+        const summaryAddrEl = document.getElementById('summary-room-address');
+        if (summaryAddrEl) summaryAddrEl.textContent = selectedRoom.addressFull || selectedRoom.addressBadge || '';
 
         if (autoFillDetails) {
           syncGuestPills(selectedRoom.defaultGuests || '2');
@@ -2562,6 +2610,7 @@
           `👤 Имя: ${booking.name}`,
           `📞 Телефон: ${booking.phone}`,
           `🏠 Номер: ${booking.room}`,
+          booking.address ? `📍 Адрес: ${booking.address}` : '',
           booking.tariffLine || '',
           `👥 Гостей: ${booking.guests}`,
           booking.comment ? `💬 Пожелания: ${booking.comment}` : ''
@@ -2801,11 +2850,14 @@
 
         const priceCalcText = document.getElementById('summary-stay-calc')?.textContent.replace(/.*:\s*/, '') || '';
 
+        const roomAddress = selectedRoom ? (selectedRoom.addressFull || selectedRoom.addressBadge || '') : '';
+
         const msg = [
           'Здравствуйте! Хочу забронировать в гостевом доме «У Арама»:',
           `• Имя: ${form.name.value.trim()}`,
           `• Телефон: ${form.phone.value.trim()}`,
           `• Квартира: ${form.room.value}`,
+          roomAddress ? `• Адрес: ${roomAddress}` : '',
           tariffLine,
           `• Гостей: ${form.guests.value}`,
           form.comment.value.trim() ? `• Комментарий: ${form.comment.value.trim()}` : ''
@@ -2831,6 +2883,7 @@
           name: form.name.value.trim(),
           phone: form.phone.value.trim(),
           room: form.room.value,
+          address: roomAddress,
           tariffLine: tariffLine.replace(/^• /gm, ''),
           guests: form.guests.value,
           comment: form.comment.value.trim()

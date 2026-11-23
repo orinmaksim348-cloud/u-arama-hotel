@@ -67,7 +67,7 @@ function doPost(e) {
     }
 
     // Определяем квартиру
-    var roomTitle = data.room || 'Студия комфорт';
+    var roomTitle = String(data.room || 'Студия комфорт').replace(/\s*\(.*?\)/g, '').trim();
     var sheet = getOrCreateRoomSheet(ss, roomTitle);
 
     var now = new Date();
