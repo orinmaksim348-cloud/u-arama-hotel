@@ -79,11 +79,22 @@ function doPost(e) {
     var checkinVal = isHourly ? (data.hourlyDate || data.checkin || '') : (data.checkin || '');
     var checkoutVal = isHourly ? (data.hourlyDuration || '3 часа') : (data.checkout || '');
 
+    // Защита от ошибки #ERROR! в Google Таблицах:
+    // Если номер телефона начинается со знака «+» (например, +7 904 444 44 91),
+    // Google Sheets ошибочно парсит его как математическую формулу (=+7...),
+    // что приводит к ошибке #ERROR!
+    // Добавление апострофа «'» в начало сохраняет номер строго как чистый текст.
+    // При этом сам апостроф в ячейке Google Таблицы не виден, отображается чистый номер +7...
+    var phoneVal = String(data.phone || 'Не указан').trim();
+    if (phoneVal.charAt(0) === '+') {
+      phoneVal = "'" + phoneVal;
+    }
+
     var newRow = [
       bookingId,
       dateOrder,
       data.name || 'Не указано',
-      data.phone || 'Не указан',
+      phoneVal,
       tariffName,
       checkinVal,
       checkoutVal,
@@ -103,6 +114,9 @@ function doPost(e) {
       .setAllowInvalid(true)
       .build();
     statusCell.setDataValidation(rule);
+
+    // Задаем текстовый формат для ячейки телефона (колонка 4)
+    sheet.getRange(lastRow, 4).setNumberFormat('@');
 
     // Выравнивание и форматирование новой строки
     sheet.getRange(lastRow, 1, 1, HEADERS.length).setVerticalAlignment('middle');
@@ -145,6 +159,9 @@ function doGet(e) {
 
       var sheet = getSheetByNameCaseInsensitive(ss, room.name);
       if (!sheet) return;
+
+      // Автоматически исправляем формульные ошибки в колонке телефона, если они были ранее
+      fixPhoneErrors(sheet);
 
       var lastRow = sheet.getLastRow();
       if (lastRow < 2) return; // Только шапка
@@ -258,6 +275,12 @@ function formatSheetHeader(sheet) {
   sheet.setColumnWidth(10, 150); // Статус
   sheet.setColumnWidth(11, 260); // Пожелания
 
+  // Колонка D (Телефон) - принудительно устанавливаем формат Plain Text (@),
+  // чтобы при любом редактировании номера с плюсом не возникало #ERROR!
+  try {
+    sheet.getRange(2, 4, Math.max(100, sheet.getMaxRows() - 1), 1).setNumberFormat('@');
+  } catch(e) {}
+
   // Условное форматирование для колонки J (Статус):
   // «Ожидание» -> янтарный, «Забронировано» -> зелёный, «Отклонено» -> светло-красный
   try {
@@ -341,4 +364,32 @@ function getDaysRange(inStr, outStr) {
     curr.setDate(curr.getDate() + 1);
   }
   return list;
+}
+
+/**
+ * Автоматическое исправление ячеек с ошибкой #ERROR! в колонке телефона (Колонка D)
+ * Если в ячейке находится формула вида =+7904... или значение #ERROR!,
+ * функция конвертирует её в чистый текст '+7... и форматирует как Plain text.
+ */
+function fixPhoneErrors(sheet) {
+  try {
+    var lastRow = sheet.getLastRow();
+    if (lastRow < 2) return;
+    var range = sheet.getRange(2, 4, lastRow - 1, 1);
+    var formulas = range.getFormulas();
+    var values = range.getValues();
+    for (var i = 0; i < values.length; i++) {
+      var formula = String(formulas[i][0] || '').trim();
+      var val = String(values[i][0] || '').trim();
+      if (formula && (formula.indexOf('=+') === 0 || formula.indexOf('+') === 0)) {
+        var cleanPhone = formula.replace(/^=/, '');
+        range.getCell(i + 1, 1).setNumberFormat('@').setValue("'" + cleanPhone);
+      } else if (val === '#ERROR!' && formula) {
+        var cleanPhone = formula.replace(/^=/, '');
+        range.getCell(i + 1, 1).setNumberFormat('@').setValue("'" + cleanPhone);
+      }
+    }
+  } catch (err) {
+    // Безопасный перехват без остановки выполнения
+  }
 }
