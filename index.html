@@ -1175,6 +1175,11 @@
           <button type="button" data-open-legal="consent" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Согласие на обработку данных</button>
           <span class="text-slate-300 dark:text-slate-700">·</span>
           <button type="button" data-open-legal="rules" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Правила проживания</button>
+          <span class="text-slate-300 dark:text-slate-700">·</span>
+          <button type="button" data-open-push class="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400 hover:underline transition-colors">
+            <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+            <span>Пуш-уведомления для владельца</span>
+          </button>
         </div>
       </div>
 
@@ -1435,6 +1440,79 @@
         <button type="button" data-close="legal-modal" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold transition-colors">
           Понятно
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ПУШ-УВЕДОМЛЕНИЯ О БРОНИРОВАНИИ -->
+  <div id="push-modal" class="modal-backdrop fixed inset-0 z-50 bg-brand-950/65 backdrop-blur-[4px] flex items-end sm:items-center justify-center p-0 sm:p-4" aria-hidden="true">
+    <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[540px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[92dvh] flex flex-col overflow-hidden">
+      <!-- Верхняя полоса-ручка на мобильном -->
+      <div class="pt-3 sm:hidden">
+        <div class="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-700 mx-auto" aria-hidden="true"></div>
+      </div>
+
+      <!-- Шапка окна -->
+      <div class="px-5 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+            <i data-lucide="bell-ring" class="w-5 h-5"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-lg font-extrabold text-brand-900 dark:text-white tracking-tight leading-tight">
+              Пуш-уведомления о бронях
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+              Мгновенные оповещения на телефон владельца
+            </p>
+          </div>
+        </div>
+        <button type="button" data-close="push-modal" aria-label="Закрыть окно" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Тело окна: инструкция и кнопка подписки -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        <div class="p-4 rounded-2xl bg-amber-50/80 dark:bg-slate-800/80 border border-amber-200/80 dark:border-slate-700 space-y-1.5">
+          <div class="font-bold text-amber-900 dark:text-amber-200 flex items-center gap-2">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"></i>
+            <span>Как это работает:</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300">
+            Каждый раз, когда любой гость бронирует квартиру на сайте, вам на телефон мгновенно приходит громкий push с именем, номером телефона, датами и кнопками прямого звонка гостю или открытия WhatsApp!
+          </p>
+        </div>
+
+        <div class="space-y-2.5">
+          <div class="font-semibold text-brand-900 dark:text-white">Как подключить на свой телефон (1 минута):</div>
+          <ol class="list-decimal pl-5 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+            <li>
+              Нажмите синюю кнопку ниже <strong>«Подписаться на push-уведомления»</strong> или установите бесплатное приложение <strong>ntfy</strong> (доступно в Google Play и App Store).
+            </li>
+            <li>
+              В приложении или на открывшейся странице нажмите <strong>«Подписаться» / «Subscribe»</strong> на канал:
+              <br/>
+              <code class="inline-block mt-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-brand-700 dark:text-brand-300 font-mono font-bold text-xs select-all">u-arama-hotel-shakhty-94</code>
+            </li>
+            <li>
+              Разрешите уведомления в телефоне. Готово! Теперь вы никогда не пропустите бронь.
+            </li>
+          </ol>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row gap-2">
+          <a href="https://ntfy.sh/u-arama-hotel-shakhty-94" target="_blank" rel="noopener noreferrer" class="btn-sheen flex-1 py-2.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 text-center shadow-xs">
+            <i data-lucide="bell" class="w-4 h-4"></i>
+            <span>Подписаться на push-уведомления</span>
+          </a>
+          <button type="button" id="test-push-btn" class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-brand-900 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-1.5">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>Тестовый пуш</span>
+          </button>
+        </div>
+
+        <div id="test-push-status" class="hidden p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium"></div>
       </div>
     </div>
   </div>
@@ -2231,6 +2309,53 @@
       // Модальные окна с блокировкой прокрутки и Escape
       const bookingModal = document.getElementById('booking-modal');
       const legalModal = document.getElementById('legal-modal');
+      const pushModal = document.getElementById('push-modal');
+
+      // =========================================================
+      // ПУШ-УВЕДОМЛЕНИЯ О БРОНЯХ (NTFY.SH)
+      // =========================================================
+      const NTFY_TOPIC = 'u-arama-hotel-shakhty-94';
+
+      function sendPushNotification(booking) {
+        const cleanPhone = (booking.phone || '').replace(/[^0-9+]/g, '');
+        const messageParts = [
+          `👤 Имя: ${booking.name}`,
+          `📞 Телефон: ${booking.phone}`,
+          `🏠 Номер: ${booking.room}`,
+          booking.tariffLine || '',
+          `👥 Гостей: ${booking.guests}`,
+          booking.comment ? `💬 Пожелания: ${booking.comment}` : ''
+        ].filter(Boolean);
+
+        const payload = {
+          topic: NTFY_TOPIC,
+          title: `🔔 Новая бронь в «У Арама»: ${booking.room}!`,
+          message: messageParts.join('\n'),
+          priority: 5,
+          tags: ['hotel', 'bell', 'sparkles'],
+          click: cleanPhone ? `tel:${cleanPhone}` : undefined,
+          actions: [
+            ...(cleanPhone ? [{
+              action: 'view',
+              label: '📞 Позвонить гостю',
+              url: `tel:${cleanPhone}`
+            }] : []),
+            ...(cleanPhone ? [{
+              action: 'view',
+              label: '💬 Написать в WhatsApp',
+              url: `https://wa.me/${cleanPhone.replace('+', '')}`
+            }] : [])
+          ]
+        };
+
+        return fetch('https://ntfy.sh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(err => {
+          console.warn('Push dispatch error:', err);
+        });
+      }
 
       const syncBodyLock = () => {
         const hasOpenModal = document.querySelector('.modal-backdrop.is-open');
@@ -2353,6 +2478,12 @@
           return;
         }
 
+        const pushTrigger = e.target.closest('[data-open-push]');
+        if (pushTrigger) {
+          openModal(pushModal);
+          return;
+        }
+
         const bookBtn = e.target.closest('[data-action="open-booking"]');
         if (bookBtn) {
           const matchedRoom = bookBtn.dataset.roomId
@@ -2436,12 +2567,54 @@
           form.comment.value.trim() ? `• Комментарий: ${form.comment.value.trim()}` : ''
         ].filter(Boolean).join('\n');
 
+        // Мгновенная отправка Push-уведомления на телефон владельца
+        sendPushNotification({
+          name: form.name.value.trim(),
+          phone: form.phone.value.trim(),
+          room: form.room.value,
+          tariffLine: tariffLine.replace(/^• /gm, ''),
+          guests: form.guests.value,
+          comment: form.comment.value.trim()
+        });
+
         const encoded = encodeURIComponent(msg);
         document.getElementById('send-wa-link').href = `https://wa.me/79044444491?text=${encoded}`;
         document.getElementById('send-tg-link').href = 'https://t.me/+79044444491';
         document.getElementById('booking-feedback').classList.remove('hidden');
         if (window.lucide) lucide.createIcons();
       });
+
+      // Отправка тестового пуша из окна настроек
+      document.getElementById('test-push-btn')?.addEventListener('click', () => {
+        const statusEl = document.getElementById('test-push-status');
+        if (statusEl) {
+          statusEl.textContent = 'Отправка тестового пуша...';
+          statusEl.className = 'p-3 rounded-xl bg-brand-50 dark:bg-slate-800 text-xs text-brand-700 dark:text-brand-300 font-medium';
+          statusEl.classList.remove('hidden');
+        }
+        sendPushNotification({
+          name: 'Тестовый гость (Проверка связи)',
+          phone: '+7 904 444 44 91',
+          room: 'Студия комфорт',
+          tariffLine: 'Посуточно (1 сутки)',
+          guests: '2',
+          comment: 'Это проверка пуш-уведомлений. Всё настроено и отлично работает!'
+        }).then(() => {
+          if (statusEl) {
+            statusEl.textContent = '✅ Тестовый пуш отправлен! Проверьте телефон или страницу ntfy.sh.';
+            statusEl.className = 'p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium';
+          }
+        }).catch(() => {
+          if (statusEl) {
+            statusEl.textContent = 'Ошибка отправки тестового уведомления.';
+            statusEl.className = 'p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 text-xs text-rose-800 font-medium';
+          }
+        });
+      });
+
+      if (window.location.hash === '#push' || window.location.hash === '#admin') {
+        openModal(pushModal);
+      }
     });
   </script>
 </body>
