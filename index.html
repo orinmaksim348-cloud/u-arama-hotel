@@ -52,54 +52,46 @@
     }
 
     /* Кастомизация Flatpickr под дизайн сайта и тёмную тему */
-    .flatpickr-wrapper {
-      position: relative !important;
-      display: block !important;
-      width: 100% !important;
-    }
     .flatpickr-calendar {
       font-family: inherit !important;
       border-radius: 1.25rem !important;
-      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
-      border: 1px solid rgba(226, 232, 240, 0.95) !important;
-      background: #ffffff !important;
-      z-index: 99999 !important;
-      padding: 6px !important;
-      max-width: calc(100vw - 32px) !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      width: 100% !important;
+      max-width: 330px !important;
+      margin: 0 auto !important;
+      padding: 2px !important;
     }
-    .flatpickr-calendar.static {
-      position: absolute !important;
-      top: calc(100% + 4px) !important;
-      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.3) !important;
+    .flatpickr-calendar.inline {
+      display: block !important;
+      position: relative !important;
+      top: 0 !important;
     }
-    /* Для поля выезда прижимаем календарь к правому краю, чтобы он не вылезал за пределы окна */
-    #dates-daily-group > div:nth-child(2) .flatpickr-calendar.static {
-      right: 0 !important;
-      left: auto !important;
+    .flatpickr-days {
+      width: 100% !important;
     }
-    #dates-daily-group > div:nth-child(2) .flatpickr-calendar.arrowTop:before,
-    #dates-daily-group > div:nth-child(2) .flatpickr-calendar.arrowTop:after {
-      left: auto !important;
-      right: 28px !important;
+    .dayContainer {
+      width: 100% !important;
+      min-width: 100% !important;
+      max-width: 100% !important;
+      justify-content: space-around !important;
     }
-    /* Для поля заезда прижимаем календарь к левому краю */
-    #dates-daily-group > div:nth-child(1) .flatpickr-calendar.static,
-    #dates-hourly-group .flatpickr-calendar.static {
-      left: 0 !important;
-      right: auto !important;
-    }
-    .dark .flatpickr-calendar {
-      background: #0F172A !important;
-      border-color: #334155 !important;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+    .flatpickr-calendar .flatpickr-months {
+      margin-bottom: 2px !important;
     }
     .flatpickr-calendar .flatpickr-months .flatpickr-month {
       color: #0f172a !important;
       fill: #0f172a !important;
+      height: 36px !important;
     }
     .dark .flatpickr-calendar .flatpickr-months .flatpickr-month {
       color: #f8fafc !important;
       fill: #f8fafc !important;
+    }
+    .flatpickr-current-month {
+      padding-top: 4px !important;
+      font-size: 100% !important;
     }
     .flatpickr-current-month .cur-month {
       font-weight: 700 !important;
@@ -109,17 +101,21 @@
     }
     .flatpickr-calendar span.flatpickr-weekday {
       color: #64748b !important;
-      font-weight: 600 !important;
-      font-size: 85% !important;
+      font-weight: 700 !important;
+      font-size: 11px !important;
     }
     .dark .flatpickr-calendar span.flatpickr-weekday {
       color: #94a3b8 !important;
     }
     .flatpickr-day {
-      border-radius: 0.75rem !important;
+      border-radius: 0.65rem !important;
       font-weight: 600 !important;
       font-size: 13px !important;
       color: #0f172a !important;
+      height: 36px !important;
+      line-height: 36px !important;
+      max-width: 38px !important;
+      margin: 1px 0 !important;
       transition: all 0.15s ease !important;
     }
     .dark .flatpickr-day {
@@ -130,12 +126,28 @@
     }
     .flatpickr-day.selected,
     .flatpickr-day.startRange,
-    .flatpickr-day.endRange,
-    .flatpickr-day.selected:hover {
+    .flatpickr-day.endRange {
       background: #1055D6 !important;
       border-color: #1055D6 !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(16, 85, 214, 0.35) !important;
+    }
+    .flatpickr-day.startRange {
+      border-radius: 0.65rem 0 0 0.65rem !important;
+    }
+    .flatpickr-day.endRange {
+      border-radius: 0 0.65rem 0.65rem 0 !important;
+    }
+    .flatpickr-day.inRange {
+      background: #eff6ff !important;
+      border-color: #eff6ff !important;
+      color: #1055D6 !important;
+      box-shadow: -5px 0 0 #eff6ff, 5px 0 0 #eff6ff !important;
+    }
+    .dark .flatpickr-day.inRange {
+      background: #1e293b !important;
+      border-color: #1e293b !important;
+      color: #38bdf8 !important;
+      box-shadow: -5px 0 0 #1e293b, 5px 0 0 #1e293b !important;
     }
     .flatpickr-day:hover {
       background: #eff6ff !important;
@@ -145,8 +157,6 @@
       background: #1e293b !important;
       color: #38bdf8 !important;
     }
-
-    /* ЗАБРОНИРОВАННЫЕ ДАТЫ: СЕРЫЕ, ПЕРЕЧЕРКНУТЫЕ, НЕЛЬЗЯ ВЫБРАТЬ */
     .flatpickr-day.flatpickr-disabled,
     .flatpickr-day.flatpickr-disabled:hover,
     .flatpickr-day.prevMonthDay.flatpickr-disabled,
@@ -1422,49 +1432,61 @@
             </div>
           </div>
 
-          <!-- Даты или часы проживания -->
-          <div class="p-3.5 rounded-2xl bg-slate-50/90 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/70">
-            <!-- Посуточный блок дат -->
-            <div id="dates-daily-group" class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-checkin">
-                  <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
-                  <span>Заезд</span>
-                </label>
-                <input id="client-checkin" name="checkin" type="text" placeholder="Выберите дату" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 cursor-pointer" />
-              </div>
-              <div>
-                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-checkout">
-                  <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
-                  <span>Выезд</span>
-                </label>
-                <input id="client-checkout" name="checkout" type="text" placeholder="Выберите дату" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 cursor-pointer" />
+          <!-- Даты или часы проживания (Удобный встроенный календарь) -->
+          <div class="p-3 sm:p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/70">
+            <!-- Скрытые поля для передачи в форму -->
+            <input type="hidden" id="client-checkin" name="checkin" value="" />
+            <input type="hidden" id="client-checkout" name="checkout" value="" />
+            <input type="hidden" id="client-hourly-date" name="hourlyDate" value="" />
+
+            <!-- Посуточный блок дат (красивые сводные плашки заезда и выезда) -->
+            <div id="dates-daily-group">
+              <div class="grid grid-cols-2 gap-2 mb-2.5">
+                <div class="p-2 sm:p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-brand-200/90 dark:border-slate-700 text-center shadow-xs">
+                  <div class="flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                    <span>Заезд</span>
+                  </div>
+                  <div id="display-checkin-val" class="text-xs sm:text-sm font-bold text-brand-900 dark:text-white truncate">--</div>
+                </div>
+                <div class="p-2 sm:p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-brand-200/90 dark:border-slate-700 text-center shadow-xs">
+                  <div class="flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">
+                    <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                    <span>Выезд</span>
+                  </div>
+                  <div id="display-checkout-val" class="text-xs sm:text-sm font-bold text-brand-900 dark:text-white truncate">--</div>
+                </div>
               </div>
             </div>
 
             <!-- Почасовой блок дат -->
-            <div id="dates-hourly-group" class="hidden grid grid-cols-2 gap-3">
-              <div>
-                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-hourly-date">
-                  <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
-                  <span>Дата</span>
-                </label>
-                <input id="client-hourly-date" type="text" placeholder="Выберите дату" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 cursor-pointer" />
-              </div>
-              <div>
-                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-hourly-duration">
-                  <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
-                  <span>Длительность</span>
-                </label>
-                <select id="client-hourly-duration" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900">
-                  <option value="3" selected>3 часа (1 800 ₽)</option>
-                  <option value="4">4 часа (2 300 ₽)</option>
-                  <option value="5">5 часов (2 800 ₽)</option>
-                  <option value="6">6 часов (3 300 ₽)</option>
-                  <option value="more">От 6 часов (договорная)</option>
-                </select>
+            <div id="dates-hourly-group" class="hidden">
+              <div class="grid grid-cols-2 gap-2 mb-2.5">
+                <div class="p-2 sm:p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-brand-200/90 dark:border-slate-700 text-center shadow-xs">
+                  <div class="flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                    <span>Дата заезда</span>
+                  </div>
+                  <div id="display-hourly-date-val" class="text-xs sm:text-sm font-bold text-brand-900 dark:text-white truncate">--</div>
+                </div>
+                <div class="p-1.5 sm:p-2 rounded-xl bg-white dark:bg-slate-900 border border-brand-200/90 dark:border-slate-700 flex flex-col justify-center shadow-xs">
+                  <div class="flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-0.5">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                    <span>Длительность</span>
+                  </div>
+                  <select id="client-hourly-duration" class="w-full text-xs font-bold text-center bg-transparent text-brand-900 dark:text-white border-0 focus:outline-none cursor-pointer">
+                    <option value="3" selected>3 часа (1 800 ₽)</option>
+                    <option value="4">4 часа (2 300 ₽)</option>
+                    <option value="5">5 часов (2 800 ₽)</option>
+                    <option value="6">6 часов (3 300 ₽)</option>
+                    <option value="more">От 6 ч (договорная)</option>
+                  </select>
+                </div>
               </div>
             </div>
+
+            <!-- Встроенный удобный календарь прямо в карточке (без всплывающих окон и вылетов) -->
+            <div id="booking-inline-calendar" class="w-full flex justify-center overflow-hidden rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-700 p-1"></div>
 
             <!-- Предупреждение о конфликте дат -->
             <div id="room-date-error" class="hidden mt-2.5 p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-xs font-semibold text-rose-800 dark:text-rose-200 flex items-start gap-2">
@@ -2153,9 +2175,34 @@
         rangeSeparator: ' — '
       };
 
-      let checkinPicker = null;
-      let checkoutPicker = null;
-      let hourlyPicker = null;
+      let inlinePicker = null;
+      const displayCheckinVal = document.getElementById('display-checkin-val');
+      const displayCheckoutVal = document.getElementById('display-checkout-val');
+      const displayHourlyDateVal = document.getElementById('display-hourly-date-val');
+
+      function formatDateRu(d) {
+        if (!d || isNaN(d.getTime())) return '--';
+        const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+        const days = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+        return `${d.getDate()} ${months[d.getMonth()]} (${days[d.getDay()]})`;
+      }
+
+      function parseISODate(str) {
+        if (!str) return new Date();
+        const parts = String(str).slice(0, 10).split('-');
+        if (parts.length === 3) {
+          return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        }
+        return new Date(str);
+      }
+
+      function formatDateISO(d) {
+        if (!d || isNaN(d.getTime())) return '';
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
 
       function getBookedDatesForSelectedRoom() {
         if (!selectedRoom || !BOOKED_DATES_CACHE[selectedRoom.id]) return [];
@@ -2176,155 +2223,131 @@
 
       function updatePickerDisabledDates() {
         const disabled = getBookedDatesForSelectedRoom();
-        if (checkinPicker) checkinPicker.set('disable', disabled);
-        if (checkoutPicker) checkoutPicker.set('disable', disabled);
-        if (hourlyPicker) hourlyPicker.set('disable', disabled);
+        if (inlinePicker) inlinePicker.set('disable', disabled);
       }
 
       function initFlatpickr() {
         if (typeof flatpickr === 'undefined') return;
+        const container = document.getElementById('booking-inline-calendar');
+        if (!container) return;
 
         const disabled = getBookedDatesForSelectedRoom();
         const today = getTodayStr();
-        const tomorrow = getTomorrowStr(today);
 
-        if (checkinInput) {
-          checkinPicker = flatpickr(checkinInput, {
-            locale: RussianFlatpickr,
-            dateFormat: 'Y-m-d',
-            altInput: true,
-            altFormat: 'd.m.Y',
-            altInputClass: 'w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 cursor-pointer',
-            minDate: 'today',
-            disableMobile: true,
-            disable: disabled,
-            static: true,
-            position: 'auto left',
-            onChange: function(selectedDates, dateStr) {
-              if (!dateStr) return;
-              const minCheckout = getTomorrowStr(dateStr);
-              if (checkoutPicker) {
-                checkoutPicker.set('minDate', minCheckout);
-                if (checkoutInput.value <= dateStr) {
-                  const safeNext = getNextAvailableDate(minCheckout, getBookedDatesForSelectedRoom());
-                  checkoutPicker.setDate(safeNext, true);
-                }
+        inlinePicker = flatpickr(container, {
+          inline: true,
+          locale: RussianFlatpickr,
+          dateFormat: 'Y-m-d',
+          minDate: 'today',
+          mode: currentTariff === 'daily' ? 'range' : 'single',
+          disable: disabled,
+          showMonths: 1,
+          onChange: function(selectedDates) {
+            if (currentTariff === 'daily') {
+              if (selectedDates.length === 1) {
+                const dIn = selectedDates[0];
+                checkinInput.value = formatDateISO(dIn);
+                if (displayCheckinVal) displayCheckinVal.textContent = formatDateRu(dIn);
+                if (displayCheckoutVal) displayCheckoutVal.textContent = 'Выберите выезд';
+                updateStayCalculation();
+              } else if (selectedDates.length === 2) {
+                const dIn = selectedDates[0];
+                const dOut = selectedDates[1];
+                checkinInput.value = formatDateISO(dIn);
+                checkoutInput.value = formatDateISO(dOut);
+                if (displayCheckinVal) displayCheckinVal.textContent = formatDateRu(dIn);
+                if (displayCheckoutVal) displayCheckoutVal.textContent = formatDateRu(dOut);
+                updateStayCalculation();
+                checkDateAvailability();
               }
-              updateStayCalculation();
-              checkDateAvailability();
+            } else {
+              if (selectedDates.length >= 1) {
+                const d = selectedDates[0];
+                hourlyDateInput.value = formatDateISO(d);
+                if (displayHourlyDateVal) displayHourlyDateVal.textContent = formatDateRu(d);
+                updateStayCalculation();
+                checkDateAvailability();
+              }
             }
-          });
-        }
-
-        if (checkoutInput) {
-          checkoutPicker = flatpickr(checkoutInput, {
-            locale: RussianFlatpickr,
-            dateFormat: 'Y-m-d',
-            altInput: true,
-            altFormat: 'd.m.Y',
-            altInputClass: 'w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 cursor-pointer',
-            minDate: tomorrow,
-            disableMobile: true,
-            disable: disabled,
-            static: true,
-            position: 'auto right',
-            onChange: function() {
-              updateStayCalculation();
-              checkDateAvailability();
-            }
-          });
-        }
-
-        if (hourlyDateInput) {
-          hourlyPicker = flatpickr(hourlyDateInput, {
-            locale: RussianFlatpickr,
-            dateFormat: 'Y-m-d',
-            altInput: true,
-            altFormat: 'd.m.Y',
-            altInputClass: 'w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 cursor-pointer',
-            minDate: 'today',
-            disableMobile: true,
-            disable: disabled,
-            static: true,
-            position: 'auto left',
-            onChange: function() {
-              updateStayCalculation();
-              checkDateAvailability();
-            }
-          });
-        }
+          }
+        });
       }
 
       function enforceDateLimits() {
         const today = getTodayStr();
         const disabled = getBookedDatesForSelectedRoom();
-        const safeCheckin = getNextAvailableDate(today, disabled);
+        const safeCheckinStr = getNextAvailableDate(today, disabled);
+        const safeCheckoutStr = getTomorrowStr(safeCheckinStr);
+        const safeCheckoutAvailable = getNextAvailableDate(safeCheckoutStr, disabled);
 
-        if (checkinPicker) {
-          checkinPicker.set('minDate', today);
-          checkinPicker.set('disable', disabled);
-          if (!checkinInput.value || checkinInput.value < today || disabled.includes(checkinInput.value)) {
-            checkinPicker.setDate(safeCheckin, false);
-          }
-        } else if (checkinInput) {
-          checkinInput.min = today;
-          if (!checkinInput.value || checkinInput.value < today || disabled.includes(checkinInput.value)) {
-            checkinInput.value = safeCheckin;
+        const currentIn = checkinInput && checkinInput.value && checkinInput.value >= today && !disabled.includes(checkinInput.value)
+          ? checkinInput.value
+          : safeCheckinStr;
+        const currentOut = checkoutInput && checkoutInput.value && checkoutInput.value > currentIn && !disabled.includes(checkoutInput.value)
+          ? checkoutInput.value
+          : safeCheckoutAvailable;
+
+        const dIn = parseISODate(currentIn);
+        const dOut = parseISODate(currentOut);
+
+        checkinInput.value = formatDateISO(dIn);
+        checkoutInput.value = formatDateISO(dOut);
+        hourlyDateInput.value = formatDateISO(dIn);
+
+        if (displayCheckinVal) displayCheckinVal.textContent = formatDateRu(dIn);
+        if (displayCheckoutVal) displayCheckoutVal.textContent = formatDateRu(dOut);
+        if (displayHourlyDateVal) displayHourlyDateVal.textContent = formatDateRu(dIn);
+
+        if (inlinePicker) {
+          inlinePicker.set('minDate', today);
+          inlinePicker.set('disable', disabled);
+          if (currentTariff === 'daily') {
+            inlinePicker.setDate([dIn, dOut], false);
+          } else {
+            inlinePicker.setDate(dIn, false);
           }
         }
 
-        const inVal = checkinInput ? (checkinInput.value || safeCheckin) : safeCheckin;
-        const minCheckout = getTomorrowStr(inVal);
-        const safeCheckout = getNextAvailableDate(minCheckout, disabled);
-
-        if (checkoutPicker) {
-          checkoutPicker.set('minDate', minCheckout);
-          checkoutPicker.set('disable', disabled);
-          if (!checkoutInput.value || checkoutInput.value <= inVal || disabled.includes(checkoutInput.value)) {
-            checkoutPicker.setDate(safeCheckout, false);
-          }
-        } else if (checkoutInput) {
-          checkoutInput.min = minCheckout;
-          if (!checkoutInput.value || checkoutInput.value <= inVal || disabled.includes(checkoutInput.value)) {
-            checkoutInput.value = safeCheckout;
-          }
-        }
-
-        if (hourlyPicker) {
-          hourlyPicker.set('minDate', today);
-          hourlyPicker.set('disable', disabled);
-          if (!hourlyDateInput.value || hourlyDateInput.value < today || disabled.includes(hourlyDateInput.value)) {
-            hourlyPicker.setDate(safeCheckin, false);
-          }
-        } else if (hourlyDateInput) {
-          hourlyDateInput.min = today;
-          if (!hourlyDateInput.value || hourlyDateInput.value < today || disabled.includes(hourlyDateInput.value)) {
-            hourlyDateInput.value = safeCheckin;
-          }
-        }
+        updateStayCalculation();
+        checkDateAvailability();
       }
 
       function setTariff(mode) {
         currentTariff = mode;
         if (tariffInput) tariffInput.value = mode;
-        if (mode === 'daily') {
-          tariffBtnDaily.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs';
-          tariffBtnHourly.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white';
-          datesDailyGroup?.classList.remove('hidden');
-          datesHourlyGroup?.classList.add('hidden');
-          checkinInput?.setAttribute('required', 'required');
-          checkoutInput?.setAttribute('required', 'required');
-          hourlyDateInput?.removeAttribute('required');
-        } else {
-          tariffBtnHourly.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs';
-          tariffBtnDaily.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white';
+        const isHourly = mode === 'hourly';
+
+        if (tariffBtnDaily && tariffBtnHourly) {
+          tariffBtnDaily.className = isHourly
+            ? 'py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white'
+            : 'py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs';
+          tariffBtnHourly.className = isHourly
+            ? 'py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs'
+            : 'py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white';
+        }
+
+        if (isHourly) {
           datesDailyGroup?.classList.add('hidden');
           datesHourlyGroup?.classList.remove('hidden');
-          checkinInput?.removeAttribute('required');
-          checkoutInput?.removeAttribute('required');
-          hourlyDateInput?.setAttribute('required', 'required');
+          if (inlinePicker) {
+            inlinePicker.set('mode', 'single');
+            const d = parseISODate(hourlyDateInput.value || checkinInput.value || getTodayStr());
+            inlinePicker.setDate(d, false);
+            if (displayHourlyDateVal) displayHourlyDateVal.textContent = formatDateRu(d);
+          }
+        } else {
+          datesDailyGroup?.classList.remove('hidden');
+          datesHourlyGroup?.classList.add('hidden');
+          if (inlinePicker) {
+            inlinePicker.set('mode', 'range');
+            const dIn = parseISODate(checkinInput.value || getTodayStr());
+            const dOut = parseISODate(checkoutInput.value || getTomorrowStr(checkinInput.value || getTodayStr()));
+            inlinePicker.setDate([dIn, dOut], false);
+            if (displayCheckinVal) displayCheckinVal.textContent = formatDateRu(dIn);
+            if (displayCheckoutVal) displayCheckoutVal.textContent = formatDateRu(dOut);
+          }
         }
-        enforceDateLimits();
+
         updateStayCalculation();
         checkDateAvailability();
       }
@@ -2841,9 +2864,21 @@
       });
 
       document.querySelectorAll('.modal-backdrop').forEach(modal => {
-        modal.addEventListener('click', e => {
-          if (e.target === modal) closeModal(modal);
+        let isBackdropPointerDown = false;
+        modal.addEventListener('pointerdown', e => {
+          isBackdropPointerDown = (e.target === modal);
         });
+        modal.addEventListener('click', e => {
+          if (e.target === modal && isBackdropPointerDown) {
+            closeModal(modal);
+          }
+          isBackdropPointerDown = false;
+        });
+      });
+
+      document.querySelectorAll('.modal-panel').forEach(panel => {
+        panel.addEventListener('pointerdown', e => e.stopPropagation());
+        panel.addEventListener('click', e => e.stopPropagation());
       });
 
       document.addEventListener('keydown', e => {
