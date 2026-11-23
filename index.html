@@ -52,6 +52,11 @@
     }
 
     /* Кастомизация Flatpickr под дизайн сайта и тёмную тему */
+    .flatpickr-wrapper {
+      position: relative !important;
+      display: block !important;
+      width: 100% !important;
+    }
     .flatpickr-calendar {
       font-family: inherit !important;
       border-radius: 1.25rem !important;
@@ -60,6 +65,28 @@
       background: #ffffff !important;
       z-index: 99999 !important;
       padding: 6px !important;
+      max-width: calc(100vw - 32px) !important;
+    }
+    .flatpickr-calendar.static {
+      position: absolute !important;
+      top: calc(100% + 4px) !important;
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.3) !important;
+    }
+    /* Для поля выезда прижимаем календарь к правому краю, чтобы он не вылезал за пределы окна */
+    #dates-daily-group > div:nth-child(2) .flatpickr-calendar.static {
+      right: 0 !important;
+      left: auto !important;
+    }
+    #dates-daily-group > div:nth-child(2) .flatpickr-calendar.arrowTop:before,
+    #dates-daily-group > div:nth-child(2) .flatpickr-calendar.arrowTop:after {
+      left: auto !important;
+      right: 28px !important;
+    }
+    /* Для поля заезда прижимаем календарь к левому краю */
+    #dates-daily-group > div:nth-child(1) .flatpickr-calendar.static,
+    #dates-hourly-group .flatpickr-calendar.static {
+      left: 0 !important;
+      right: auto !important;
     }
     .dark .flatpickr-calendar {
       background: #0F172A !important;
@@ -2171,6 +2198,8 @@
             minDate: 'today',
             disableMobile: true,
             disable: disabled,
+            static: true,
+            position: 'auto left',
             onChange: function(selectedDates, dateStr) {
               if (!dateStr) return;
               const minCheckout = getTomorrowStr(dateStr);
@@ -2197,6 +2226,8 @@
             minDate: tomorrow,
             disableMobile: true,
             disable: disabled,
+            static: true,
+            position: 'auto right',
             onChange: function() {
               updateStayCalculation();
               checkDateAvailability();
@@ -2214,6 +2245,8 @@
             minDate: 'today',
             disableMobile: true,
             disable: disabled,
+            static: true,
+            position: 'auto left',
             onChange: function() {
               updateStayCalculation();
               checkDateAvailability();
