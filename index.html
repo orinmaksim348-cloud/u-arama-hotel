@@ -1033,13 +1033,84 @@
         <!-- 3. КАТАЛОГ КВАРТИР И АПАРТАМЕНТОВ -->
     <section id="catalog" class="pt-7 pb-10 sm:pt-10 sm:pb-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="reveal mb-6 sm:mb-8">
-          <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400 mb-1.5">Квартиры и номера</p>
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-900 dark:text-white tracking-tight">Каталог апартаментов</h2>
+        <div class="reveal mb-5 sm:mb-7 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400 mb-1.5">Квартиры и номера</p>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-900 dark:text-white tracking-tight">Каталог апартаментов</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium max-w-md">
+            Все варианты с кондиционером, собственной кухней, чистым душем, Wi-Fi и бесплатной парковкой во дворе.
+          </p>
         </div>
 
-        <!-- Карточки рендерятся из массива ROOMS -->
+        <!-- Фильтры категорий для быстрого переключения -->
+        <div class="reveal flex flex-wrap items-center gap-2 mb-6 sm:mb-8 pb-1">
+          <button type="button" data-catalog-filter="all" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white border border-brand-600 shadow-sm transition-all">Все варианты (7)</button>
+          <button type="button" data-catalog-filter="studio" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">Студии и лофты (3)</button>
+          <button type="button" data-catalog-filter="1room" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">1-комнатные (1)</button>
+          <button type="button" data-catalog-filter="2room" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">2-комнатные (1)</button>
+          <button type="button" data-catalog-filter="family" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">3-комнатные (1)</button>
+          <button type="button" data-catalog-filter="hourly" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">По часам (1)</button>
+        </div>
+
+        <!-- Карточки рендерятся из массива ROOMS с реальными фото и слайдерами -->
         <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"></div>
+      </div>
+    </section>
+
+    <!-- БЛОК: ТЕРРИТОРИЯ, ЗАКРЫТЫЙ ДВОР И ПАРКОВКА -->
+    <section class="py-10 sm:py-16 bg-white dark:bg-[#0B1220] border-t border-brand-100 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="reveal mb-6 sm:mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400 mb-1.5">Удобство для автопутешественников</p>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-900 dark:text-white tracking-tight">Закрытый двор, территория и парковка</h2>
+          </div>
+          <div class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-4 py-2.5 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/60 self-start md:self-auto">
+            <i data-lucide="shield-check" class="w-4 h-4 shrink-0"></i>
+            <span>Бесплатная закрытая парковка во дворе</span>
+          </div>
+        </div>
+
+        <!-- Сетка живых фото двора, фасада и территории -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-slate-700/80 shadow-xs">
+            <img src="images/facade/1.jpg" alt="Фасад гостевого дома У Арама" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+              <span class="text-[11px] font-semibold text-white drop-shadow">Входная группа</span>
+            </div>
+          </div>
+          <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-slate-700/80 shadow-xs">
+            <img src="images/facade/2.jpg" alt="Закрытый двор и территория" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+              <span class="text-[11px] font-semibold text-white drop-shadow">Закрытый двор</span>
+            </div>
+          </div>
+          <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-slate-700/80 shadow-xs">
+            <img src="images/facade/3.jpg" alt="Парковочные места для гостей" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+              <span class="text-[11px] font-semibold text-white drop-shadow">Парковка во дворе</span>
+            </div>
+          </div>
+          <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-slate-700/80 shadow-xs">
+            <img src="images/facade/4.jpg" alt="Территория комплекса апартаментов" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+              <span class="text-[11px] font-semibold text-white drop-shadow">Огороженная зона</span>
+            </div>
+          </div>
+          <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-slate-700/80 shadow-xs">
+            <img src="images/facade/5.jpg" alt="Вид на гостевой дом" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+              <span class="text-[11px] font-semibold text-white drop-shadow">Территория дома</span>
+            </div>
+          </div>
+          <div class="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-brand-50 dark:bg-slate-800 border border-brand-100 dark:border-slate-700/80 shadow-xs">
+            <img src="images/facade/6.jpg" alt="Безопасный заезд и парковка" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+              <span class="text-[11px] font-semibold text-white drop-shadow">Удобный заезд</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1354,6 +1425,132 @@
 
     const ROOMS = [
       {
+        id: 'studio-comfort',
+        category: 'studio',
+        badge: 'Студия',
+        title: 'Студия комфорт',
+        price: 3000,
+        priceUnit: 'за сутки',
+        guests: 'До 2 гостей',
+        defaultGuests: '2',
+        isHourly: false,
+        area: 'Кухня и санузел',
+        desc: 'Уютная и светлая студия со всеми удобствами в центре города Шахты. Кондиционер (сплит-система), полноценная кухня, быстрый Wi-Fi, современная душевая, ТВ и тихая домашняя обстановка.',
+        slideLabels: ['Интерьер студии', 'Спальное место', 'Кухонный гарнитур', 'Обеденная зона', 'Санузел и душ'],
+        images: [
+          'images/studio-comfort/1.jpg',
+          'images/studio-comfort/2.jpg',
+          'images/studio-comfort/3.jpg',
+          'images/studio-comfort/4.jpg',
+          'images/studio-comfort/5.jpg'
+        ]
+      },
+      {
+        id: 'room-1',
+        category: '1room',
+        badge: '1 комнатная',
+        title: '1-комнатная квартира',
+        price: 2200,
+        priceUnit: 'за сутки',
+        guests: '2 спальных места',
+        defaultGuests: '2',
+        isHourly: false,
+        area: '38–40 м²',
+        desc: 'Комфортабельная 1-комнатная квартира со всеми удобствами: двуспальная кровать, сплит-система, оборудованная кухня, холодильник, плита, стиральная машина, Wi-Fi и ТВ.',
+        slideLabels: ['Спальня и зона отдыха', 'Кухня и посуда', 'Прихожая', 'Санузел и душ'],
+        images: [
+          'images/room-1/1.jpg',
+          'images/room-1/2.jpg',
+          'images/room-1/3.jpg',
+          'images/room-1/4.jpg'
+        ]
+      },
+      {
+        id: 'room-2-comfort',
+        category: '2room',
+        badge: '2-х комнатная',
+        title: '2-х комнатная комфорт+',
+        price: 3500,
+        priceUnit: 'за сутки',
+        guests: 'До 4 гостей',
+        defaultGuests: '3',
+        isHourly: false,
+        area: '2 раздельные комнаты',
+        desc: 'Просторная 2-комнатная квартира улучшенной планировки. Две изолированные комнаты, спальные места, зона отдыха с ТВ, полностью укомплектованная кухня, кондиционер и быстрый интернет.',
+        slideLabels: ['Гостиная и зона отдыха', 'Вторая спальня', 'Оборудованная кухня', 'Ванная комната', 'Прихожая'],
+        images: [
+          'images/room-2-comfort/1.jpg',
+          'images/room-2-comfort/2.jpg',
+          'images/room-2-comfort/3.jpg',
+          'images/room-2-comfort/4.jpg',
+          'images/room-2-comfort/5.jpg'
+        ]
+      },
+      {
+        id: 'room-3-comfort',
+        category: 'family',
+        badge: '3-х комнатная',
+        title: '3-х комнатная комфорт',
+        price: 4000,
+        priceUnit: 'за сутки',
+        guests: 'До 6 гостей',
+        defaultGuests: '4',
+        isHourly: false,
+        area: 'Большие апартаменты',
+        desc: 'Большие 3-комнатные апартаменты для семьи, рабочей бригады или компании. Несколько раздельных спален, большая кухня, кондиционер, стиральная машина, чистый санузел и закрытый двор.',
+        slideLabels: ['Гостиная', 'Основная спальня', 'Вторая спальня', 'Обеденная зона и кухня', 'Ванная комната', 'Санузел'],
+        images: [
+          'images/room-3-comfort/1.jpg',
+          'images/room-3-comfort/2.jpg',
+          'images/room-3-comfort/3.jpg',
+          'images/room-3-comfort/4.jpg',
+          'images/room-3-comfort/5.jpg',
+          'images/room-3-comfort/6.jpg'
+        ]
+      },
+      {
+        id: 'studio-loft',
+        category: 'studio',
+        badge: 'Студия-лофт',
+        title: 'Студия-лофт',
+        price: 3200,
+        priceUnit: 'за сутки',
+        guests: 'До 2 гостей',
+        defaultGuests: '2',
+        isHourly: false,
+        area: 'Стильный дизайн',
+        desc: 'Стильная студия в стиле лофт с кирпичной кладкой, атмосферной подсветкой и современной мебелью. Кухонный блок, сплит-система, скоростной интернет и смарт-ТВ.',
+        slideLabels: ['Лофт-интерьер', 'Спальная зона', 'Кухонный гарнитур', 'Зона отдыха', 'Санузел'],
+        images: [
+          'images/studio-loft/1.jpg',
+          'images/studio-loft/2.jpg',
+          'images/studio-loft/3.jpg',
+          'images/studio-loft/4.jpg',
+          'images/studio-loft/5.jpg'
+        ]
+      },
+      {
+        id: 'studio-loft-premium',
+        category: 'studio',
+        badge: 'Лофт Премиум',
+        title: 'Студия-лофт премиум',
+        price: 3800,
+        priceUnit: 'за сутки',
+        guests: 'До 2 гостей',
+        defaultGuests: '2',
+        isHourly: false,
+        area: 'Премиум апартаменты',
+        desc: 'Премиальная дизайнерская студия повышенной комфортности: кровать King-Size, дизайнерская мебель, многоуровневая подсветка, кухонный уголок и современная просторная душевая.',
+        slideLabels: ['Премиум лофт', 'Кровать King-Size', 'Кухонная зона', 'Освещение и детали', 'Санузел премиум'],
+        images: [
+          'images/studio-loft-premium/1.jpg',
+          'images/studio-loft-premium/2.jpg',
+          'images/studio-loft-premium/3.jpg',
+          'images/studio-loft-premium/4.jpg',
+          'images/studio-loft-premium/5.jpg'
+        ]
+      },
+      {
         id: 'hourly',
         category: 'hourly',
         badge: 'По часам',
@@ -1364,69 +1561,13 @@
         defaultGuests: '2',
         isHourly: true,
         area: 'От 3 часов',
-        desc: 'Минимум 3 часа от 1 800 ₽. Уютные апартаменты в центре города Шахты со всеми удобствами: кондиционер, Wi-Fi, душ и кухонный уголок.',
-        slideLabels: ['Спальня и зона отдыха', 'Кухонный уголок', 'Душ и удобства'],
-        images: ['', '', '']
-      },
-      {
-        id: '2-mestny',
-        category: '1room',
-        badge: '1 комнатная',
-        title: '2-х местный',
-        price: 2200,
-        priceUnit: 'за сутки',
-        guests: '2 спальных места',
-        defaultGuests: '2',
-        isHourly: false,
-        area: '38–40 м²',
-        desc: 'Сдаются апартаменты 38–40 м² в центре Шахт! Все удобства имеются: кондиционер, высокоскоростной Wi-Fi, кухня в номере, душ, ТВ. Возможна скидка при длительном проживании.',
-        slideLabels: ['Основная комната', 'Оборудованная кухня', 'Санузел и душ'],
-        images: ['', '', '']
-      },
-      {
-        id: 'studio-2',
-        category: 'studio',
-        badge: 'Студия',
-        title: 'Комната студия 2-х местная',
-        price: 3000,
-        priceUnit: 'за сутки',
-        guests: 'До 2 гостей',
-        defaultGuests: '2',
-        isHourly: false,
-        area: '50 м²',
-        desc: 'Сдаётся просторный апартамент-студия 50 м² в самом центре города Шахты со всеми удобствами и своим двором. Кондиционер, Wi-Fi, кухня, стиральная машина и ТВ.',
-        slideLabels: ['Просторная студия', 'Кухня и обеденная зона', 'Ванная комната'],
-        images: ['', '', '']
-      },
-      {
-        id: 'studio-4',
-        category: 'studio',
-        badge: 'Студия',
-        title: 'Студия (4-х местная)',
-        price: 3000,
-        priceUnit: 'за сутки',
-        guests: '4 спальных места',
-        defaultGuests: '4',
-        isHourly: false,
-        area: '50 м²',
-        desc: 'Комфортная 4-х местная студия: двуспальная кровать и диван-кровать, кухня/кухонный уголок в номере, кондиционер, душ, Wi-Fi и детские ТВ-каналы.',
-        slideLabels: ['Спальная и гостиная зона', 'Диван-кровать и ТВ', 'Кухня и душ'],
-        images: ['', '', '']
-      },
-      {
-        id: '3-room-4',
-        category: 'family',
-        badge: '3-х комнатная',
-        title: '3-х комнатная комната (4-х местный)',
-        price: 3990,
-        priceUnit: 'за сутки',
-        guests: '4 спальных места',
-        defaultGuests: '4',
-        isHourly: false,
-        area: 'Просторные апартаменты',
-        desc: 'Большие 3-х комнатные апартаменты для семьи или компании в центре Шахт. Все удобства имеются: кондиционер, высокоскоростной интернет, полноценная кухня, стиральная машина и душ.',
-        slideLabels: ['Гостиная', 'Изолированные спальни', 'Кухня и санузел'],
-        images: ['', '', '']
+        desc: 'Минимум 3 часа от 1 800 ₽. Идеальный вариант для отдыха проездом с трассы М-4, короткого визита или командировки. Сплит-система, чистый душ, свежие полотенца и Wi-Fi.',
+        slideLabels: ['Уютная комната', 'Зона отдыха', 'Душ и удобства'],
+        images: [
+          'images/studio-comfort/1.jpg',
+          'images/studio-loft/1.jpg',
+          'images/room-1/1.jpg'
+        ]
       }
     ];
 
@@ -1852,9 +1993,27 @@
       checkinInput.addEventListener('change', updateStayCalculation);
       checkoutInput.addEventListener('change', updateStayCalculation);
 
-      applyRoomPreset(ROOMS[1], true);
+      applyRoomPreset(ROOMS[0], true);
 
       renderRooms('all');
+
+      // Переключение фильтров категорий в каталоге
+      const filterBtns = document.querySelectorAll('.catalog-filter-btn');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.dataset.catalogFilter;
+          filterBtns.forEach(b => {
+            const isTarget = b === btn;
+            b.className = `catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm border transition-all ${
+              isTarget
+                ? 'bg-brand-600 text-white border-brand-600 shadow-sm font-bold'
+                : 'bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border-brand-200/80 dark:border-slate-700 hover:border-brand-400 font-semibold'
+            }`;
+          });
+          renderRooms(filter);
+        });
+      });
+
       renderAddressCards();
       if (window.lucide) lucide.createIcons();
       initScrollReveal();
