@@ -1152,14 +1152,49 @@
   </main>
 
   <!-- Подвал -->
-  <footer class="border-t border-brand-100 dark:border-slate-800 bg-white dark:bg-[#0B1220] py-7 sm:py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3.5 text-center sm:text-left text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-      <div class="flex items-center gap-2.5">
-        <span class="brand-logo-slot logo-frame w-8 h-8 rounded-xl overflow-hidden bg-white ring-1 ring-slate-200/90 dark:ring-slate-700 flex items-center justify-center shrink-0"></span>
-        <span>© 2026 Гостевой дом «У Арама» · Шахты</span>
+  <footer class="border-t border-brand-100 dark:border-slate-800 bg-white dark:bg-[#0B1220] pt-10 pb-9">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <!-- Верхняя часть: реквизиты и ссылки на документы -->
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-100 dark:border-slate-800/80 text-center lg:text-left">
+        <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+          <span class="brand-logo-slot logo-frame w-10 h-10 rounded-2xl overflow-hidden bg-white ring-1 ring-slate-200/90 dark:ring-slate-700 flex items-center justify-center shrink-0 shadow-xs"></span>
+          <div>
+            <div class="text-sm font-bold text-brand-900 dark:text-white">Гостевой дом «У Арама» · Шахты</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Советская ул., 94 · Тюменский пер., 21 | Организация: Курехян Карине Ашотовна
+            </div>
+          </div>
+        </div>
+
+        <!-- Ссылки на соглашения -->
+        <div class="flex flex-wrap items-center justify-center lg:justify-end gap-x-4 gap-y-2 text-xs text-slate-500 dark:text-slate-400">
+          <button type="button" data-open-legal="privacy" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Политика конфиденциальности</button>
+          <span class="text-slate-300 dark:text-slate-700">·</span>
+          <button type="button" data-open-legal="terms" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Пользовательское соглашение</button>
+          <span class="text-slate-300 dark:text-slate-700">·</span>
+          <button type="button" data-open-legal="consent" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Согласие на обработку данных</button>
+          <span class="text-slate-300 dark:text-slate-700">·</span>
+          <button type="button" data-open-legal="rules" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Правила проживания</button>
+        </div>
       </div>
-      <div class="text-xs text-slate-400 dark:text-slate-500">
-        Наименование организации: Курехян Карине Ашотовна
+
+      <!-- Нижняя часть по центру: блок разработчика с ссылкой на Telegram @m1lware -->
+      <div class="flex flex-col items-center justify-center gap-2.5 text-center">
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs sm:text-sm text-slate-600 dark:text-slate-300 shadow-xs">
+          <span>Сайт создан разработчиком:</span>
+          <a href="https://t.me/m1lware" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 hover:underline">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+              <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+            </svg>
+            <span>@m1lware</span>
+          </a>
+          <span class="text-slate-300 dark:text-slate-700 hidden sm:inline">·</span>
+          <span>Обращайтесь за разработкой и созданием сайтов в Telegram!</span>
+        </div>
+        <div class="text-[11px] text-slate-400 dark:text-slate-500">
+          © 2026 Гостевой дом «У Арама». Все права защищены.
+        </div>
       </div>
     </div>
   </footer>
@@ -1352,7 +1387,54 @@
           <button type="submit" id="booking-submit-btn" class="btn-sheen w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
             <span>Подтвердить бронирование</span>
           </button>
+          <p class="text-[11px] text-center text-slate-500 dark:text-slate-400 leading-normal">
+            Отправляя заявку, вы соглашаетесь с <button type="button" data-open-legal="privacy" class="text-brand-600 dark:text-brand-400 underline hover:text-brand-700">политикой конфиденциальности</button> и <button type="button" data-open-legal="consent" class="text-brand-600 dark:text-brand-400 underline hover:text-brand-700">обработкой данных</button>
+          </p>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ПРАВОВАЯ ИНФОРМАЦИЯ И СОГЛАШЕНИЯ -->
+  <div id="legal-modal" class="modal-backdrop fixed inset-0 z-50 bg-brand-950/65 backdrop-blur-[4px] flex items-end sm:items-center justify-center p-0 sm:p-4" aria-hidden="true">
+    <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[640px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[90dvh] flex flex-col overflow-hidden">
+      <!-- Верхняя полоса-ручка на мобильном -->
+      <div class="pt-3 sm:hidden">
+        <div class="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-700 mx-auto" aria-hidden="true"></div>
+      </div>
+
+      <!-- Шапка окна -->
+      <div class="px-5 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+        <div class="min-w-0">
+          <h3 id="legal-modal-title" class="text-lg font-extrabold text-brand-900 dark:text-white tracking-tight leading-tight">
+            Правовая информация
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+            Гостевой дом «У Арама» · г. Шахты
+          </p>
+        </div>
+        <button type="button" data-close="legal-modal" aria-label="Закрыть окно" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Переключатель вкладок документов -->
+      <div class="px-5 sm:px-6 py-2.5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-xs font-semibold">
+        <button type="button" data-legal-tab="privacy" class="legal-tab-btn px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors bg-brand-600 text-white">Политика конфиденциальности</button>
+        <button type="button" data-legal-tab="terms" class="legal-tab-btn px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-900">Пользовательское соглашение</button>
+        <button type="button" data-legal-tab="consent" class="legal-tab-btn px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-900">Обработка данных</button>
+        <button type="button" data-legal-tab="rules" class="legal-tab-btn px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-900">Правила проживания</button>
+      </div>
+
+      <!-- Содержимое выбранного документа -->
+      <div id="legal-modal-body" class="p-5 sm:p-6 overflow-y-auto text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-4">
+      </div>
+
+      <!-- Нижняя кнопка закрытия -->
+      <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex justify-end shrink-0">
+        <button type="button" data-close="legal-modal" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold transition-colors">
+          Понятно
+        </button>
       </div>
     </div>
   </div>
@@ -2146,27 +2228,131 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      // Модалка бронирования с блокировкой прокрутки и Escape
+      // Модальные окна с блокировкой прокрутки и Escape
       const bookingModal = document.getElementById('booking-modal');
+      const legalModal = document.getElementById('legal-modal');
 
       const syncBodyLock = () => {
-        document.body.classList.toggle('is-locked', bookingModal.classList.contains('is-open'));
+        const hasOpenModal = document.querySelector('.modal-backdrop.is-open');
+        document.body.classList.toggle('is-locked', !!hasOpenModal);
       };
 
       const openModal = el => {
-        enforceDateLimits();
-        updateStayCalculation();
+        if (!el) return;
+        if (el === bookingModal) {
+          enforceDateLimits();
+          updateStayCalculation();
+        }
         el.classList.add('is-open');
         el.setAttribute('aria-hidden', 'false');
         syncBodyLock();
       };
+
       const closeModal = el => {
+        if (!el) return;
         el.classList.remove('is-open');
         el.setAttribute('aria-hidden', 'true');
         syncBodyLock();
       };
 
+      // Логика правовых документов
+      const LEGAL_DOCS = {
+        privacy: {
+          title: 'Политика конфиденциальности',
+          content: `
+            <div class="space-y-3">
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">1. Общие положения</h4>
+              <p>Настоящая Политика обработки персональных данных составлена в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных гостевого дома «У Арама» (ИП Курехян Карине Ашотовна, г. Шахты, Советская ул., 94).</p>
+              
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">2. Состав обрабатываемых данных</h4>
+              <p>При оформлении заявки на бронирование обрабатываются: имя, номер телефона, выбранные даты/часы проживания и пожелания к заезду.</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">3. Цели обработки</h4>
+              <p>Данные используются исключительно для обратной связи с гостем, подтверждения бронирования и консультации по условиям проживания.</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">4. Конфиденциальность</h4>
+              <p>Персональные данные не передаются третьим лицам, за исключением случаев, предусмотренных законодательством Российской Федерации.</p>
+            </div>
+          `
+        },
+        terms: {
+          title: 'Пользовательское соглашение',
+          content: `
+            <div class="space-y-3">
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">1. Предмет соглашения</h4>
+              <p>Сайт предоставляет пользователям информационные материалы об условиях размещения в гостевом доме «У Арама» и техническую возможность отправки заявки на бронирование.</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">2. Бронирование</h4>
+              <p>Отправка заявки через сайт является предварительным запросом. Бронирование считается окончательно подтверждённым после согласования с администратором гостевого дома по телефону или через мессенджеры.</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">3. Актуальность сведений</h4>
+              <p>Администрация гостевого дома предпринимает все меры для поддержания актуальности информации о ценах, планировках и наличии свободных номеров.</p>
+            </div>
+          `
+        },
+        consent: {
+          title: 'Согласие на обработку персональных данных',
+          content: `
+            <div class="space-y-3">
+              <p>Отправляя заявку на бронирование через сайт гостевого дома «У Арама», пользователь свободно, своей волей и в своем интересе выражает согласие на обработку своих персональных данных (имя, номер контактного телефона) оператором ИП Курехян Карине Ашотовна.</p>
+              
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">Условия согласия</h4>
+              <p>Обработка данных осуществляется для связи с гостем, согласования деталей бронирования и подтверждения заезда. Согласие действует бессрочно и может быть отозвано по обращению к администрации по телефону: +7 904 444 44 91.</p>
+            </div>
+          `
+        },
+        rules: {
+          title: 'Правила проживания и бронирования',
+          content: `
+            <div class="space-y-3">
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">1. Круглосуточный заезд</h4>
+              <p>Гостевой дом «У Арама» принимает гостей <strong>круглосуточно 24/7</strong> по предварительному согласованию. Стандартный расчётный час: заезд с 14:00, выезд до 12:00 (возможен ранний заезд или поздний выезд).</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">2. Почасовая аренда</h4>
+              <p>Для всех апартаментов доступна почасовая аренда от 3 часов (от 1 800 ₽). Идеально для отдыха проездом с трассы М-4 или коротких поездок.</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">3. Правила дома</h4>
+              <p>В помещениях запрещено курение (оборудованы зоны для курения на свежем воздухе во дворе). Просим соблюдать тишину с 23:00 до 07:00 и бережно относиться к имуществу.</p>
+
+              <h4 class="text-sm font-bold text-brand-900 dark:text-white">4. Парковка</h4>
+              <p>Гостям предоставляется бесплатная закрытая парковка на охраняемой территории гостевого дома.</p>
+            </div>
+          `
+        }
+      };
+
+      const legalModalTitle = document.getElementById('legal-modal-title');
+      const legalModalBody = document.getElementById('legal-modal-body');
+      const legalTabBtns = document.querySelectorAll('.legal-tab-btn');
+
+      function showLegalDoc(key) {
+        const doc = LEGAL_DOCS[key] || LEGAL_DOCS.privacy;
+        if (legalModalTitle) legalModalTitle.textContent = doc.title;
+        if (legalModalBody) legalModalBody.innerHTML = doc.content;
+
+        legalTabBtns.forEach(btn => {
+          const isActive = btn.dataset.legalTab === key;
+          btn.className = `legal-tab-btn px-3 py-1.5 rounded-xl whitespace-nowrap transition-colors ${
+            isActive
+              ? 'bg-brand-600 text-white shadow-xs font-bold'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white font-semibold'
+          }`;
+        });
+      }
+
+      legalTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => showLegalDoc(btn.dataset.legalTab));
+      });
+
       document.addEventListener('click', e => {
+        const legalTrigger = e.target.closest('[data-open-legal]');
+        if (legalTrigger) {
+          const docKey = legalTrigger.dataset.openLegal || 'privacy';
+          showLegalDoc(docKey);
+          openModal(legalModal);
+          return;
+        }
+
         const bookBtn = e.target.closest('[data-action="open-booking"]');
         if (bookBtn) {
           const matchedRoom = bookBtn.dataset.roomId
@@ -2177,7 +2363,7 @@
             pickerChips.classList.add('hidden');
             togglePickerBtn.textContent = 'Выбрать другую';
           } else {
-            applyRoomPreset(selectedRoom || ROOMS[1], true);
+            applyRoomPreset(selectedRoom || ROOMS[0], true);
             pickerChips.classList.remove('hidden');
             togglePickerBtn.textContent = 'Свернуть';
           }
@@ -2192,11 +2378,15 @@
         }
       });
 
-      bookingModal.addEventListener('click', e => { if (e.target === bookingModal) closeModal(bookingModal); });
+      document.querySelectorAll('.modal-backdrop').forEach(modal => {
+        modal.addEventListener('click', e => {
+          if (e.target === modal) closeModal(modal);
+        });
+      });
 
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-          if (bookingModal.classList.contains('is-open')) closeModal(bookingModal);
+          document.querySelectorAll('.modal-backdrop.is-open').forEach(closeModal);
         }
       });
 
