@@ -2222,6 +2222,170 @@
         submitBtn.innerHTML = `<span>Подтвердить · ${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
       }
 
+      // =========================================================
+      // ИНТЕГРАЦИЯ С GOOGLE ТАБЛИЦЕЙ (Apps Script Web App)
+      // =========================================================
+      const SHEETS_STORAGE_KEY = 'uarama_google_sheet_url';
+      let GOOGLE_SHEET_API_URL = localStorage.getItem(SHEETS_STORAGE_KEY) || '';
+      let BOOKED_DATES_CACHE = {}; // { 'studio-comfort': { daily: [...], hourly: [...] }, ... }
+
+      function formatRuDateBadge(isoStr) {
+        if (!isoStr) return '';
+        const parts = String(isoStr).split('-');
+        if (parts.length !== 3) return isoStr;
+        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+        const mIdx = parseInt(parts[1], 10) - 1;
+        const d = parseInt(parts[2], 10);
+        return `${d} ${months[mIdx] || parts[1]}`;
+      }
+
+      function getStayDateRange(inStr, outStr) {
+        const list = [];
+        if (!inStr) return list;
+        let d = new Date(inStr + 'T00:00:00');
+        const end = outStr ? new Date(outStr + 'T00:00:00') : new Date(d.getTime() + 86400000);
+        if (isNaN(d.getTime())) return list;
+        if (isNaN(end.getTime()) || end <= d) {
+          list.push(formatDateYMD(d));
+          return list;
+        }
+        while (d < end) {
+          list.push(formatDateYMD(d));
+          d.setDate(d.getDate() + 1);
+        }
+        return list;
+      }
+
+      function updateBookedDatesBanner() {
+        const banner = document.getElementById('room-booked-banner');
+        const listEl = document.getElementById('room-booked-list');
+        if (!banner || !listEl || !selectedRoom) return;
+
+        const roomData = BOOKED_DATES_CACHE[selectedRoom.id];
+        const hasDaily = roomData && Array.isArray(roomData.daily) && roomData.daily.length > 0;
+        const hasHourly = roomData && Array.isArray(roomData.hourly) && roomData.hourly.length > 0;
+
+        if (!hasDaily && !hasHourly) {
+          banner.classList.add('hidden');
+          return;
+        }
+
+        const badges = [];
+        if (hasDaily) {
+          roomData.daily.forEach(d => {
+            badges.push(`<span class="px-2 py-0.5 rounded-md bg-amber-200/90 dark:bg-amber-900/60 text-amber-950 dark:text-amber-100 font-bold">${formatRuDateBadge(d)} (сутки)</span>`);
+          });
+        }
+        if (hasHourly) {
+          roomData.hourly.forEach(d => {
+            badges.push(`<span class="px-2 py-0.5 rounded-md bg-sky-200/90 dark:bg-sky-900/60 text-sky-950 dark:text-sky-100 font-bold">${formatRuDateBadge(d)} (по часам)</span>`);
+          });
+        }
+
+        listEl.innerHTML = badges.join('');
+        banner.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function checkDateAvailability() {
+        const errEl = document.getElementById('room-date-error');
+        const errTextEl = document.getElementById('room-date-error-text');
+        if (!errEl || !errTextEl || !selectedRoom) return true;
+
+        const roomData = BOOKED_DATES_CACHE[selectedRoom.id];
+        if (!roomData) {
+          errEl.classList.add('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+          }
+          return true;
+        }
+
+        const dailyBooked = new Set(roomData.daily || []);
+        const hourlyBooked = new Set(roomData.hourly || []);
+
+        let conflict = false;
+        let conflictDate = '';
+
+        if (currentTariff === 'daily') {
+          if (checkinInput && checkinInput.value && checkoutInput && checkoutInput.value) {
+            const days = getStayDateRange(checkinInput.value, checkoutInput.value);
+            for (const d of days) {
+              if (dailyBooked.has(d)) {
+                conflict = true;
+                conflictDate = `${formatRuDateBadge(d)} (занято посуточно)`;
+                break;
+              }
+              if (hourlyBooked.has(d)) {
+                conflict = true;
+                conflictDate = `${formatRuDateBadge(d)} (занято по часам)`;
+                break;
+              }
+            }
+          }
+        } else {
+          const hVal = hourlyDateInput ? hourlyDateInput.value : '';
+          if (hVal) {
+            if (dailyBooked.has(hVal)) {
+              conflict = true;
+              conflictDate = `${formatRuDateBadge(hVal)} (занято посуточно)`;
+            } else if (hourlyBooked.has(hVal)) {
+              conflict = true;
+              conflictDate = `${formatRuDateBadge(hVal)} (занято по часам)`;
+            }
+          }
+        }
+
+        if (conflict) {
+          errTextEl.textContent = `Внимание: дата ${conflictDate} в этой квартире уже забронирована. Пожалуйста, выберите другие даты.`;
+          errEl.classList.remove('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+            submitBtn.innerHTML = `<span>Выбранная дата занята</span>`;
+          }
+          if (window.lucide) lucide.createIcons();
+          return false;
+        } else {
+          errEl.classList.add('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+            updateStayCalculation();
+          }
+          return true;
+        }
+      }
+
+      async function fetchBookedDates() {
+        if (!GOOGLE_SHEET_API_URL) return;
+        try {
+          const res = await fetch(GOOGLE_SHEET_API_URL, { method: 'GET', cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (data && data.booked) {
+            BOOKED_DATES_CACHE = data.booked;
+            updateBookedDatesBanner();
+            checkDateAvailability();
+          }
+        } catch (err) {
+          console.warn('Google Sheets fetchBookedDates error:', err);
+        }
+      }
+
+      function sendBookingToGoogleSheet(bookingData) {
+        if (!GOOGLE_SHEET_API_URL) return Promise.resolve();
+        return fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(bookingData)
+        }).catch(err => {
+          console.warn('Google Sheets POST error:', err);
+        });
+      }
+
       function renderRoomChips() {
         pickerChips.innerHTML = ROOMS.map(r => {
           const isCur = selectedRoom && r.id === selectedRoom.id;
@@ -2394,170 +2558,6 @@
       const bookingModal = document.getElementById('booking-modal');
       const legalModal = document.getElementById('legal-modal');
       const pushModal = document.getElementById('push-modal');
-
-      // =========================================================
-      // ИНТЕГРАЦИЯ С GOOGLE ТАБЛИЦЕЙ (Apps Script Web App)
-      // =========================================================
-      const SHEETS_STORAGE_KEY = 'uarama_google_sheet_url';
-      let GOOGLE_SHEET_API_URL = localStorage.getItem(SHEETS_STORAGE_KEY) || '';
-      let BOOKED_DATES_CACHE = {}; // { 'studio-comfort': { daily: [...], hourly: [...] }, ... }
-
-      function formatRuDateBadge(isoStr) {
-        if (!isoStr) return '';
-        const parts = String(isoStr).split('-');
-        if (parts.length !== 3) return isoStr;
-        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-        const mIdx = parseInt(parts[1], 10) - 1;
-        const d = parseInt(parts[2], 10);
-        return `${d} ${months[mIdx] || parts[1]}`;
-      }
-
-      function getStayDateRange(inStr, outStr) {
-        const list = [];
-        if (!inStr) return list;
-        let d = new Date(inStr + 'T00:00:00');
-        const end = outStr ? new Date(outStr + 'T00:00:00') : new Date(d.getTime() + 86400000);
-        if (isNaN(d.getTime())) return list;
-        if (isNaN(end.getTime()) || end <= d) {
-          list.push(formatDateYMD(d));
-          return list;
-        }
-        while (d < end) {
-          list.push(formatDateYMD(d));
-          d.setDate(d.getDate() + 1);
-        }
-        return list;
-      }
-
-      function updateBookedDatesBanner() {
-        const banner = document.getElementById('room-booked-banner');
-        const listEl = document.getElementById('room-booked-list');
-        if (!banner || !listEl || !selectedRoom) return;
-
-        const roomData = BOOKED_DATES_CACHE[selectedRoom.id];
-        const hasDaily = roomData && Array.isArray(roomData.daily) && roomData.daily.length > 0;
-        const hasHourly = roomData && Array.isArray(roomData.hourly) && roomData.hourly.length > 0;
-
-        if (!hasDaily && !hasHourly) {
-          banner.classList.add('hidden');
-          return;
-        }
-
-        const badges = [];
-        if (hasDaily) {
-          roomData.daily.forEach(d => {
-            badges.push(`<span class="px-2 py-0.5 rounded-md bg-amber-200/90 dark:bg-amber-900/60 text-amber-950 dark:text-amber-100 font-bold">${formatRuDateBadge(d)} (сутки)</span>`);
-          });
-        }
-        if (hasHourly) {
-          roomData.hourly.forEach(d => {
-            badges.push(`<span class="px-2 py-0.5 rounded-md bg-sky-200/90 dark:bg-sky-900/60 text-sky-950 dark:text-sky-100 font-bold">${formatRuDateBadge(d)} (по часам)</span>`);
-          });
-        }
-
-        listEl.innerHTML = badges.join('');
-        banner.classList.remove('hidden');
-        if (window.lucide) lucide.createIcons();
-      }
-
-      function checkDateAvailability() {
-        const errEl = document.getElementById('room-date-error');
-        const errTextEl = document.getElementById('room-date-error-text');
-        if (!errEl || !errTextEl || !selectedRoom) return true;
-
-        const roomData = BOOKED_DATES_CACHE[selectedRoom.id];
-        if (!roomData) {
-          errEl.classList.add('hidden');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-          }
-          return true;
-        }
-
-        const dailyBooked = new Set(roomData.daily || []);
-        const hourlyBooked = new Set(roomData.hourly || []);
-
-        let conflict = false;
-        let conflictDate = '';
-
-        if (currentTariff === 'daily') {
-          if (checkinInput && checkinInput.value && checkoutInput && checkoutInput.value) {
-            const days = getStayDateRange(checkinInput.value, checkoutInput.value);
-            for (const d of days) {
-              if (dailyBooked.has(d)) {
-                conflict = true;
-                conflictDate = `${formatRuDateBadge(d)} (занято посуточно)`;
-                break;
-              }
-              if (hourlyBooked.has(d)) {
-                conflict = true;
-                conflictDate = `${formatRuDateBadge(d)} (занято по часам)`;
-                break;
-              }
-            }
-          }
-        } else {
-          const hVal = hourlyDateInput ? hourlyDateInput.value : '';
-          if (hVal) {
-            if (dailyBooked.has(hVal)) {
-              conflict = true;
-              conflictDate = `${formatRuDateBadge(hVal)} (занято посуточно)`;
-            } else if (hourlyBooked.has(hVal)) {
-              conflict = true;
-              conflictDate = `${formatRuDateBadge(hVal)} (занято по часам)`;
-            }
-          }
-        }
-
-        if (conflict) {
-          errTextEl.textContent = `Внимание: дата ${conflictDate} в этой квартире уже забронирована. Пожалуйста, выберите другие даты.`;
-          errEl.classList.remove('hidden');
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
-            submitBtn.innerHTML = `<span>Выбранная дата занята</span>`;
-          }
-          if (window.lucide) lucide.createIcons();
-          return false;
-        } else {
-          errEl.classList.add('hidden');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-            updateStayCalculation();
-          }
-          return true;
-        }
-      }
-
-      async function fetchBookedDates() {
-        if (!GOOGLE_SHEET_API_URL) return;
-        try {
-          const res = await fetch(GOOGLE_SHEET_API_URL, { method: 'GET', cache: 'no-store' });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const data = await res.json();
-          if (data && data.booked) {
-            BOOKED_DATES_CACHE = data.booked;
-            updateBookedDatesBanner();
-            checkDateAvailability();
-          }
-        } catch (err) {
-          console.warn('Google Sheets fetchBookedDates error:', err);
-        }
-      }
-
-      function sendBookingToGoogleSheet(bookingData) {
-        if (!GOOGLE_SHEET_API_URL) return Promise.resolve();
-        return fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(bookingData)
-        }).catch(err => {
-          console.warn('Google Sheets POST error:', err);
-        });
-      }
 
       // =========================================================
       // ПУШ-УВЕДОМЛЕНИЯ О БРОНЯХ (NTFY.SH)
