@@ -1177,8 +1177,8 @@
           <button type="button" data-open-legal="rules" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Правила проживания</button>
           <span class="text-slate-300 dark:text-slate-700">·</span>
           <button type="button" data-open-push class="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400 hover:underline transition-colors">
-            <i data-lucide="bell" class="w-3.5 h-3.5"></i>
-            <span>Пуш-уведомления для владельца</span>
+            <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+            <span>Панель управления (Таблица и Пуш)</span>
           </button>
         </div>
       </div>
@@ -1328,6 +1328,21 @@
               </div>
             </div>
 
+            <!-- Баннер занятых дат для выбранной квартиры (из Google Таблицы) -->
+            <div id="room-booked-banner" class="hidden mt-3 p-2.5 rounded-xl bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200/90 dark:border-amber-800 text-[11px] leading-snug text-amber-900 dark:text-amber-200">
+              <div class="flex items-center gap-1.5 font-bold mb-1">
+                <i data-lucide="calendar-x-2" class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0"></i>
+                <span>Занятые даты в этом номере:</span>
+              </div>
+              <div id="room-booked-list" class="flex flex-wrap gap-1 mt-1"></div>
+            </div>
+
+            <!-- Предупреждение о конфликте дат -->
+            <div id="room-date-error" class="hidden mt-2.5 p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-xs font-semibold text-rose-800 dark:text-rose-200 flex items-start gap-2">
+              <i data-lucide="alert-circle" class="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5"></i>
+              <span id="room-date-error-text">Выбранная дата уже забронирована. Пожалуйста, укажите свободные даты.</span>
+            </div>
+
             <!-- Количество гостей (тактильные кнопки) -->
             <div class="mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60 flex items-center justify-between gap-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-900 dark:text-slate-200">
@@ -1444,26 +1459,26 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО: ПУШ-УВЕДОМЛЕНИЯ О БРОНИРОВАНИИ -->
+  <!-- МОДАЛЬНОЕ ОКНО: ПАНЕЛЬ ВЛАДЕЛЬЦА (GOOGLE ТАБЛИЦА + ПУШ-УВЕДОМЛЕНИЯ) -->
   <div id="push-modal" class="modal-backdrop fixed inset-0 z-50 bg-brand-950/65 backdrop-blur-[4px] flex items-end sm:items-center justify-center p-0 sm:p-4" aria-hidden="true">
-    <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[540px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[92dvh] flex flex-col overflow-hidden">
+    <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[560px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[92dvh] flex flex-col overflow-hidden">
       <!-- Верхняя полоса-ручка на мобильном -->
       <div class="pt-3 sm:hidden">
         <div class="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-700 mx-auto" aria-hidden="true"></div>
       </div>
 
       <!-- Шапка окна -->
-      <div class="px-5 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+      <div class="px-5 sm:px-6 pt-4 sm:pt-6 pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
         <div class="flex items-center gap-2.5 min-w-0">
-          <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-            <i data-lucide="bell-ring" class="w-5 h-5"></i>
+          <div class="w-9 h-9 rounded-xl bg-brand-600/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0">
+            <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
           </div>
           <div class="min-w-0">
             <h3 class="text-lg font-extrabold text-brand-900 dark:text-white tracking-tight leading-tight">
-              Пуш-уведомления о бронях
+              Панель управления
             </h3>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
-              Мгновенные оповещения на телефон владельца
+              Google Таблица броней и Push-уведомления
             </p>
           </div>
         </div>
@@ -1472,15 +1487,79 @@
         </button>
       </div>
 
-      <!-- Тело окна: инструкция и кнопка подписки -->
-      <div class="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+      <!-- Переключатель вкладок панели -->
+      <div class="px-5 sm:px-6 pt-3 pb-2 border-b border-slate-100 dark:border-slate-800 flex gap-2 shrink-0 bg-slate-50/60 dark:bg-slate-900/40">
+        <button type="button" id="admin-tab-sheets-btn" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-xs transition-all flex items-center gap-1.5">
+          <i data-lucide="table" class="w-4 h-4"></i>
+          <span>Google Таблица</span>
+        </button>
+        <button type="button" id="admin-tab-push-btn" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition-all flex items-center gap-1.5">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span>Push-уведомления</span>
+        </button>
+      </div>
+
+      <!-- Тело окна: Вкладка Google Таблицы -->
+      <div id="admin-view-sheets" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        <div class="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/80 space-y-1.5">
+          <div class="font-bold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0"></i>
+            <span>Автоматический учёт броней и блокировка дат</span>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-slate-300">
+            Каждая новая заявка с сайта попадает на отдельный лист нужной квартиры со статусом <strong>«Ожидание»</strong>. Как только вы подтверждаете бронь и меняете статус на <strong>«Забронировано»</strong>, выбранные даты мгновенно блокируются на сайте!
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-brand-900 dark:text-white" for="admin-sheets-url">
+            URL веб-приложения Google Apps Script:
+          </label>
+          <input
+            id="admin-sheets-url"
+            type="url"
+            placeholder="https://script.google.com/macros/s/.../exec"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-xs font-mono focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900"
+          />
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">
+            Скопируйте URL веб-приложения после развертывания скрипта в вашей Google Таблице.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+          <button type="button" id="save-sheets-url-btn" class="btn-sheen flex-1 py-2.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 text-center shadow-xs">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span>Сохранить и подключить</span>
+          </button>
+          <button type="button" id="test-sheets-btn" class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-brand-900 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Проверить связь</span>
+          </button>
+        </div>
+
+        <div id="admin-sheets-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+
+        <!-- Краткая шпаргалка -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1">
+          <div class="font-bold text-slate-700 dark:text-slate-300">Как подключить таблицу (2 минуты):</div>
+          <ol class="list-decimal pl-4 space-y-0.5">
+            <li>Создайте таблицу в Google Таблицах ➔ «Расширения» ➔ «Apps Script».</li>
+            <li>Вставьте код из файла <code class="font-mono text-brand-600 dark:text-brand-400">google-apps-script.js</code>.</li>
+            <li>Нажмите «Развернуть» ➔ «Новое развертывание» ➔ Тип: «Веб-приложение».</li>
+            <li>Доступ: <strong>«Все» (Anyone)</strong> ➔ Развернуть ➔ Вставьте ссылку выше.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Тело окна: Вкладка Пуш-уведомлений -->
+      <div id="admin-view-push" class="hidden p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
         <div class="p-4 rounded-2xl bg-amber-50/80 dark:bg-slate-800/80 border border-amber-200/80 dark:border-slate-700 space-y-1.5">
           <div class="font-bold text-amber-900 dark:text-amber-200 flex items-center gap-2">
             <i data-lucide="zap" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"></i>
-            <span>Как это работает:</span>
+            <span>Мгновенные оповещения о каждой брони:</span>
           </div>
           <p class="text-xs text-slate-600 dark:text-slate-300">
-            Каждый раз, когда любой гость бронирует квартиру на сайте, вам на телефон мгновенно приходит громкий push с именем, номером телефона, датами и кнопками прямого звонка гостю или открытия WhatsApp!
+            Каждый раз, когда гость отправляет заявку, на ваш телефон мгновенно приходит громкий push с именем, телефоном, квартирой и кнопками прямого звонка гостю или открытия чата WhatsApp!
           </p>
         </div>
 
@@ -2169,6 +2248,8 @@
         }
         renderRoomChips();
         updateStayCalculation();
+        updateBookedDatesBanner();
+        checkDateAvailability();
       }
 
       document.querySelectorAll('#guests-pills .guest-pill').forEach(btn => {
@@ -2202,6 +2283,7 @@
           checkoutInput.value = minCheckout;
         }
         updateStayCalculation();
+        checkDateAvailability();
       });
 
       checkoutInput.addEventListener('change', () => {
@@ -2212,6 +2294,7 @@
           checkoutInput.value = minCheckout;
         }
         updateStayCalculation();
+        checkDateAvailability();
       });
 
       hourlyDateInput?.addEventListener('change', () => {
@@ -2220,6 +2303,7 @@
           hourlyDateInput.value = today;
         }
         updateStayCalculation();
+        checkDateAvailability();
       });
 
       applyRoomPreset(ROOMS[0], true);
@@ -2312,6 +2396,170 @@
       const pushModal = document.getElementById('push-modal');
 
       // =========================================================
+      // ИНТЕГРАЦИЯ С GOOGLE ТАБЛИЦЕЙ (Apps Script Web App)
+      // =========================================================
+      const SHEETS_STORAGE_KEY = 'uarama_google_sheet_url';
+      let GOOGLE_SHEET_API_URL = localStorage.getItem(SHEETS_STORAGE_KEY) || '';
+      let BOOKED_DATES_CACHE = {}; // { 'studio-comfort': { daily: [...], hourly: [...] }, ... }
+
+      function formatRuDateBadge(isoStr) {
+        if (!isoStr) return '';
+        const parts = String(isoStr).split('-');
+        if (parts.length !== 3) return isoStr;
+        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+        const mIdx = parseInt(parts[1], 10) - 1;
+        const d = parseInt(parts[2], 10);
+        return `${d} ${months[mIdx] || parts[1]}`;
+      }
+
+      function getStayDateRange(inStr, outStr) {
+        const list = [];
+        if (!inStr) return list;
+        let d = new Date(inStr + 'T00:00:00');
+        const end = outStr ? new Date(outStr + 'T00:00:00') : new Date(d.getTime() + 86400000);
+        if (isNaN(d.getTime())) return list;
+        if (isNaN(end.getTime()) || end <= d) {
+          list.push(formatDateYMD(d));
+          return list;
+        }
+        while (d < end) {
+          list.push(formatDateYMD(d));
+          d.setDate(d.getDate() + 1);
+        }
+        return list;
+      }
+
+      function updateBookedDatesBanner() {
+        const banner = document.getElementById('room-booked-banner');
+        const listEl = document.getElementById('room-booked-list');
+        if (!banner || !listEl || !selectedRoom) return;
+
+        const roomData = BOOKED_DATES_CACHE[selectedRoom.id];
+        const hasDaily = roomData && Array.isArray(roomData.daily) && roomData.daily.length > 0;
+        const hasHourly = roomData && Array.isArray(roomData.hourly) && roomData.hourly.length > 0;
+
+        if (!hasDaily && !hasHourly) {
+          banner.classList.add('hidden');
+          return;
+        }
+
+        const badges = [];
+        if (hasDaily) {
+          roomData.daily.forEach(d => {
+            badges.push(`<span class="px-2 py-0.5 rounded-md bg-amber-200/90 dark:bg-amber-900/60 text-amber-950 dark:text-amber-100 font-bold">${formatRuDateBadge(d)} (сутки)</span>`);
+          });
+        }
+        if (hasHourly) {
+          roomData.hourly.forEach(d => {
+            badges.push(`<span class="px-2 py-0.5 rounded-md bg-sky-200/90 dark:bg-sky-900/60 text-sky-950 dark:text-sky-100 font-bold">${formatRuDateBadge(d)} (по часам)</span>`);
+          });
+        }
+
+        listEl.innerHTML = badges.join('');
+        banner.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function checkDateAvailability() {
+        const errEl = document.getElementById('room-date-error');
+        const errTextEl = document.getElementById('room-date-error-text');
+        if (!errEl || !errTextEl || !selectedRoom) return true;
+
+        const roomData = BOOKED_DATES_CACHE[selectedRoom.id];
+        if (!roomData) {
+          errEl.classList.add('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+          }
+          return true;
+        }
+
+        const dailyBooked = new Set(roomData.daily || []);
+        const hourlyBooked = new Set(roomData.hourly || []);
+
+        let conflict = false;
+        let conflictDate = '';
+
+        if (currentTariff === 'daily') {
+          if (checkinInput && checkinInput.value && checkoutInput && checkoutInput.value) {
+            const days = getStayDateRange(checkinInput.value, checkoutInput.value);
+            for (const d of days) {
+              if (dailyBooked.has(d)) {
+                conflict = true;
+                conflictDate = `${formatRuDateBadge(d)} (занято посуточно)`;
+                break;
+              }
+              if (hourlyBooked.has(d)) {
+                conflict = true;
+                conflictDate = `${formatRuDateBadge(d)} (занято по часам)`;
+                break;
+              }
+            }
+          }
+        } else {
+          const hVal = hourlyDateInput ? hourlyDateInput.value : '';
+          if (hVal) {
+            if (dailyBooked.has(hVal)) {
+              conflict = true;
+              conflictDate = `${formatRuDateBadge(hVal)} (занято посуточно)`;
+            } else if (hourlyBooked.has(hVal)) {
+              conflict = true;
+              conflictDate = `${formatRuDateBadge(hVal)} (занято по часам)`;
+            }
+          }
+        }
+
+        if (conflict) {
+          errTextEl.textContent = `Внимание: дата ${conflictDate} в этой квартире уже забронирована. Пожалуйста, выберите другие даты.`;
+          errEl.classList.remove('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+            submitBtn.innerHTML = `<span>Выбранная дата занята</span>`;
+          }
+          if (window.lucide) lucide.createIcons();
+          return false;
+        } else {
+          errEl.classList.add('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+            updateStayCalculation();
+          }
+          return true;
+        }
+      }
+
+      async function fetchBookedDates() {
+        if (!GOOGLE_SHEET_API_URL) return;
+        try {
+          const res = await fetch(GOOGLE_SHEET_API_URL, { method: 'GET', cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (data && data.booked) {
+            BOOKED_DATES_CACHE = data.booked;
+            updateBookedDatesBanner();
+            checkDateAvailability();
+          }
+        } catch (err) {
+          console.warn('Google Sheets fetchBookedDates error:', err);
+        }
+      }
+
+      function sendBookingToGoogleSheet(bookingData) {
+        if (!GOOGLE_SHEET_API_URL) return Promise.resolve();
+        return fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(bookingData)
+        }).catch(err => {
+          console.warn('Google Sheets POST error:', err);
+        });
+      }
+
+      // =========================================================
       // ПУШ-УВЕДОМЛЕНИЯ О БРОНЯХ (NTFY.SH)
       // =========================================================
       const NTFY_TOPIC = 'u-arama-hotel-shakhty-94';
@@ -2367,6 +2615,9 @@
         if (el === bookingModal) {
           enforceDateLimits();
           updateStayCalculation();
+          updateBookedDatesBanner();
+          checkDateAvailability();
+          fetchBookedDates();
         }
         el.classList.add('is-open');
         el.setAttribute('aria-hidden', 'false');
@@ -2521,7 +2772,7 @@
         }
       });
 
-      // Формирование заявки для отправки в WhatsApp / Telegram
+      // Формирование заявки для отправки в WhatsApp / Telegram и Google Таблицу
       document.getElementById('booking-form').addEventListener('submit', e => {
         e.preventDefault();
         const form = e.target;
@@ -2547,6 +2798,12 @@
           }
         }
 
+        // Проверка: свободна ли дата (заблокирована ли Арамом в Google Таблице)
+        if (!checkDateAvailability()) {
+          alert('Внимание: выбранная дата в этой квартире уже забронирована. Пожалуйста, выберите другие свободные даты или другую квартиру.');
+          return;
+        }
+
         let tariffLine = '';
         if (isHourly) {
           const durText = (hourlyDurationSelect && hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex])
@@ -2556,6 +2813,8 @@
         } else {
           tariffLine = `• Тариф: Посуточно\n• Заезд: ${form.checkin.value} — Выезд: ${form.checkout.value}`;
         }
+
+        const priceCalcText = document.getElementById('summary-stay-calc')?.textContent.replace(/.*:\s*/, '') || '';
 
         const msg = [
           'Здравствуйте! Хочу забронировать в гостевом доме «У Арама»:',
@@ -2567,7 +2826,22 @@
           form.comment.value.trim() ? `• Комментарий: ${form.comment.value.trim()}` : ''
         ].filter(Boolean).join('\n');
 
-        // Мгновенная отправка Push-уведомления на телефон владельца
+        // 1. Автоматическая запись заявки в Google Таблицу на лист нужной квартиры со статусом «Ожидание»
+        sendBookingToGoogleSheet({
+          room: form.room.value,
+          name: form.name.value.trim(),
+          phone: form.phone.value.trim(),
+          tariff: currentTariff,
+          checkin: form.checkin.value,
+          checkout: form.checkout.value,
+          hourlyDate: hourlyDateInput ? hourlyDateInput.value : '',
+          hourlyDuration: (hourlyDurationSelect && hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex]) ? hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex].text : '',
+          guests: form.guests.value,
+          price: priceCalcText,
+          comment: form.comment.value.trim()
+        });
+
+        // 2. Мгновенная отправка Push-уведомления на телефон владельца через ntfy.sh
         sendPushNotification({
           name: form.name.value.trim(),
           phone: form.phone.value.trim(),
@@ -2577,12 +2851,86 @@
           comment: form.comment.value.trim()
         });
 
+        // 3. Формирование ссылки для диалога в WhatsApp и Telegram
         const encoded = encodeURIComponent(msg);
         document.getElementById('send-wa-link').href = `https://wa.me/79044444491?text=${encoded}`;
         document.getElementById('send-tg-link').href = 'https://t.me/+79044444491';
         document.getElementById('booking-feedback').classList.remove('hidden');
         if (window.lucide) lucide.createIcons();
       });
+
+      // Переключение вкладок в панели администратора (Google Таблица / Пуш-уведомления)
+      const adminTabSheetsBtn = document.getElementById('admin-tab-sheets-btn');
+      const adminTabPushBtn = document.getElementById('admin-tab-push-btn');
+      const adminViewSheets = document.getElementById('admin-view-sheets');
+      const adminViewPush = document.getElementById('admin-view-push');
+
+      adminTabSheetsBtn?.addEventListener('click', () => {
+        adminTabSheetsBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-xs transition-all flex items-center gap-1.5';
+        adminTabPushBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition-all flex items-center gap-1.5';
+        adminViewSheets?.classList.remove('hidden');
+        adminViewPush?.classList.add('hidden');
+      });
+
+      adminTabPushBtn?.addEventListener('click', () => {
+        adminTabPushBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-xs transition-all flex items-center gap-1.5';
+        adminTabSheetsBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition-all flex items-center gap-1.5';
+        adminViewPush?.classList.remove('hidden');
+        adminViewSheets?.classList.add('hidden');
+      });
+
+      // Настройка и проверка подключения Google Таблицы
+      const adminSheetsUrlInput = document.getElementById('admin-sheets-url');
+      if (adminSheetsUrlInput && GOOGLE_SHEET_API_URL) {
+        adminSheetsUrlInput.value = GOOGLE_SHEET_API_URL;
+      }
+
+      async function testSheetsConnection() {
+        const stEl = document.getElementById('admin-sheets-status');
+        if (!stEl) return;
+        const url = (adminSheetsUrlInput?.value || GOOGLE_SHEET_API_URL || '').trim();
+        if (!url) {
+          stEl.textContent = 'Пожалуйста, укажите URL веб-приложения Google Apps Script.';
+          stEl.className = 'p-3 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 text-xs text-amber-800 dark:text-amber-200 font-medium';
+          stEl.classList.remove('hidden');
+          return;
+        }
+
+        stEl.textContent = 'Подключение к Google Таблице...';
+        stEl.className = 'p-3 rounded-xl bg-brand-50 dark:bg-slate-800 text-xs text-brand-700 dark:text-brand-300 font-medium';
+        stEl.classList.remove('hidden');
+
+        try {
+          const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (data && data.status === 'success') {
+            BOOKED_DATES_CACHE = data.booked || {};
+            let totalBooked = 0;
+            Object.values(BOOKED_DATES_CACHE).forEach(r => {
+              totalBooked += (r.daily?.length || 0) + (r.hourly?.length || 0);
+            });
+            stEl.textContent = `✅ Связь установлена! Таблица синхронизирована. Всего забронированных дат: ${totalBooked}.`;
+            stEl.className = 'p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium';
+            updateBookedDatesBanner();
+            checkDateAvailability();
+          } else {
+            throw new Error(data.message || 'Некорректный формат ответа');
+          }
+        } catch (err) {
+          stEl.textContent = `Ошибка подключения: ${err.message}. Убедитесь, что веб-приложение развернуто с доступом «Все» (Anyone) и ссылка оканчивается на /exec.`;
+          stEl.className = 'p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 text-xs text-rose-800 font-medium';
+        }
+      }
+
+      document.getElementById('save-sheets-url-btn')?.addEventListener('click', async () => {
+        const val = (adminSheetsUrlInput?.value || '').trim();
+        GOOGLE_SHEET_API_URL = val;
+        localStorage.setItem(SHEETS_STORAGE_KEY, val);
+        await testSheetsConnection();
+      });
+
+      document.getElementById('test-sheets-btn')?.addEventListener('click', testSheetsConnection);
 
       // Отправка тестового пуша из окна настроек
       document.getElementById('test-push-btn')?.addEventListener('click', () => {
@@ -2611,6 +2959,9 @@
           }
         });
       });
+
+      // Фоновая загрузка занятых дат при старте страницы
+      fetchBookedDates();
 
       if (window.location.hash === '#push' || window.location.hash === '#admin') {
         openModal(pushModal);
