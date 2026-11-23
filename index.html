@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>У Арама — Гостевой дом в Шахтах | Советская ул., 94</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#F4F8FE',
+              100: '#E8F1FD',
+              200: '#CEE1FA',
+              300: '#A5C7F6',
+              400: '#6EA3F0',
+              500: '#357BE8',
+              600: '#1055D6',
+              700: '#0C43AD',
+              800: '#0B3587',
+              900: '#0B1F44',
+              950: '#07142D',
+            }
+          }
+        }
+      }
+    };
+
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root {
+      --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
+      --brand-blue: #1055D6;
+      --brand-navy: #0B1F44;
+    }
+
+    html, body {
+      overflow-x: clip;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body.is-locked {
+      overflow: hidden;
+    }
+
+    section[id] {
+      scroll-margin-top: 84px;
+    }
+    @media (min-width: 640px) {
+      section[id] {
+        scroll-margin-top: 92px;
+      }
+    }
+
+    /* Скрытие скроллбара для горизонтальных фильтров на мобильных */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Индикатор прокрутки сверху */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #357BE8 0%, #1055D6 60%, #0B1F44 100%);
+      z-index: 60;
+      transition: width 90ms linear;
+      pointer-events: none;
+    }
+    .dark #scroll-progress {
+      background: linear-gradient(90deg, #6EA3F0 0%, #357BE8 60%, #1055D6 100%);
+    }
+
+    /* Шапка при скролле */
+    .site-header {
+      transition: background-color 320ms var(--ease-out-expo),
+                  box-shadow 320ms var(--ease-out-expo),
+                  border-color 320ms var(--ease-out-expo);
+    }
+    .site-header.is-scrolled {
+      background-color: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px -8px rgba(11, 31, 68, 0.08);
+      border-bottom-color: #DDE9FA;
+    }
+    .dark .site-header.is-scrolled {
+      background-color: rgba(11, 18, 32, 0.9);
+      box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+      border-bottom-color: rgba(148, 163, 184, 0.16);
+    }
+
+    /* Автоматический перелив логотипа каждые 7 секунд */
+    @keyframes logoAutoSheen {
+      0%, 78% {
+        transform: translateX(-160%) skewX(-18deg);
+        opacity: 0;
+      }
+      82% {
+        opacity: 1;
+      }
+      96% {
+        transform: translateX(170%) skewX(-18deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(170%) skewX(-18deg);
+        opacity: 0;
+      }
+    }
+    .logo-frame {
+      position: relative;
+      overflow: hidden;
+      transition: transform 360ms var(--ease-spring), box-shadow 320ms var(--ease-out-expo);
+    }
+    .logo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      width: 68%;
+      background: linear-gradient(105deg, transparent 10%, rgba(255, 255, 255, 0.78) 50%, transparent 90%);
+      transform: translateX(-160%) skewX(-18deg);
+      animation: logoAutoSheen 7s var(--ease-out-expo) infinite;
+      pointer-events: none;
+    }
+    .group:hover .logo-frame {
+      transform: translateY(-1px) scale(1.04);
+      box-shadow: 0 10px 24px -8px rgba(16, 85, 214, 0.28);
+    }
+
+    /* Моушн: каскадное появление первого экрана */
+    @keyframes heroFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .hero-stagger {
+      opacity: 0;
+      animation: heroFadeUp 700ms var(--ease-out-expo) forwards;
+    }
+    .hero-stagger-1 { animation-delay: 40ms; }
+    .hero-stagger-2 { animation-delay: 120ms; }
+    .hero-stagger-3 { animation-delay: 200ms; }
+    .hero-stagger-4 { animation-delay: 280ms; }
+    .hero-stagger-5 { animation-delay: 360ms; }
+
+    /* Моушн: появление секций и карточек при прокрутке */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px) scale(0.985);
+      transition: opacity 640ms var(--ease-out-expo),
+                  transform 640ms var(--ease-out-expo);
+      will-change: opacity, transform;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Каскадное появление карточек каталога при переключении фильтра */
+    @keyframes cardEnter {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .room-card-enter {
+      opacity: 0;
+      animation: cardEnter 520ms var(--ease-out-expo) forwards;
+    }
+
+    /* Тактильный блик на главных кнопках */
+    .btn-sheen {
+      position: relative;
+      overflow: hidden;
+      transition: transform 220ms var(--ease-spring),
+                  background-color 220ms ease,
+                  box-shadow 260ms var(--ease-out-expo);
+    }
+    .btn-sheen::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.22) 50%, transparent 80%);
+      transition: left 620ms var(--ease-out-expo);
+      pointer-events: none;
+    }
+    @media (hover: hover) {
+      .btn-sheen:hover::after {
+        left: 140%;
+      }
+      .btn-sheen:hover {
+        transform: translateY(-1px);
+      }
+    }
+    .btn-sheen:active {
+      transform: scale(0.975);
+    }
+
+    /* Бесшовная бегущая лента удобств (как стадионный баннер) */
+    @keyframes marqueeTicker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-viewport {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeTicker 42s linear infinite;
+      will-change: transform;
+    }
+    .marquee-half {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* Карточка квартиры */
+    .room-card {
+      transition: transform 340ms var(--ease-out-expo),
+                  box-shadow 340ms var(--ease-out-expo),
+                  border-color 260ms ease;
+    }
+    @media (hover: hover) {
+      .room-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 22px 46px -18px rgba(16, 85, 214, 0.18);
+        border-color: #B4D0F8;
+      }
+      .dark .room-card:hover {
+        box-shadow: 0 22px 46px -18px rgba(0, 0, 0, 0.58);
+        border-color: rgba(110, 163, 240, 0.45);
+      }
+      .room-card .carousel-arrow {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.9);
+      }
+      .room-card:hover .carousel-arrow,
+      .room-card:focus-within .carousel-arrow {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+      }
+    }
+    .carousel-arrow {
+      transition: opacity 220ms ease, transform 260ms var(--ease-spring), background-color 200ms ease;
+    }
+
+    /* Слайдер фотографий в карточках */
+    .carousel-track {
+      display: flex;
+      transition: transform 480ms var(--ease-out-expo);
+      height: 100%;
+    }
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .carousel-slide img,
+    .carousel-slide .interior-art {
+      transition: transform 650ms var(--ease-out-expo);
+    }
+    @media (hover: hover) {
+      .room-card:hover .carousel-slide img,
+      .room-card:hover .carousel-slide .interior-art {
+        transform: scale(1.03);
+      }
+    }
+
+    /* Кастомная метка-стрелочка с логотипом на карте */
+    .ua-map-pin-wrap {
+      background: transparent;
+      border: none;
+    }
+    .ua-map-pin {
+      position: relative;
+      width: 46px;
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(0 8px 14px rgba(11, 31, 68, 0.28));
+      transition: transform 240ms var(--ease-spring);
+    }
+    .ua-map-pin:hover {
+      transform: translateY(-4px) scale(1.06);
+    }
+    .ua-map-pin-head {
+      width: 44px;
+      height: 44px;
+      border-radius: 9999px;
+      background: #1055D6;
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #FFFFFF;
+    }
+    .ua-map-pin-logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+    .ua-map-pin-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.1);
+      display: block;
+    }
+    .ua-map-pin-tip {
+      width: 0;
+      height: 0;
+      margin-top: -3px;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 12px solid #1055D6;
+    }
+    .dark .leaflet-tile-pane {
+      filter: invert(0.92) hue-rotate(180deg) brightness(0.92) contrast(0.92);
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 16px;
+      box-shadow: 0 14px 32px -10px rgba(11, 31, 68, 0.22);
+    }
+    .leaflet-popup-content {
+      margin: 12px 14px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Модальные окна и мобильное меню */
+    .modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 260ms ease;
+    }
+    .modal-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-panel {
+      opacity: 0;
+      transform: translateY(28px) scale(0.98);
+      transition: opacity 320ms var(--ease-out-expo), transform 360ms var(--ease-out-expo);
+    }
+    .modal-backdrop.is-open .modal-panel {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .drawer-panel {
+      transform: translateX(100%);
+      transition: transform 340ms var(--ease-out-expo);
+    }
+    .modal-backdrop.is-open .drawer-panel {
+      transform: translateX(0);
+    }
+
+    /* 3D изометрический домик и моушн-графика в Hero (без фона и рамок) */
+    .iso-house-scene {
+      --iso-wall-left: #FFFFFF;
+      --iso-wall-right: #E3EEFD;
+      --iso-wall-side: #D2E3FB;
+      --iso-roof-light: #357BE8;
+      --iso-roof-dark: #1055D6;
+      --iso-roof-edge: #0B3587;
+      --iso-stroke: #1055D6;
+      --iso-stroke-soft: #93B8F2;
+      --iso-grid: #B8D2F8;
+      --iso-window: #1E5CD4;
+      --iso-window-glow: #93C5FD;
+      --iso-shadow: rgba(16, 85, 214, 0.13);
+      --iso-tree-1: #357BE8;
+      --iso-tree-2: #1055D6;
+    }
+    .dark .iso-house-scene {
+      --iso-wall-left: #16233B;
+      --iso-wall-right: #111C30;
+      --iso-wall-side: #0D1627;
+      --iso-roof-light: #357BE8;
+      --iso-roof-dark: #1A4DB8;
+      --iso-roof-edge: #6EA3F0;
+      --iso-stroke: #6EA3F0;
+      --iso-stroke-soft: #33538A;
+      --iso-grid: #23375A;
+      --iso-window: #60A5FA;
+      --iso-window-glow: #BAE6FD;
+      --iso-shadow: rgba(0, 0, 0, 0.45);
+      --iso-tree-1: #3B82F6;
+      --iso-tree-2: #1D4ED8;
+    }
+
+    @keyframes isoFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-9px); }
+    }
+    @keyframes isoShadowPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(0.93); opacity: 0.62; }
+    }
+    @keyframes isoLineDraw {
+      from { stroke-dashoffset: 320; opacity: 0; }
+      to { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes isoOrbitA {
+      0%, 100% { transform: translate(0px, 0px); }
+      50% { transform: translate(5px, -10px); }
+    }
+    @keyframes isoOrbitB {
+      0%, 100% { transform: translate(0px, 0px); }
+      50% { transform: translate(-6px, -8px); }
+    }
+    @keyframes isoWindowGleam {
+      0%, 72%, 100% { opacity: 0.22; }
+      84% { opacity: 0.72; }
+    }
+    @keyframes isoDashFlow {
+      to { stroke-dashoffset: -48; }
+    }
+
+    .iso-house-group {
+      animation: isoFloat 6.8s ease-in-out infinite;
+      transform-origin: center;
+    }
+    .iso-ground-shadow {
+      animation: isoShadowPulse 6.8s ease-in-out infinite;
+      transform-origin: 260px 322px;
+    }
+    .iso-blueprint-line {
+      stroke-dasharray: 320;
+      stroke-dashoffset: 320;
+      animation: isoLineDraw 1.5s var(--ease-out-expo) 0.25s forwards;
+    }
+    .iso-dash-flow {
+      stroke-dasharray: 5 7;
+      animation: isoDashFlow 5.5s linear infinite;
+    }
+    .iso-float-a {
+      animation: isoOrbitA 6.2s ease-in-out infinite;
+    }
+    .iso-float-b {
+      animation: isoOrbitB 7.6s ease-in-out infinite;
+    }
+    .iso-window-gleam {
+      animation: isoWindowGleam 6.5s ease-in-out infinite;
+    }
+
+    /* Всплывающее уведомление о копировании номера */
+    .copy-toast {
+      opacity: 0;
+      transform: translate(-50%, 6px) scale(0.92);
+      pointer-events: none;
+      transition: opacity 220ms ease, transform 280ms var(--ease-spring);
+    }
+    .copy-toast.is-shown {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    /* Кнопка «Наверх» */
+    #scroll-top-btn {
+      opacity: 0;
+      transform: translateY(14px) scale(0.92);
+      pointer-events: none;
+      transition: opacity 280ms ease, transform 320ms var(--ease-spring), background-color 200ms ease;
+    }
+    #scroll-top-btn.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    /* Адаптация виджета Яндекс Карт под тёмную тему */
+    .yandex-map-frame {
+      transition: filter 300ms ease;
+    }
+    .dark .yandex-map-frame {
+      filter: invert(0.9) hue-rotate(180deg) brightness(0.94) contrast(0.94);
+    }
+
+    /* Подчёркивание ссылок меню + активное состояние scroll-spy */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 2px;
+      background-color: #1055D6;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 280ms var(--ease-out-expo);
+      border-radius: 2px;
+    }
+    .dark .nav-link::after {
+      background-color: #6EA3F0;
+    }
+    .nav-link:hover::after,
+    .nav-link.is-active::after {
+      transform: scaleX(1);
+    }
+    .nav-link.is-active {
+      color: #1055D6;
+    }
+    .dark .nav-link.is-active {
+      color: #6EA3F0;
+    }
+
+    /* Поддержка уменьшенного движения */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .hero-stagger, .reveal, .room-card-enter {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-[#0B1220] text-brand-900 dark:text-slate-100 transition-colors duration-300 selection:bg-brand-100 selection:text-brand-700 dark:selection:bg-brand-700 dark:selection:text-white">
+
+  <!-- Полоса прогресса прокрутки -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Фиксированная шапка -->
+  <header id="site-header" class="site-header fixed top-0 left-0 right-0 z-50 h-[64px] sm:h-[72px] bg-white/95 dark:bg-[#0B1220]/95 border-b border-brand-100/80 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto h-full px-3.5 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-3">
+      <!-- Фирменный логотип «У Арама» с Яндекс Карт -->
+      <a href="#top" class="flex items-center gap-2.5 sm:gap-3 min-w-0 shrink group focus:outline-none">
+        <div class="brand-logo-slot logo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-white shadow-sm shadow-brand-900/10 ring-1 ring-slate-200/90 dark:ring-slate-700/80 flex items-center justify-center shrink-0"></div>
+        <div class="leading-tight min-w-0">
+          <div class="text-[15px] sm:text-[17px] font-extrabold text-brand-900 dark:text-white tracking-tight truncate">У Арама</div>
+          <div class="text-[11px] sm:text-xs font-medium text-brand-600 dark:text-brand-400 truncate">Гостевой дом · Шахты</div>
+        </div>
+      </a>
+
+      <!-- Навигация (десктоп) -->
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-brand-900/80 dark:text-slate-300" aria-label="Основная навигация">
+        <a href="#about" data-spy-link="about" class="nav-link hover:text-brand-600 dark:hover:text-brand-400 transition-colors">О нас</a>
+        <a href="#catalog" data-spy-link="catalog" class="nav-link hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Каталог</a>
+        <a href="#contacts" data-spy-link="contacts" class="nav-link hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Контакты</a>
+      </nav>
+
+      <!-- Правые кнопки (десктоп) -->
+      <div class="hidden lg:flex items-center gap-2.5 shrink-0">
+        <a href="tel:+79044444491" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-brand-200 bg-brand-50/70 hover:bg-brand-100/80 text-brand-900 text-sm font-semibold transition-colors">
+          <i data-lucide="phone" class="w-4 h-4 text-brand-600 shrink-0"></i>
+          <span>+7 904 444 44 91</span>
+        </a>
+        <button type="button" data-action="open-booking" class="btn-sheen inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-sm shadow-brand-600/20">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i>
+          <span>Забронировать</span>
+        </button>
+      </div>
+
+      <!-- Правые кнопки (планшет и мобильные — без бургер-меню, увеличенная кнопка бронирования) -->
+      <div class="flex lg:hidden items-center gap-2 shrink-0">
+        <a href="tel:+79044444491" aria-label="Позвонить +7 904 444 44 91" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-brand-200 bg-brand-50/70 text-brand-900 text-sm font-semibold transition-colors">
+          <i data-lucide="phone" class="w-4 h-4 text-brand-600 shrink-0"></i>
+          <span>+7 904 444 44 91</span>
+        </a>
+        <button type="button" data-action="open-booking" class="btn-sheen inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 min-h-[44px] rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-sm shadow-brand-600/25">
+          <i data-lucide="calendar-check" class="w-4 h-4 shrink-0"></i>
+          <span>Забронировать</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Основной контент -->
+  <main id="top">
+
+    <!-- 1. ПЕРВЫЙ ЭКРАН (HERO) -->
+    <section class="relative pt-[84px] sm:pt-[104px] lg:pt-[116px] pb-10 sm:pb-14 bg-gradient-to-b from-brand-50/85 via-white to-white dark:from-[#0F1B33] dark:via-[#0B1220] dark:to-[#0B1220]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+          <div class="lg:col-span-7 space-y-5">
+          <!-- Заголовок и текст (укрупнённый на мобильных + компактные 5 звёзд со ссылкой на Яндекс Карты) -->
+          <div class="hero-stagger hero-stagger-2 space-y-3.5">
+            <div class="flex items-center justify-between gap-2">
+              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.14em] text-brand-600">
+                Гостевой дом · г. Шахты
+              </p>
+              <a
+                href="https://yandex.ru/maps/org/u_arama/34994172858/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Рейтинг 5,0 на Яндекс Картах"
+                title="Открыть на Яндекс Картах"
+                class="lg:hidden inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50/90 hover:bg-amber-100/90 border border-amber-200/80 transition-colors active:scale-95 shrink-0"
+              >
+                <span class="inline-flex items-center gap-0.5 text-amber-500" aria-hidden="true">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                </span>
+                <span class="text-xs font-extrabold text-brand-900 ml-0.5">5,0</span>
+              </a>
+            </div>
+            <h1 class="text-[34px] sm:text-4xl md:text-5xl font-extrabold text-brand-900 tracking-tight leading-[1.08]">
+              Гостевой дом <span class="text-brand-600 whitespace-nowrap">«У&nbsp;Арама»</span>
+            </h1>
+            <p class="text-lg sm:text-xl font-semibold text-brand-900/90 leading-snug max-w-2xl">
+              Уютно, как дома, удобно, как в отеле
+            </p>
+            <p class="text-[15px] sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+              Наш комплекс квартир и домов расположен в центре города Шахты по улице Советская, 94 — от трассы М-4 всего 8&nbsp;км. Будем рады видеть гостей! Все удобства имеются.
+            </p>
+          </div>
+
+          <!-- Главные кнопки (на телефоне — удобные на всю ширину, на планшете и десктопе — в ряд) -->
+          <div class="hero-stagger hero-stagger-4 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5 sm:gap-3 pt-1">
+            <button type="button" data-action="open-booking" class="btn-sheen w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[48px] rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm sm:text-base font-semibold shadow-lg shadow-brand-600/25">
+              <span>Забронировать номер</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <a href="#catalog" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 min-h-[48px] rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-brand-400 dark:hover:border-brand-500 hover:bg-brand-50/70 dark:hover:bg-slate-800 text-brand-900 dark:text-white text-sm sm:text-base font-semibold transition-all">
+              <span>Смотреть квартиры</span>
+            </a>
+          </div>
+
+          <!-- Быстрая связь: крупный номер с копированием + иконки мессенджеров -->
+          <div class="hero-stagger hero-stagger-5 pt-2">
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5">Быстрая связь</div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <div class="relative w-full sm:w-auto inline-flex">
+                <button
+                  type="button"
+                  id="copy-phone-btn"
+                  data-copy-phone="+7 904 444 44 91"
+                  aria-label="Скопировать номер телефона +7 904 444 44 91"
+                  class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-4 sm:px-5 py-3 sm:py-2.5 rounded-2xl bg-brand-50 dark:bg-brand-900/45 hover:bg-brand-100/90 dark:hover:bg-brand-900/70 border-2 border-brand-300 dark:border-brand-600/80 hover:border-brand-500 text-brand-900 dark:text-white text-[15px] sm:text-[17px] font-extrabold tracking-tight shadow-sm shadow-brand-600/10 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+                >
+                  <i data-lucide="phone-call" class="w-4 h-4 sm:w-[18px] sm:h-[18px] text-brand-600 dark:text-brand-400 shrink-0"></i>
+                  <span>+7 904 444 44 91</span>
+                  <i data-lucide="copy" id="copy-phone-icon" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-500/80 dark:text-brand-300/80 shrink-0 ml-0.5"></i>
+                </button>
+                <div
+                  id="copy-phone-toast"
+                  role="status"
+                  aria-live="polite"
+                  class="copy-toast absolute -top-11 left-1/2 z-30 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-900 dark:bg-white text-white dark:text-brand-950 text-xs font-bold shadow-lg whitespace-nowrap"
+                >
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600 shrink-0"></i>
+                  <span>Номер скопирован</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-3 sm:inline-flex items-center gap-2 w-full sm:w-auto">
+                <a href="https://wa.me/79044444491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-emerald-400 dark:hover:border-emerald-500/70 hover:bg-emerald-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                  </svg>
+                </a>
+                <a href="https://t.me/+79044444491" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-sky-400 dark:hover:border-sky-500/70 hover:bg-sky-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                    <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                  </svg>
+                </a>
+                <a href="https://vk.com/" target="_blank" rel="noopener noreferrer" aria-label="VK" title="VK" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-blue-400 dark:hover:border-blue-500/70 hover:bg-blue-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
+                    <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+          </div>
+          </div>
+
+          <!-- Правая колонка: 3D изометрический домик + встроенный бейдж рейтинга Яндекс Карт (только ПК) -->
+          <div class="hidden lg:flex lg:col-span-5 relative items-center justify-end hero-stagger hero-stagger-3">
+            <svg viewBox="0 0 520 410" class="iso-house-scene w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[490px] h-auto select-none overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <!-- Плавное растворение сетки по краям, чтобы не было рамки -->
+                <radialGradient id="isoGridMaskGrad" cx="50%" cy="62%" r="48%">
+                  <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+                  <stop offset="68%" stop-color="#FFFFFF" stop-opacity="0.4" />
+                  <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.4" />
+                </radialGradient>
+                <mask id="isoGridFade">
+                  <rect x="0" y="0" width="520" height="410" fill="url(#isoGridMaskGrad)" />
+                </mask>
+                <linearGradient id="isoGlassGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#6EA3F0" stop-opacity="0.88" />
+                  <stop offset="50%" stop-color="#1055D6" stop-opacity="0.92" />
+                  <stop offset="100%" stop-color="#0B3587" stop-opacity="0.95" />
+                </linearGradient>
+                <linearGradient id="isoRoofGrad" x1="150" y1="75" x2="365" y2="205" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#357BE8" />
+                  <stop offset="100%" stop-color="#1055D6" />
+                </linearGradient>
+              </defs>
+
+              <!-- Изометрическая чертёжная сетка, растворяющаяся в фон -->
+              <g mask="url(#isoGridFade)" stroke="var(--iso-grid)" stroke-width="1">
+                <path d="M52 292 L260 172 L468 292 L260 412 Z" opacity="0.55" />
+                <path d="M104 322 L312 202" opacity="0.5" />
+                <path d="M156 352 L364 232" opacity="0.5" />
+                <path d="M208 382 L416 262" opacity="0.5" />
+                <path d="M104 262 L312 382" opacity="0.5" />
+                <path d="M156 232 L364 352" opacity="0.5" />
+                <path d="M208 202 L416 322" opacity="0.5" />
+              </g>
+
+              <!-- Анимированные геометрические оси -->
+              <g stroke="var(--iso-stroke-soft)" stroke-width="1.2" opacity="0.7">
+                <line x1="260" y1="42" x2="260" y2="96" class="iso-dash-flow" />
+                <line x1="78" y1="278" x2="132" y2="247" class="iso-dash-flow" />
+                <line x1="398" y1="247" x2="452" y2="278" class="iso-dash-flow" />
+              </g>
+
+              <!-- Мягкая тень на плоскости -->
+              <g class="iso-ground-shadow">
+                <polygon points="260,356 124,278 260,200 396,278" fill="var(--iso-shadow)" />
+              </g>
+
+              <!-- Основная парящая 3D-группа дома -->
+              <g class="iso-house-group">
+                <!-- Основание / фундамент дома (3D плита) -->
+                <polygon points="260,336 132,262 260,188 388,262" fill="var(--iso-wall-right)" stroke="var(--iso-stroke)" stroke-width="1.5" stroke-linejoin="round" />
+                <polygon points="132,262 260,336 260,348 132,274" fill="var(--iso-wall-side)" stroke="var(--iso-stroke)" stroke-width="1.5" stroke-linejoin="round" />
+                <polygon points="260,336 388,262 388,274 260,348" fill="var(--iso-roof-dark)" fill-opacity="0.16" stroke="var(--iso-stroke)" stroke-width="1.5" stroke-linejoin="round" />
+
+                <!-- Правая пристройка / терраса (1 этаж) -->
+                <polygon points="312,286 376,249 376,204 312,241" fill="var(--iso-wall-right)" stroke="var(--iso-stroke)" stroke-width="1.5" stroke-linejoin="round" />
+                <polygon points="274,264 312,286 312,241 274,219" fill="var(--iso-wall-left)" stroke="var(--iso-stroke)" stroke-width="1.5" stroke-linejoin="round" />
+                <!-- Крыша террасы -->
+                <polygon points="270,217 334,180 380,206 316,243" fill="var(--iso-wall-side)" stroke="var(--iso-stroke)" stroke-width="1.5" stroke-linejoin="round" />
+                <!-- Панорамное окно террасы -->
+                <polygon points="325,274 364,251 364,219 325,242" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.2" />
+                <line x1="344.5" y1="230.5" x2="344.5" y2="262.5" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1.2" />
+
+                <!-- Главный 2-этажный объём гостевого дома -->
+                <!-- Левый фасад (светлый) -->
+                <polygon points="154,262 260,323 260,196 154,135" fill="var(--iso-wall-left)" stroke="var(--iso-stroke)" stroke-width="1.7" stroke-linejoin="round" />
+                <!-- Правый фасад (в лёгкой тени) -->
+                <polygon points="260,323 346,273 346,162 260,196" fill="var(--iso-wall-right)" stroke="var(--iso-stroke)" stroke-width="1.7" stroke-linejoin="round" />
+                <!-- Треугольный фронтон левого фасада -->
+                <polygon points="154,135 260,196 207,104" fill="var(--iso-wall-left)" stroke="var(--iso-stroke)" stroke-width="1.7" stroke-linejoin="round" />
+
+                <!-- Входная дверь и козырёк (левый фасад, 1 этаж) -->
+                <polygon points="184,279 212,295 212,248 184,232" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.4" stroke-linejoin="round" />
+                <!-- Козырёк над дверью -->
+                <polygon points="178,229 218,252 228,246 188,223" fill="var(--iso-roof-light)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+                <!-- Второе окно 1 этажа (левый фасад) -->
+                <polygon points="224,284 248,298 248,264 224,250" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+
+                <!-- Панорамное окно 2 этажа (левый фасад) -->
+                <polygon points="172,204 244,245 244,208 172,167" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.4" stroke-linejoin="round" />
+                <line x1="208" y1="187.5" x2="208" y2="224.5" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="1.3" />
+                <!-- Блик на стекле -->
+                <polygon points="178,200 198,211 206,186 186,175" fill="#FFFFFF" class="iso-window-gleam" />
+
+                <!-- Круглое мансардное окно во фронтоне -->
+                <ellipse cx="207" cy="146" rx="10" ry="12" transform="rotate(-24 207 146)" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.4" />
+
+                <!-- Окна на правом фасаде (2 этажа) -->
+                <polygon points="274,238 302,222 302,190 274,206" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+                <polygon points="312,216 336,202 336,172 312,186" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+                <polygon points="274,292 302,276 302,246 274,262" fill="url(#isoGlassGrad)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+                <!-- Блик на правом окне -->
+                <polygon points="278,232 290,225 294,196 282,203" fill="#FFFFFF" class="iso-window-gleam" style="animation-delay: 1.4s;" />
+
+                <!-- Двускатная 3D-крыша со свесами -->
+                <!-- Правый видимый скат крыши -->
+                <polygon points="207,96 299,66 360,158 260,202" fill="url(#isoRoofGrad)" stroke="var(--iso-roof-edge)" stroke-width="1.8" stroke-linejoin="round" />
+                <!-- Объёмная кромка левого ската -->
+                <polygon points="144,137 207,96 260,202 252,207 207,108 152,143" fill="var(--iso-wall-left)" stroke="var(--iso-stroke)" stroke-width="1.6" stroke-linejoin="round" />
+                <!-- Декоративные геометрические линии на крыше -->
+                <line x1="230" y1="89" x2="286" y2="190" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.2" />
+                <line x1="254" y1="81" x2="312" y2="179" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.2" />
+                <line x1="277" y1="73" x2="336" y2="168" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.2" />
+
+                <!-- Аккуратная труба на крыше (отсылка к логотипу) -->
+                <polygon points="240,104 256,96 256,74 240,82" fill="var(--iso-wall-right)" stroke="var(--iso-stroke)" stroke-width="1.4" stroke-linejoin="round" />
+                <polygon points="228,97 240,104 240,82 228,75" fill="var(--iso-wall-left)" stroke="var(--iso-stroke)" stroke-width="1.4" stroke-linejoin="round" />
+                <polygon points="228,75 244,67 256,74 240,82" fill="var(--iso-roof-light)" stroke="var(--iso-stroke)" stroke-width="1.4" stroke-linejoin="round" />
+
+                <!-- Геометрическое дерево возле дома -->
+                <line x1="118" y1="274" x2="118" y2="250" stroke="var(--iso-stroke)" stroke-width="2" stroke-linecap="round" />
+                <polygon points="118,214 102,252 118,258" fill="var(--iso-tree-1)" opacity="0.9" />
+                <polygon points="118,214 134,252 118,258" fill="var(--iso-tree-2)" opacity="0.92" />
+
+                <!-- Чертёжный контур прорисовки (моушн-линии) -->
+                <path d="M144,137 L207,96 L299,66 L360,158" class="iso-blueprint-line" stroke="var(--iso-roof-edge)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+
+              <!-- Парящие геометрические 3D-акценты (моушн-графика) -->
+              <g class="iso-float-a">
+                <!-- Маленький изометрический куб слева сверху -->
+                <polygon points="110,118 124,110 138,118 124,126" fill="var(--iso-wall-left)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+                <polygon points="110,118 124,126 124,142 110,134" fill="var(--iso-wall-right)" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+                <polygon points="124,126 138,118 138,134 124,142" fill="var(--iso-roof-light)" fill-opacity="0.28" stroke="var(--iso-stroke)" stroke-width="1.3" stroke-linejoin="round" />
+              </g>
+
+              <g class="iso-float-b">
+                <!-- Каркасный изометрический ромб справа сверху -->
+                <polygon points="402,118 424,105 446,118 424,131" fill="none" stroke="var(--iso-stroke)" stroke-width="1.3" opacity="0.65" />
+                <polygon points="402,130 424,117 446,130 424,143" fill="var(--iso-roof-light)" fill-opacity="0.14" stroke="var(--iso-stroke-soft)" stroke-width="1.1" />
+                <circle cx="424" cy="105" r="3" fill="var(--iso-stroke)" />
+              </g>
+
+              <!-- Акцентные узловые точки на осях -->
+              <circle cx="260" cy="42" r="3.5" fill="var(--iso-stroke)" opacity="0.7" />
+              <circle cx="78" cy="278" r="3" fill="var(--iso-stroke-soft)" />
+              <circle cx="452" cy="278" r="3" fill="var(--iso-stroke-soft)" />
+            </svg>
+
+            <!-- Интерактивная плашка рейтинга Яндекс Карт, интегрированная в 3D-композицию -->
+            <a href="https://yandex.ru/maps/org/u_arama/34994172858/" target="_blank" rel="noopener noreferrer" class="group absolute bottom-3 right-2 z-20 flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md border border-brand-200/80 shadow-lg shadow-brand-900/10 hover:border-brand-400 hover:-translate-y-1 transition-all duration-300">
+              <div class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center shrink-0">
+                <i data-lucide="star" class="w-4 h-4 text-amber-500 fill-amber-400"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-sm font-extrabold text-brand-900">5,0</span>
+                  <span class="text-[11px] font-medium text-slate-500">· 266 оценок</span>
+                </div>
+                <div class="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-600 group-hover:text-brand-700 mt-0.5">
+                  <span>Яндекс Карты</span>
+                  <i data-lucide="arrow-up-right" class="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. БЕСШОВНАЯ ЗАЦИКЛЕННАЯ ЛЕНТА УДОБСТВ (без пустых пробелов на любых экранах) -->
+    <section id="about" class="py-3 sm:py-4 border-y border-brand-100/80 dark:border-slate-800/80 bg-white/70 dark:bg-[#0D1628]/70">
+      <div class="marquee-viewport w-full">
+        <div class="marquee-track">
+          <div class="marquee-half">
+            <div class="flex items-center gap-2.5 sm:gap-3 pr-2.5 sm:pr-3 shrink-0">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wind" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кондиционер в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wifi" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Бесплатный Wi-Fi</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="zap" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Высокоскоростной интернет</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="utensils" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кухня / кухонный уголок</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="droplets" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Душ в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="sofa" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Диван-кровать</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="tv" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Детские ТВ-каналы</span>
+              </span>
+            </div>
+            <div class="flex items-center gap-2.5 sm:gap-3 pr-2.5 sm:pr-3 shrink-0">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wind" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кондиционер в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wifi" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Бесплатный Wi-Fi</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="zap" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Высокоскоростной интернет</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="utensils" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кухня / кухонный уголок</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="droplets" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Душ в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="sofa" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Диван-кровать</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="tv" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Детские ТВ-каналы</span>
+              </span>
+            </div>
+          </div>
+          <div class="marquee-half" aria-hidden="true">
+            <div class="flex items-center gap-2.5 sm:gap-3 pr-2.5 sm:pr-3 shrink-0">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wind" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кондиционер в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wifi" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Бесплатный Wi-Fi</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="zap" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Высокоскоростной интернет</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="utensils" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кухня / кухонный уголок</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="droplets" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Душ в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="sofa" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Диван-кровать</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="tv" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Детские ТВ-каналы</span>
+              </span>
+            </div>
+            <div class="flex items-center gap-2.5 sm:gap-3 pr-2.5 sm:pr-3 shrink-0">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wind" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кондиционер в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="wifi" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Бесплатный Wi-Fi</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="zap" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Высокоскоростной интернет</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="utensils" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Кухня / кухонный уголок</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="droplets" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Душ в номере</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="sofa" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Диван-кровать</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/85 border border-brand-100 dark:border-slate-700/80 text-xs sm:text-sm font-semibold text-brand-900 dark:text-slate-100 shrink-0">
+                <i data-lucide="tv" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Детские ТВ-каналы</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        <!-- 3. КАТАЛОГ КВАРТИР И АПАРТАМЕНТОВ -->
+    <section id="catalog" class="pt-7 pb-10 sm:pt-10 sm:pb-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="reveal mb-6 sm:mb-8">
+          <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400 mb-1.5">Квартиры и номера</p>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-900 dark:text-white tracking-tight">Каталог апартаментов</h2>
+        </div>
+
+        <!-- Карточки рендерятся из массива ROOMS -->
+        <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"></div>
+
+        <!-- Ненавязчивое краткое описание (без воды, под каталогом) -->
+        <div class="reveal mt-8 sm:mt-10 pt-6 border-t border-brand-100/80 dark:border-slate-800/80">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            <p class="max-w-xl leading-relaxed">
+              <span class="font-semibold text-brand-900/85 dark:text-slate-200">Работаем круглосуточно:</span>
+              удобно для командировок, проезда и отдыха в центре Шахт (Советская,&nbsp;94) — заезд возможен в любое время суток.
+            </p>
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-500 dark:text-slate-400 shrink-0">
+              <span class="inline-flex items-center gap-1.5">
+                <i data-lucide="thermometer-sun" class="w-3.5 h-3.5 text-brand-500/80 shrink-0"></i>
+                <span>Прохладно летом, тепло зимой</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <i data-lucide="home" class="w-3.5 h-3.5 text-brand-500/80 shrink-0"></i>
+                <span>Тихая домашняя атмосфера</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-brand-500/80 shrink-0"></i>
+                <span>Внимательный хозяин на связи</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. КОНТАКТЫ И КАРТА ОТ ЯНДЕКСА -->
+    <section id="contacts" class="py-10 sm:py-16 bg-brand-50/60 dark:bg-[#0E1729] border-t border-brand-100 dark:border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="reveal mb-7 sm:mb-8">
+          <p class="text-xs font-bold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400 mb-1.5">Как нас найти</p>
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-900 dark:text-white tracking-tight">Контакты</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+          <!-- Левая карточка контактов -->
+          <div class="reveal lg:col-span-5 bg-white dark:bg-[#111B2E] rounded-3xl border border-brand-100 dark:border-slate-800 p-5 sm:p-7 shadow-sm flex flex-col justify-between gap-6">
+            <div class="space-y-5">
+              <div>
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Наши адреса</div>
+                <div class="space-y-2.5" id="address-cards"></div>
+              </div>
+
+              <div>
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Телефон</div>
+                <a href="tel:+79044444491" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-brand-50 dark:bg-slate-800/90 hover:bg-brand-100 dark:hover:bg-slate-800 border border-brand-200/80 dark:border-slate-700 text-brand-900 dark:text-white font-semibold transition-colors">
+                  <span class="inline-flex items-center gap-2.5 text-sm sm:text-base">
+                    <i data-lucide="phone-call" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                    <span>+7 904 444 44 91</span>
+                  </span>
+                  <span class="text-xs text-brand-600 dark:text-brand-400 font-semibold shrink-0">Позвонить</span>
+                </a>
+              </div>
+
+              <div>
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Мессенджеры и соцсети</div>
+                <div class="flex items-center gap-2.5">
+                  <a href="https://wa.me/79044444491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                      <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                  <a href="https://t.me/+79044444491" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-sky-400 hover:bg-sky-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                      <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                  <a href="https://vk.com/" target="_blank" rel="noopener noreferrer" aria-label="VK" title="VK" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
+                      <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" data-action="open-booking" class="btn-sheen w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-sm shadow-brand-600/20">
+              Забронировать номер
+            </button>
+          </div>
+
+          <!-- Правая колонка: интерактивная карта с фирменными метками-логотипами -->
+          <div class="reveal lg:col-span-7 bg-white dark:bg-[#111B2E] rounded-3xl border border-brand-100 dark:border-slate-800 p-2 sm:p-3 shadow-sm flex flex-col" style="transition-delay: 90ms;">
+            <div class="relative w-full flex-1 h-[340px] sm:h-[400px] lg:min-h-[460px] rounded-2xl overflow-hidden bg-brand-50 dark:bg-slate-900">
+              <div id="yandex-map" class="w-full h-full min-h-[340px] sm:min-h-[400px] lg:min-h-[460px] z-10" aria-label="Карта — Гостевой дом У Арама"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Подвал -->
+  <footer class="border-t border-brand-100 dark:border-slate-800 bg-white dark:bg-[#0B1220] py-7 sm:py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3.5 text-center sm:text-left text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+      <div class="flex items-center gap-2.5">
+        <span class="brand-logo-slot logo-frame w-8 h-8 rounded-xl overflow-hidden bg-white ring-1 ring-slate-200/90 dark:ring-slate-700 flex items-center justify-center shrink-0"></span>
+        <span>© 2026 Гостевой дом «У Арама» · Шахты</span>
+      </div>
+      <div class="text-xs text-slate-400 dark:text-slate-500">
+        Наименование организации: Курехян Карине Ашотовна
+      </div>
+    </div>
+  </footer>
+
+  <!-- Кнопка «Наверх» -->
+  <button
+    type="button"
+    id="scroll-top-btn"
+    aria-label="Вернуться наверх"
+    class="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-40 w-11 h-11 rounded-2xl bg-white/95 dark:bg-slate-800/95 hover:bg-brand-600 dark:hover:bg-brand-600 text-brand-900 dark:text-slate-100 hover:text-white border border-brand-200/90 dark:border-slate-700 shadow-lg shadow-brand-950/10 backdrop-blur-md flex items-center justify-center"
+  >
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+  </button>
+
+  <!-- МОДАЛЬНОЕ ОКНО: БРОНИРОВАНИЕ (Обновлённый лаконичный дизайн) -->
+  <div id="booking-modal" class="modal-backdrop fixed inset-0 z-50 bg-brand-950/65 backdrop-blur-[4px] flex items-end sm:items-center justify-center p-0 sm:p-4" aria-hidden="true">
+    <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[460px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[92dvh] overflow-y-auto">
+      <!-- Верхняя полоса-ручка на мобильном -->
+      <div class="pt-3 sm:hidden">
+        <div class="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-700 mx-auto" aria-hidden="true"></div>
+      </div>
+
+      <!-- Шапка окна -->
+      <div class="px-5 sm:px-6 pt-4 sm:pt-6 pb-4 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="brand-logo-slot w-10 h-10 rounded-xl overflow-hidden bg-white ring-1 ring-slate-200/90 dark:ring-slate-700 shrink-0 shadow-xs"></div>
+          <div class="min-w-0">
+            <h3 class="text-lg font-extrabold text-brand-900 dark:text-white tracking-tight leading-tight">Бронирование</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">Ответим и подтвердим за 5 минут</p>
+          </div>
+        </div>
+        <button type="button" data-close="booking-modal" aria-label="Закрыть окно бронирования" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="px-5 sm:px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:pb-6 space-y-4">
+        <!-- Карточка выбранной квартиры (вместо выпадающего списка) -->
+        <div id="booking-room-summary" class="p-4 rounded-2xl bg-gradient-to-br from-brand-50 via-brand-50/50 to-white dark:from-slate-800/90 dark:via-slate-800/60 dark:to-slate-900 border border-brand-200/80 dark:border-slate-700/90">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span id="summary-room-badge" class="px-2 py-0.5 rounded-md bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider"></span>
+                <span id="summary-room-meta" class="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate"></span>
+              </div>
+              <div id="summary-room-title" class="text-[15px] font-bold text-brand-900 dark:text-white leading-snug"></div>
+            </div>
+            <div class="text-right shrink-0">
+              <div id="summary-room-price" class="text-base font-extrabold text-brand-600 dark:text-brand-400 leading-tight"></div>
+              <div id="summary-room-unit" class="text-[11px] text-slate-500 dark:text-slate-400"></div>
+            </div>
+          </div>
+
+          <div class="mt-2.5 pt-2.5 border-t border-brand-200/60 dark:border-slate-700/70 flex items-center justify-between gap-2">
+            <span id="summary-stay-calc" class="text-xs font-semibold text-brand-800 dark:text-brand-300"></span>
+            <button type="button" id="toggle-room-picker" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline focus:outline-none">
+              Выбрать другую
+            </button>
+          </div>
+
+          <!-- Компактный выбор другой квартиры (открывается только по кнопке или при общем бронировании) -->
+          <div id="room-picker-chips" class="hidden mt-3 pt-3 border-t border-brand-200/60 dark:border-slate-700/70 flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <form id="booking-form" class="space-y-4">
+          <input type="hidden" id="client-room" name="room" value="" />
+          <input type="hidden" id="client-guests" name="guests" value="2" />
+
+          <!-- Даты проживания -->
+          <div class="p-3.5 rounded-2xl bg-slate-50/90 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/70">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-checkin">
+                  <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                  <span>Заезд</span>
+                </label>
+                <input id="client-checkin" name="checkin" type="date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900" />
+              </div>
+              <div>
+                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-checkout">
+                  <i data-lucide="calendar-check" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                  <span>Выезд</span>
+                </label>
+                <input id="client-checkout" name="checkout" type="date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900" />
+              </div>
+            </div>
+
+            <!-- Количество гостей (тактильные кнопки) -->
+            <div class="mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-700/60 flex items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-900 dark:text-slate-200">
+                <i data-lucide="users" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                <span>Гостей</span>
+              </span>
+              <div id="guests-pills" class="inline-flex items-center gap-1 p-0.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-700">
+                <button type="button" data-guest-val="1" class="guest-pill px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors">1</button>
+                <button type="button" data-guest-val="2" class="guest-pill px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors">2</button>
+                <button type="button" data-guest-val="3" class="guest-pill px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors">3</button>
+                <button type="button" data-guest-val="4" class="guest-pill px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors">4</button>
+                <button type="button" data-guest-val="5+" class="guest-pill px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors">5+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Контактные данные -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-brand-900 dark:text-slate-200 mb-1.5" for="client-name">Ваше имя *</label>
+              <div class="relative">
+                <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <input id="client-name" name="name" type="text" required placeholder="Иван" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-900 focus:bg-white dark:focus:bg-slate-900 text-brand-900 dark:text-white text-base sm:text-sm focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 transition-colors" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-brand-900 dark:text-slate-200 mb-1.5" for="client-phone">Телефон *</label>
+              <div class="relative">
+                <i data-lucide="phone" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <input id="client-phone" name="phone" type="tel" required placeholder="+7 900 000 00 00" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-900 focus:bg-white dark:focus:bg-slate-900 text-brand-900 dark:text-white text-base sm:text-sm focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 transition-colors" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Комментарий -->
+          <div>
+            <label class="block text-xs font-semibold text-brand-900 dark:text-slate-200 mb-1.5" for="client-comment">Пожелания к заезду</label>
+            <textarea id="client-comment" name="comment" rows="2" placeholder="Например, ориентировочное время заезда..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-900 focus:bg-white dark:focus:bg-slate-900 text-brand-900 dark:text-white text-base sm:text-sm focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900 transition-colors resize-none"></textarea>
+          </div>
+
+          <!-- Успешная заявка -->
+          <div id="booking-feedback" class="hidden p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 space-y-3">
+            <p class="text-xs sm:text-sm font-semibold text-emerald-900 dark:text-emerald-200">Заявка готова! Отправьте её в удобный мессенджер:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <a id="send-wa-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold transition-colors">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                  <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                </svg>
+                <span>Отправить в WhatsApp</span>
+              </a>
+              <a id="send-tg-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 border border-brand-200 dark:border-slate-700 text-brand-900 dark:text-slate-100 text-xs font-semibold transition-colors">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                  <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                </svg>
+                <span>Написать в Telegram</span>
+              </a>
+            </div>
+          </div>
+
+          <button type="submit" id="booking-submit-btn" class="btn-sheen w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
+            <span>Подтвердить бронирование</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // 1. ЛОГОТИП С КАРТОЧКИ ЯНДЕКС КАРТ (https://yandex.ru/maps/-/CXcZISZ0)
+    // Белый скруглённый квадрат, объёмный серебристо-металлический круг
+    // с лёгким голубоватым кантом, чёрный силуэт домика с трубой слева
+    // и белой стрелкой/дверным проёмом внутри (без текста).
+    // Если захотите заменить на локальный файл: const BRAND_LOGO_URL = 'img/logo.png';
+    // =========================================================
+    const BRAND_LOGO_URL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGEAAABfCAIAAAB3FD4pAAAQAElEQVR4AZS9B7xnVXX3vfc+7V9vvzPDFBiGDsPQGWAAwUJRAVFJlIjRRPN+EmOePElM1PhqniS2JCbRRGMUa+hYEERpCgZQkDIgzDDDtDszt/d/P2WX93v+f5xA4vPmec6se+46a6+19lq/vXY55/L5oP7hz3//K//w8Scfe+SZp3/+00ce2v7cMy88v333i7sO7jswuX9ifn6p1WpzGWO4Ly8vW2vjOG42m0hgkKRpClOv17Ms01r3JPCLi4utVosmJDA0YYUT9GmCwQNWCGE63QvnPDYaDecchjA0IUEfh0mSIIFBt1arwfQkeEaZXpBA+KQLCAkKtC4tLaGAhCb6RYJPnNALfpDQL57rteX5yQNbf3TXT771lZ9856uP3PH1R+74xs/uvFnVlmu5krN+EECe74nuFUZhub8yMFC1NkcHv4TbI3hM4HFNx9yllASBBKJvhDAQmr7v8wjDYw8p3POIPoakBBErOoQLjxyeO8owKGMIoUPCyOEhPNCEAt3x2Gs9xNCKc/SRwHBHcigSDLFCQnfccfLS3dj+0cPWn37+SRe+YWDFatG7pFD1eKmd1oAmieOB/v4wisCq2tfXN9hfKBaIWwgxMDDAmNBZj8E1DGNCEENDQ/THsAwODnJHODIygoQMkWCysLAAo5TCA1YwFAWSKIrm5+fL5TIMOtxxxYAjqVar9FsoFIiCJgYAQyR4g8EPOdMEQyS4YsCg0dFR+kWIhLQJAIfIMYQhi9nZWaw8z+sFgFuc0xcSmGKxWKlUCIB+B4ZGDjv29A2nbrHKd55SUlmhzMjICG2lUskaOzgyXKlW6IbyQ4gvesI7DP3hlDyJBqdBEIAL40OGNNEZHrDiEYJBQs4MPulhiB9iJRTMGXkShiFPJHQH4pgzpAgPMTRhggQGEzz09/cTAP0SACHBhGFInAwPcrqjXwLrBdBrAjgCoAk/OIHBin5JCgb/OOeRVhgiwRVMaWD0pHNfM7r2CEU3hSgSwlnnhJT9A0NCCDpgrCCS5E70CPEOj4RQ8Ag02OKRgOAJAisYJOjAkC2aRNnDCAlW+IHBITwMDnGLIcqECEPQAAGDBB4dPOMBQ9yijwQTeqFfnCNBTiToIKG1J+kx3Hs6mIA7neIHNZxjQhNy/NMdVjA0IYGH4W6Ft3L98Qq9gcHBdrtTLpWEkGVKqFKZm5ujY4oLRBkuBpx5QX+MIYWKMRKaCBQdxo1khoeHiRLhihUrYJDQhCaGFD+2lDFWRAmDhH7pBed0hAfGFqEQAnMIIZJVq1ZhCAOBIN4IfWZmhgzpjuogAOYRJUwrVtx7zmEQEi2RMOl6nukOCZ4xpIIYP6YYErogSLoARMwpSYQoU0oE3OkkzLRgYHClNSIICv0Dw2DJIBM6LtrtNnrc6QZtQqQJXzgFArCnP9LDKQQ6pI0hTTC0IkGB/tDBLYaEzuihjB+aWEFwRdr0hfLExMTY2Njzzz+/devWx355we/evZuBAQ7UUAYLXIE1PGDRRF/w9AuDc3rBLToABAORArbgAoMhOjQxHkx/rJAQJCEhpImO8EC+PKKPH1WrZ2vXHev7URynAIkG2tiACNDQN8kgoYn0MMYL3lEDDronfxCBoSfiQL8nQQ0rTGhFGYxowidWxModJww1Qzo9Pc1qOjk5yahiS1jgRUe9EFFgkFEYHx/f173gacWcDCki3NILYOGNaYJnnNApclwRGJGQCDpIUOvFgAckqBEbrgAXCQGDCIlASFCmFZ187z983eFpkrKLESVt5ECl4ZoRoz9UCYXhIk/QpRphAJHoccF0wDtq6MAwLFQHMdFKhdMZU4O4856UwpygyQQFEsAzERMrDpEDMUxPgk6PGCEU0ITp6dAp5vQIlMipdBIDL0IiSCKnXxRoJX6UiYSJCRA0oUYkoIky3sgFBgmJkzWuGA+ghMcVCCDBXPmel2ZZmqUkSTL4yrKMZu6MJHHji1BwRNAI0UFI3/giehju8AwCaUDooIAV5iRMfEQG9EjQxD9CsOjpIOkRhkho/b8i+sIVgeGEXlavXk0v5ElUOGTM8EnAxI8OU6HHoAMDETYeiIfsuOMKBlcICZjHno5666/9OqqFYjEqFICNxHBNf9iANxJsYBgroqdvGLpHgjscMQIEgZAKwg9xADxNdMC4IQFuDDHhDhG0UJ4XhE6yFEpjBWRdvq8q4XxPSeGc0cIaKawUzpMCUgTRJdG9nJA5dT1YIZXylFKgQC+UKirEQJ0SgJSSGAiSeEgKIWkTLWVIE/VCvmSKFQyEhEfGm6R4hEBAbd5ysVVRqVKhAwqMNlwwFICNAdWId2qBXumbJiQghQQoKWnmGo5gUOZO3+j0lhgc4gSrl5P7jwcphORflySpQsY6qbwgKig/4LeQSltnsJEvXaJ7IXC5GQ+Sn5dYcOb4IgQjRL/gQmAkwnCyw6LGQkZ2REUT8xFYaQI4QARNxhI4QAA5KZAvdyTkq6rVAd8LivnGjx9B/vwKggA40SY05xy1R694By8eaUXOI9HQhCZCiLJiFdizZw9+0adXXP0q6iaWN2AkrHV48INI+XlxZcY22/FyvQm1OolxkroLAj8KA0g4S3FB4n9/EZvv+4RHbKyGbJcMHrkEQeCco44IjCYYHskXfQh/SLCCJx4erbUo8Kg6cafdbjWaDaQsYNbaVqsFujxSKUhQQsIkQgIENKHDzEKCR5oYHIqIEWDrISbiQ4L3Xk8wGPbIMdRCIIdQ09qMje276667Pv3pv3nv7/zOr7/tbVe/+S1Xvenqt15zzW+/5z3vee973/Xud//GO6677p3ves9vvftP/+SPPvsPn/nJgz+amZqQQoZhSNEYo4lBCGL8D6JHCESMMfRCNe3YsYOCYkL15hrV0WNYgplWKFBWgEW+JNJjek2oYaWmp6bowvd9IQTjH0URLg6lCijIsaQsgQbIAIUI0GFaMRp4pw/QoVwBjtAJi0HD6r+S7IriuDM2tv8Tn/jEq1998UUXXfyBD3zghptv/cnW3XsX0iVXNpXD1ODh3HXlsLS0sun1z2fRrunWw1t3femmO//wI5+67K3vfvOvXfuVr36FGY0/PjUQD8x/JeCDAI94qKZt27YRHkXUm2uMMTGTEUJmFneSAoFi9yI7NJEArioUo1ptsbZcpw/cAQQMzTC9vmEYEDpDDt8jJGCBRGuNlwMHDoAXQ0c0WEFSUi+a9SUzzqIHab04N/e5z/zjZa+77OJXX/Kpz/3rrokFv29F36r1J5y2+dJLL3nve377wx/84Cc/+fHPffYfr//Sv379K9df/8Uv/sPf/d1HP/Lnv/W773vVZW888YzN5dFVWRDt2DP+T5//6jVve8c7f/u3bv32Lcut5USn2mjpXCiV7IZIhwQjZb5mM/BECzQgReEAB8VCwDDEjybZoYkdDHIYhJjDB0GgMuv8MCpXKkipK4wpB6qDR2qHmYUqtUMpwYAuOj0GuIGSQzCEhCAwwTsAwdAljOMt0BK83T924J8++7nN52z50w//v794Ybf1S0eduPH1V7/5Y5/4xNdvvuWGW2/7l3/+7P/8g99/2zVvvuTVF5179hmnn3ryqSefdObpm15z8YVvedOVf/AH7/vbz/zNjTejeOunPvXJq9781pGVazPnP/v8ix/6yF9d82vX3f6tO2bnFozRxmXGasc8JAjBDMlrtxceITHpiJZWUjPGUEpkRMpkR47AR3akwKSjgpgfEBJVHhjpH1yJFyEElkCOJZDjke2AuUYTkMEAKr7YHeiD6YqjF154gVcHDFGGYF5GMuedUc58/ctfvPDCC/7oo395cLERDa0673Vv+PRnP/dvN3z1rz/+F69/wyXrDuelzMVJ0um06UJrY61LjU6tjo1upXGj0243ltNW3Sat4b7iay/a8qEPf+D6b1z/mc/+00WvfmOSFnfunP7Upz9/7XXvufuBH7eFScVLhZsH8MsfwiMRCIx4v6FeGFTyBQtSZtIdYigc+OXlZSoAhtlHHalE20KhiDcckb+1FgZ3xhjuyLXWyPEF5HhHAr344ovPPPMMQgi/aGKFLU0Q+s7J55969uq3vv33/+jPJupZsPq4S97yG1/48pf++R8/ff7Zp58d55xzNn/y05/5xje++cd//Htv/fVb3/fBD/5e11r15r/92xvf+e733HLLrX/4h3/82te+9v3v/9P/9f7f+O33vfFtb/71N1/9pnPP2bLh6KPWHf26q67+jXffcNVrXvO611/1hje+4W1vf/PZZ27ecOyG/w8AAP//73pE8Bw6sFEAAAAASUVORK5CYII=";
+
+    function buildBrandLogoSvg(uid) {
+      return `
+        <svg viewBox="0 0 64 64" class="w-full h-full block" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Логотип Гостевого дома У Арама">
+          <defs>
+            <radialGradient id="uaSphere_${uid}" cx="35%" cy="28%" r="68%">
+              <stop offset="0%" stop-color="#FFFFFF" />
+              <stop offset="32%" stop-color="#E4ECF4" />
+              <stop offset="68%" stop-color="#BAC7D6" />
+              <stop offset="90%" stop-color="#90A3B8" />
+              <stop offset="100%" stop-color="#B9D5F2" />
+            </radialGradient>
+            <linearGradient id="uaRim_${uid}" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#DBEAFE" />
+              <stop offset="50%" stop-color="#94A3B8" />
+              <stop offset="100%" stop-color="#7DD3FC" />
+            </linearGradient>
+            <linearGradient id="uaGloss_${uid}" x1="32" y1="9" x2="32" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.82" />
+              <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <!-- Белая подложка -->
+          <rect width="64" height="64" rx="14" fill="#FFFFFF" />
+          <!-- Лёгкая тень под объёмным кругом -->
+          <circle cx="32" cy="33.5" r="24" fill="#0F172A" fill-opacity="0.10" />
+          <!-- Объёмный серебристо-металлический круг с голубоватым кантом -->
+          <circle cx="32" cy="32" r="24" fill="url(#uaSphere_${uid})" stroke="url(#uaRim_${uid})" stroke-width="1.6" />
+          <!-- Верхний металлический блик -->
+          <ellipse cx="32" cy="18.5" rx="15.5" ry="8" fill="url(#uaGloss_${uid})" />
+          <!-- Чёрный силуэт дома с двускатной крышей и трубой на левом скате -->
+          <path d="M18.2 31.2 L22.2 27.6 V21.4 H25.6 V24.5 L32 18.8 L45.8 31.2 H42.1 V43.2 C42.1 43.9 41.5 44.5 40.8 44.5 H23.2 C22.5 44.5 21.9 43.9 21.9 43.2 V31.2 H18.2 Z" fill="#111827" />
+          <!-- Белый вырез в виде стрелки вверх / стилизованного входа -->
+          <path d="M32 27.6 L37.2 33.4 H34.1 V44.5 H29.9 V33.4 H26.8 L32 27.6 Z" fill="#FFFFFF" />
+        </svg>
+      `;
+    }
+
+    // =========================================================
+    // 2. КАТАЛОГ КВАРТИР С ОФИЦИАЛЬНОГО САЙТА
+    // =========================================================
+    const AUTO_SLIDE = true;
+    const AUTO_SLIDE_MS = 4500;
+
+    const ROOMS = [
+      {
+        id: 'hourly',
+        category: 'hourly',
+        badge: 'По часам',
+        title: 'Снять квартиру по часам',
+        price: 1800,
+        priceUnit: 'за 3 ч',
+        guests: 'До 2 гостей',
+        defaultGuests: '2',
+        isHourly: true,
+        area: 'От 3 часов',
+        desc: 'Минимум 3 часа от 1 800 ₽. Уютные апартаменты в центре города Шахты со всеми удобствами: кондиционер, Wi-Fi, душ и кухонный уголок.',
+        slideLabels: ['Спальня и зона отдыха', 'Кухонный уголок', 'Душ и удобства'],
+        images: ['', '', '']
+      },
+      {
+        id: '2-mestny',
+        category: '1room',
+        badge: '1 комнатная',
+        title: '2-х местный',
+        price: 2200,
+        priceUnit: 'за сутки',
+        guests: '2 спальных места',
+        defaultGuests: '2',
+        isHourly: false,
+        area: '38–40 м²',
+        desc: 'Сдаются апартаменты 38–40 м² в центре Шахт! Все удобства имеются: кондиционер, высокоскоростной Wi-Fi, кухня в номере, душ, ТВ. Возможна скидка при длительном проживании.',
+        slideLabels: ['Основная комната', 'Оборудованная кухня', 'Санузел и душ'],
+        images: ['', '', '']
+      },
+      {
+        id: 'studio-2',
+        category: 'studio',
+        badge: 'Студия',
+        title: 'Комната студия 2-х местная',
+        price: 3000,
+        priceUnit: 'за сутки',
+        guests: 'До 2 гостей',
+        defaultGuests: '2',
+        isHourly: false,
+        area: '50 м²',
+        desc: 'Сдаётся просторный апартамент-студия 50 м² в самом центре города Шахты со всеми удобствами и своим двором. Кондиционер, Wi-Fi, кухня, стиральная машина и ТВ.',
+        slideLabels: ['Просторная студия', 'Кухня и обеденная зона', 'Ванная комната'],
+        images: ['', '', '']
+      },
+      {
+        id: 'studio-4',
+        category: 'studio',
+        badge: 'Студия',
+        title: 'Студия (4-х местная)',
+        price: 3000,
+        priceUnit: 'за сутки',
+        guests: '4 спальных места',
+        defaultGuests: '4',
+        isHourly: false,
+        area: '50 м²',
+        desc: 'Комфортная 4-х местная студия: двуспальная кровать и диван-кровать, кухня/кухонный уголок в номере, кондиционер, душ, Wi-Fi и детские ТВ-каналы.',
+        slideLabels: ['Спальная и гостиная зона', 'Диван-кровать и ТВ', 'Кухня и душ'],
+        images: ['', '', '']
+      },
+      {
+        id: '3-room-4',
+        category: 'family',
+        badge: '3-х комнатная',
+        title: '3-х комнатная комната (4-х местный)',
+        price: 3990,
+        priceUnit: 'за сутки',
+        guests: '4 спальных места',
+        defaultGuests: '4',
+        isHourly: false,
+        area: 'Просторные апартаменты',
+        desc: 'Большие 3-х комнатные апартаменты для семьи или компании в центре Шахт. Все удобства имеются: кондиционер, высокоскоростной интернет, полноценная кухня, стиральная машина и душ.',
+        slideLabels: ['Гостиная', 'Изолированные спальни', 'Кухня и санузел'],
+        images: ['', '', '']
+      }
+    ];
+
+    // =========================================================
+    // 3. ДВА РЕАЛЬНЫХ АДРЕСА В ШАХТАХ
+    // =========================================================
+    const MAP_POINTS = [
+      {
+        id: 'point-1',
+        name: 'Гостевой дом «У Арама»',
+        address: 'Ростовская область, Шахты, Советская улица, 94',
+        phone: '+7 904 444 44 91',
+        phoneHref: 'tel:+79044444491',
+        routeUrl: 'https://yandex.ru/maps/?rtext=~47.705769,40.222390',
+        coords: [47.705769, 40.222390]
+      },
+      {
+        id: 'point-2',
+        name: 'У Арама · Филиал 2 (Арт. Апарт)',
+        address: 'Ростовская область, Шахты, Тюменский переулок, 21',
+        phone: '+7 961 304 76 03',
+        phoneHref: 'tel:+79613047603',
+        routeUrl: 'https://yandex.ru/maps/?rtext=~47.699844,40.202124',
+        coords: [47.699844, 40.202124]
+      }
+    ];
+
+    // =========================================================
+    // 4. ГЕНЕРАЦИЯ ВЕКТОРНЫХ ИЛЛЮСТРАЦИЙ ДЛЯ СЛАЙДОВ
+    // =========================================================
+    function buildInteriorSvg(slideIdx, title, label) {
+      const palettes = [
+        { bg1: '#EDF4FF', bg2: '#D8E7FC', accent: '#1055D6', soft: '#A5C7F6' },
+        { bg1: '#F1F6FE', bg2: '#DCEAFD', accent: '#0C43AD', soft: '#94BDF5' },
+        { bg1: '#EBF2FD', bg2: '#D3E3FA', accent: '#1E64E0', soft: '#8AB7F4' }
+      ];
+      const p = palettes[slideIdx % palettes.length];
+
+      let scene = '';
+      if (slideIdx % 3 === 0) {
+        scene = `
+          <rect x="44" y="28" width="66" height="44" rx="6" fill="#FFFFFF" stroke="${p.soft}" stroke-width="2"/>
+          <line x1="77" y1="28" x2="77" y2="72" stroke="${p.soft}" stroke-width="1.5"/>
+          <rect x="195" y="34" width="60" height="34" rx="5" fill="#FFFFFF" stroke="${p.soft}" stroke-width="2"/>
+          <path d="M205 58L220 46L232 55L242 48L248 58H205Z" fill="${p.soft}" opacity="0.7"/>
+          <rect x="74" y="106" width="172" height="44" rx="10" fill="#FFFFFF" stroke="${p.accent}" stroke-width="2"/>
+          <rect x="86" y="92" width="148" height="22" rx="7" fill="${p.accent}" opacity="0.14"/>
+          <rect x="94" y="98" width="52" height="16" rx="6" fill="#FFFFFF" stroke="${p.accent}" stroke-width="1.8"/>
+          <rect x="174" y="98" width="52" height="16" rx="6" fill="#FFFFFF" stroke="${p.accent}" stroke-width="1.8"/>
+          <rect x="82" y="124" width="156" height="18" rx="6" fill="${p.accent}" opacity="0.18"/>
+          <rect x="42" y="120" width="24" height="30" rx="5" fill="#FFFFFF" stroke="${p.soft}" stroke-width="2"/>
+          <rect x="254" y="120" width="24" height="30" rx="5" fill="#FFFFFF" stroke="${p.soft}" stroke-width="2"/>
+        `;
+      } else if (slideIdx % 3 === 1) {
+        scene = `
+          <rect x="52" y="34" width="140" height="34" rx="6" fill="#FFFFFF" stroke="${p.soft}" stroke-width="2"/>
+          <line x1="98" y1="34" x2="98" y2="68" stroke="${p.soft}" stroke-width="1.5"/>
+          <line x1="146" y1="34" x2="146" y2="68" stroke="${p.soft}" stroke-width="1.5"/>
+          <rect x="52" y="96" width="140" height="54" rx="7" fill="#FFFFFF" stroke="${p.accent}" stroke-width="2"/>
+          <rect x="96" y="108" width="48" height="30" rx="4" fill="${p.accent}" opacity="0.15" stroke="${p.accent}" stroke-width="1.5"/>
+          <rect x="206" y="34" width="60" height="116" rx="8" fill="#FFFFFF" stroke="${p.accent}" stroke-width="2"/>
+          <line x1="206" y1="92" x2="266" y2="92" stroke="${p.soft}" stroke-width="2"/>
+          <line x1="216" y1="60" x2="216" y2="76" stroke="${p.accent}" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="216" y1="106" x2="216" y2="122" stroke="${p.accent}" stroke-width="2.5" stroke-linecap="round"/>
+        `;
+      } else {
+        scene = `
+          <rect x="60" y="36" width="76" height="114" rx="10" fill="#FFFFFF" stroke="${p.accent}" stroke-width="2"/>
+          <path d="M98 46V60" stroke="${p.accent}" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M88 60H108" stroke="${p.accent}" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="92" cy="74" r="2" fill="${p.accent}" opacity="0.6"/>
+          <circle cx="98" cy="78" r="2" fill="${p.accent}" opacity="0.6"/>
+          <circle cx="104" cy="74" r="2" fill="${p.accent}" opacity="0.6"/>
+          <circle cx="95" cy="88" r="2" fill="${p.accent}" opacity="0.45"/>
+          <circle cx="101" cy="92" r="2" fill="${p.accent}" opacity="0.45"/>
+          <rect x="166" y="40" width="74" height="44" rx="22" fill="#FFFFFF" stroke="${p.soft}" stroke-width="2"/>
+          <rect x="160" y="104" width="86" height="46" rx="8" fill="#FFFFFF" stroke="${p.accent}" stroke-width="2"/>
+          <path d="M188 104C188 94 218 94 218 104" stroke="${p.accent}" stroke-width="2" fill="none"/>
+        `;
+      }
+
+      return `
+        <div class="interior-art w-full h-full flex flex-col items-center justify-center relative select-none dark:opacity-90" style="background: linear-gradient(135deg, ${p.bg1} 0%, ${p.bg2} 100%);">
+          <svg viewBox="0 0 320 185" class="w-full h-full max-w-[320px] max-h-[185px]" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="${title} — ${label}">
+            <line x1="26" y1="150" x2="294" y2="150" stroke="${p.soft}" stroke-width="2" stroke-linecap="round"/>
+            ${scene}
+          </svg>
+          <span class="absolute bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 backdrop-blur-[2px] text-[11px] font-semibold text-brand-900 shadow-sm whitespace-nowrap">
+            ${label}
+          </span>
+        </div>
+      `;
+    }
+
+    // =========================================================
+    // 5. РЕНДЕР КАТАЛОГА И СЛАЙДЕРОВ
+    // =========================================================
+    const carouselTimers = [];
+
+    function clearCarouselTimers() {
+      while (carouselTimers.length) clearInterval(carouselTimers.pop());
+    }
+
+    function renderRooms(filter = 'all') {
+      clearCarouselTimers();
+      const grid = document.getElementById('rooms-grid');
+      const filtered = filter === 'all' ? ROOMS : ROOMS.filter(r => r.category === filter);
+
+      grid.innerHTML = filtered.map((room, cardIdx) => {
+        const slides = room.images.length ? room.images : [''];
+        const slidesHtml = slides.map((src, idx) => {
+          const label = (room.slideLabels && room.slideLabels[idx]) ? room.slideLabels[idx] : `Фото ${idx + 1}`;
+          if (src) {
+            return `
+              <div class="carousel-slide relative bg-brand-50 dark:bg-slate-800">
+                <img
+                  src="${src}"
+                  alt="${room.title} — ${label}"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>`;
+          }
+          return `<div class="carousel-slide">${buildInteriorSvg(idx, room.title, label)}</div>`;
+        }).join('');
+
+        const dotsHtml = slides.length > 1
+          ? `<div class="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 px-2.5 py-1 rounded-full bg-brand-950/40 backdrop-blur-[2px]">
+              ${slides.map((_, idx) => `<button type="button" data-slide-to="${idx}" aria-label="Фото ${idx + 1}" class="carousel-dot h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-white w-5' : 'bg-white/55 hover:bg-white/80 w-2'}"></button>`).join('')}
+            </div>`
+          : '';
+
+        const arrowsHtml = slides.length > 1
+          ? `<button type="button" data-slide-prev aria-label="Предыдущее фото" class="carousel-arrow absolute left-2.5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/92 hover:bg-white text-brand-900 shadow-sm flex items-center justify-center">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <button type="button" data-slide-next aria-label="Следующее фото" class="carousel-arrow absolute right-2.5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/92 hover:bg-white text-brand-900 shadow-sm flex items-center justify-center">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>`
+          : '';
+
+        const staggerDelay = Math.min(cardIdx * 70, 350);
+
+        return `
+          <article class="room-card room-card-enter rounded-3xl bg-white dark:bg-[#111B2E] border border-brand-100 dark:border-slate-800 overflow-hidden flex flex-col" style="animation-delay: ${staggerDelay}ms;">
+            <div class="room-carousel relative aspect-[16/10] bg-brand-50 dark:bg-slate-900 overflow-hidden" data-count="${slides.length}">
+              <span class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-lg bg-white/92 dark:bg-slate-900/90 backdrop-blur-[2px] text-[11px] font-bold text-brand-800 dark:text-brand-300 border border-brand-100 dark:border-slate-700 shadow-sm">
+                ${room.badge}
+              </span>
+              <div class="carousel-track">${slidesHtml}</div>
+              ${arrowsHtml}
+              ${dotsHtml}
+            </div>
+
+            <div class="p-4 sm:p-6 flex-1 flex flex-col justify-between gap-4">
+              <div class="space-y-2.5">
+                <h3 class="text-base sm:text-lg font-bold text-brand-900 dark:text-white leading-snug">${room.title}</h3>
+                <div class="flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
+                  <span class="inline-flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.guests}</span>
+                  <span class="inline-flex items-center gap-1"><i data-lucide="maximize-2" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.area}</span>
+                </div>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${room.desc}</p>
+              </div>
+
+              <div class="pt-4 border-t border-brand-100 dark:border-slate-800 flex items-center justify-between gap-3">
+                <div>
+                  <div class="text-lg sm:text-xl font-extrabold text-brand-900 dark:text-white">${room.price.toLocaleString('ru-RU')} ₽</div>
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400">${room.priceUnit}</div>
+                </div>
+                <button type="button" data-action="open-booking" data-room-id="${room.id}" data-room="${room.title}" class="btn-sheen px-4 py-2.5 min-h-[42px] rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold">
+                  Забронировать
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+      initCarousels();
+    }
+
+    function initCarousels() {
+      document.querySelectorAll('.room-carousel').forEach(carousel => {
+        const count = Number(carousel.dataset.count || 1);
+        if (count <= 1) return;
+
+        const track = carousel.querySelector('.carousel-track');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        let index = 0;
+        let paused = false;
+        let touchStartX = 0;
+
+        function goTo(newIdx) {
+          index = (newIdx + count) % count;
+          track.style.transform = `translateX(-${index * 100}%)`;
+          dots.forEach((d, i) => {
+            d.className = `carousel-dot h-2 rounded-full transition-all duration-300 ${i === index ? 'bg-white w-5' : 'bg-white/55 hover:bg-white/80 w-2'}`;
+          });
+        }
+
+        carousel.querySelector('[data-slide-prev]')?.addEventListener('click', () => goTo(index - 1));
+        carousel.querySelector('[data-slide-next]')?.addEventListener('click', () => goTo(index + 1));
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => goTo(Number(dot.dataset.slideTo)));
+        });
+
+        carousel.addEventListener('touchstart', e => {
+          paused = true;
+          touchStartX = e.changedTouches[0].clientX;
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', e => {
+          const diff = e.changedTouches[0].clientX - touchStartX;
+          if (Math.abs(diff) > 35) goTo(diff < 0 ? index + 1 : index - 1);
+          paused = false;
+        }, { passive: true });
+
+        carousel.addEventListener('mouseenter', () => { paused = true; });
+        carousel.addEventListener('mouseleave', () => { paused = false; });
+
+        if (AUTO_SLIDE) {
+          const timer = setInterval(() => {
+            if (!paused) goTo(index + 1);
+          }, AUTO_SLIDE_MS);
+          carouselTimers.push(timer);
+        }
+      });
+    }
+
+    // =========================================================
+    // 6. РЕНДЕР КАРТОЧЕК АДРЕСОВ В БЛОКЕ КОНТАКТОВ
+    // =========================================================
+    let leafletMap = null;
+    const mapMarkers = {};
+
+    function renderAddressCards() {
+      const addressCards = document.getElementById('address-cards');
+      addressCards.innerHTML = MAP_POINTS.map((pt, idx) => `
+        <div data-focus-point="${pt.id}" class="cursor-pointer p-3.5 rounded-2xl bg-brand-50/70 dark:bg-slate-800/70 border border-brand-100 dark:border-slate-700/80 flex items-start justify-between gap-3 transition-colors hover:border-brand-400 dark:hover:border-brand-500">
+          <div class="flex items-start gap-2.5 min-w-0">
+            <span class="w-6 h-6 rounded-lg bg-brand-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+            <div class="min-w-0">
+              <div class="text-sm font-bold text-brand-900 dark:text-white leading-snug">${pt.name}</div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">${pt.address}</div>
+              <a href="${pt.phoneHref}" class="inline-block text-xs font-semibold text-brand-700 dark:text-brand-400 hover:underline mt-1">${pt.phone}</a>
+            </div>
+          </div>
+          <a href="${pt.routeUrl}" target="_blank" rel="noopener noreferrer" title="Построить маршрут" aria-label="Построить маршрут: ${pt.name}" class="shrink-0 w-9 h-9 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:bg-brand-600 hover:text-white text-brand-700 dark:text-brand-400 flex items-center justify-center transition-colors">
+            <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      `).join('');
+
+      addressCards.querySelectorAll('[data-focus-point]').forEach(card => {
+        card.addEventListener('click', e => {
+          if (e.target.closest('a')) return;
+          const pt = MAP_POINTS.find(p => p.id === card.dataset.focusPoint);
+          if (pt && leafletMap && mapMarkers[pt.id]) {
+            leafletMap.flyTo(pt.coords, 16, { duration: 0.75 });
+            mapMarkers[pt.id].openPopup();
+          }
+        });
+      });
+    }
+
+    function initCustomLogoMap() {
+      const mapEl = document.getElementById('yandex-map');
+      if (!mapEl || !window.L) return;
+
+      leafletMap = L.map(mapEl, {
+        center: [47.702806, 40.212257],
+        zoom: 14,
+        scrollWheelZoom: false
+      });
+
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: '© Esri'
+      }).addTo(leafletMap);
+
+      const logoSrc = BRAND_LOGO_URL || '';
+      const createLogoPinIcon = () => L.divIcon({
+        className: 'ua-map-pin-wrap',
+        html: `
+          <div class="ua-map-pin">
+            <div class="ua-map-pin-head">
+              <div class="ua-map-pin-logo">
+                ${logoSrc ? `<img src="${logoSrc}" alt="У Арама" />` : buildBrandLogoSvg('pin')}
+              </div>
+            </div>
+            <div class="ua-map-pin-tip"></div>
+          </div>
+        `,
+        iconSize: [46, 56],
+        iconAnchor: [23, 54],
+        popupAnchor: [0, -52]
+      });
+
+      MAP_POINTS.forEach(pt => {
+        const marker = L.marker(pt.coords, { icon: createLogoPinIcon() }).addTo(leafletMap);
+        marker.bindPopup(`
+          <div style="min-width:190px;">
+            <div style="font-weight:700;font-size:13px;color:#0B1F44;margin-bottom:3px;">${pt.name}</div>
+            <div style="font-size:12px;color:#475569;margin-bottom:8px;">${pt.address}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <a href="${pt.phoneHref}" style="font-size:12px;font-weight:600;color:#1055D6;text-decoration:none;">${pt.phone}</a>
+              <a href="${pt.routeUrl}" target="_blank" rel="noopener noreferrer" style="font-size:11px;font-weight:600;color:#FFFFFF;background:#1055D6;padding:4px 9px;border-radius:8px;text-decoration:none;">Маршрут</a>
+            </div>
+          </div>
+        `);
+        mapMarkers[pt.id] = marker;
+      });
+    }
+
+    // =========================================================
+    // 8. МОУШН-ДВИЖОК: SCROLL REVEAL, SLIDING PILL И SCROLL-SPY
+    // =========================================================
+    function initScrollReveal() {
+      const els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+      const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' });
+
+      els.forEach(el => io.observe(el));
+    }
+
+    function updateActiveNav() {
+      const spyLinks = document.querySelectorAll('[data-spy-link]');
+      const aboutEl = document.getElementById('about');
+      const catalogEl = document.getElementById('catalog');
+      const contactsEl = document.getElementById('contacts');
+      const headerEl = document.getElementById('site-header');
+      if (!catalogEl || !contactsEl) return;
+
+      const y = window.scrollY;
+      const offset = (headerEl ? headerEl.offsetHeight : 72) + 80;
+      const nearBottom = (window.innerHeight + y) >= (document.documentElement.scrollHeight - 40);
+
+      let activeId = '';
+      if (y > 40 && (nearBottom || (y + offset) >= contactsEl.offsetTop)) {
+        activeId = 'contacts';
+      } else if (y > 40 && (y + offset) >= catalogEl.offsetTop) {
+        activeId = 'catalog';
+      } else if (aboutEl && y > 40 && (y + offset) >= aboutEl.offsetTop) {
+        activeId = 'about';
+      }
+
+      spyLinks.forEach(link => {
+        link.classList.toggle('is-active', link.dataset.spyLink === activeId);
+      });
+    }
+
+    // =========================================================
+    // 9. ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ
+    // =========================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Вставляем логотип «У Арама» (с уникальными ID градиентов для каждого слота)
+      document.querySelectorAll('.brand-logo-slot').forEach((slot, idx) => {
+        const svgMarkup = buildBrandLogoSvg(idx + 1);
+        if (BRAND_LOGO_URL) {
+          const img = document.createElement('img');
+          img.src = BRAND_LOGO_URL;
+          img.alt = 'У Арама';
+          img.className = 'w-full h-full object-cover scale-[1.08]';
+          img.addEventListener('error', () => {
+            slot.innerHTML = svgMarkup;
+          });
+          slot.innerHTML = '';
+          slot.appendChild(img);
+        } else {
+          slot.innerHTML = svgMarkup;
+        }
+      });
+
+      // Состояние и логика обновлённого окна бронирования
+      const roomInput = document.getElementById('client-room');
+      const guestsInput = document.getElementById('client-guests');
+      const checkinInput = document.getElementById('client-checkin');
+      const checkoutInput = document.getElementById('client-checkout');
+      const commentInput = document.getElementById('client-comment');
+      const pickerChips = document.getElementById('room-picker-chips');
+      const togglePickerBtn = document.getElementById('toggle-room-picker');
+      const submitBtn = document.getElementById('booking-submit-btn');
+
+      let selectedRoom = ROOMS[1];
+
+      const getTodayStr = () => new Date().toISOString().slice(0, 10);
+      const getTomorrowStr = () => new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+
+      function syncGuestPills(val) {
+        guestsInput.value = val;
+        document.querySelectorAll('#guests-pills .guest-pill').forEach(btn => {
+          const active = btn.dataset.guestVal === val;
+          btn.className = active
+            ? 'guest-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white shadow-xs transition-colors'
+            : 'guest-pill px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors';
+        });
+      }
+
+      function updateStayCalculation() {
+        const calcEl = document.getElementById('summary-stay-calc');
+        if (!selectedRoom || !calcEl) return;
+
+        let baseTotal = selectedRoom.price;
+        let label = 'От 3 часов';
+
+        if (!selectedRoom.isHourly) {
+          const d1 = new Date(checkinInput.value);
+          const d2 = new Date(checkoutInput.value);
+          const nights = (!isNaN(d1) && !isNaN(d2) && d2 > d1)
+            ? Math.max(1, Math.round((d2 - d1) / 86400000))
+            : 1;
+          baseTotal = selectedRoom.price * nights;
+          const nWord = nights === 1 ? 'сутки' : 'суток';
+          label = `${nights} ${nWord}`;
+        }
+
+        calcEl.textContent = `Итого (${label}): ${baseTotal.toLocaleString('ru-RU')} ₽`;
+        submitBtn.innerHTML = `<span>Подтвердить · ${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
+      }
+
+      function renderRoomChips() {
+        pickerChips.innerHTML = ROOMS.map(r => {
+          const isCur = selectedRoom && r.id === selectedRoom.id;
+          return `<button type="button" data-pick-room="${r.id}" class="px-2.5 py-1.5 rounded-xl text-[11px] font-semibold border transition-colors ${
+            isCur
+              ? 'bg-brand-600 text-white border-brand-600'
+              : 'bg-white dark:bg-slate-900 text-brand-900 dark:text-slate-200 border-brand-200/80 dark:border-slate-700 hover:border-brand-400'
+          }">${r.title} · ${r.price.toLocaleString('ru-RU')} ₽</button>`;
+        }).join('');
+      }
+
+      function applyRoomPreset(roomObj, autoFillDetails = true) {
+        selectedRoom = roomObj || ROOMS[1];
+        roomInput.value = selectedRoom.title;
+        document.getElementById('summary-room-badge').textContent = selectedRoom.badge;
+        document.getElementById('summary-room-meta').textContent = `${selectedRoom.guests} · ${selectedRoom.area}`;
+        document.getElementById('summary-room-title').textContent = selectedRoom.title;
+        document.getElementById('summary-room-price').textContent = `${selectedRoom.price.toLocaleString('ru-RU')} ₽`;
+        document.getElementById('summary-room-unit').textContent = selectedRoom.priceUnit;
+
+        if (autoFillDetails) {
+          syncGuestPills(selectedRoom.defaultGuests || '2');
+          checkinInput.value = getTodayStr();
+          checkoutInput.value = selectedRoom.isHourly ? getTodayStr() : getTomorrowStr();
+          if (selectedRoom.isHourly) {
+            if (!commentInput.value.trim() || commentInput.value.includes('Почасовая аренда')) {
+              commentInput.value = 'Почасовая аренда (от 3 часов)';
+            }
+          } else if (commentInput.value === 'Почасовая аренда (от 3 часов)') {
+            commentInput.value = '';
+          }
+        }
+        renderRoomChips();
+        updateStayCalculation();
+      }
+
+      document.querySelectorAll('#guests-pills .guest-pill').forEach(btn => {
+        btn.addEventListener('click', () => syncGuestPills(btn.dataset.guestVal));
+      });
+
+      togglePickerBtn.addEventListener('click', () => {
+        const isHidden = pickerChips.classList.toggle('hidden');
+        togglePickerBtn.textContent = isHidden ? 'Выбрать другую' : 'Свернуть';
+      });
+
+      pickerChips.addEventListener('click', e => {
+        const chip = e.target.closest('[data-pick-room]');
+        if (!chip) return;
+        const found = ROOMS.find(r => r.id === chip.dataset.pickRoom);
+        if (found) {
+          applyRoomPreset(found, true);
+          pickerChips.classList.add('hidden');
+          togglePickerBtn.textContent = 'Выбрать другую';
+        }
+      });
+
+      checkinInput.addEventListener('change', updateStayCalculation);
+      checkoutInput.addEventListener('change', updateStayCalculation);
+
+      applyRoomPreset(ROOMS[1], true);
+
+      renderRooms('all');
+      renderAddressCards();
+      if (window.lucide) lucide.createIcons();
+      initScrollReveal();
+
+      // Инициализация карты с фирменными метками-логотипами
+      initCustomLogoMap();
+
+      // Копирование номера телефона по клику + уведомление возле кнопки
+      const copyPhoneBtn = document.getElementById('copy-phone-btn');
+      const copyPhoneToast = document.getElementById('copy-phone-toast');
+      let copyToastTimer = null;
+
+      function copyTextReliable(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+        }
+        fallbackCopy(text);
+        return Promise.resolve();
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+
+      copyPhoneBtn?.addEventListener('click', () => {
+        const phone = copyPhoneBtn.dataset.copyPhone || '+7 904 444 44 91';
+        copyTextReliable(phone).finally(() => {
+          if (copyPhoneToast) {
+            copyPhoneToast.classList.add('is-shown');
+            clearTimeout(copyToastTimer);
+            copyToastTimer = setTimeout(() => {
+              copyPhoneToast.classList.remove('is-shown');
+            }, 2200);
+          }
+        });
+      });
+
+      // Прогресс скролла, шапка и кнопка «Наверх»
+      const header = document.getElementById('site-header');
+      const progress = document.getElementById('scroll-progress');
+      const scrollTopBtn = document.getElementById('scroll-top-btn');
+
+      const onScroll = () => {
+        const y = window.scrollY;
+        header.classList.toggle('is-scrolled', y > 12);
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = h > 0 ? `${(y / h) * 100}%` : '0%';
+        scrollTopBtn.classList.toggle('is-visible', y > 420);
+        updateActiveNav();
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateActiveNav, { passive: true });
+      onScroll();
+
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Модалка бронирования с блокировкой прокрутки и Escape
+      const bookingModal = document.getElementById('booking-modal');
+
+      const syncBodyLock = () => {
+        document.body.classList.toggle('is-locked', bookingModal.classList.contains('is-open'));
+      };
+
+      const openModal = el => {
+        el.classList.add('is-open');
+        el.setAttribute('aria-hidden', 'false');
+        syncBodyLock();
+      };
+      const closeModal = el => {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+        syncBodyLock();
+      };
+
+      document.addEventListener('click', e => {
+        const bookBtn = e.target.closest('[data-action="open-booking"]');
+        if (bookBtn) {
+          const matchedRoom = bookBtn.dataset.roomId
+            ? ROOMS.find(r => r.id === bookBtn.dataset.roomId)
+            : (bookBtn.dataset.room ? ROOMS.find(r => r.title === bookBtn.dataset.room) : null);
+          if (matchedRoom) {
+            applyRoomPreset(matchedRoom, true);
+            pickerChips.classList.add('hidden');
+            togglePickerBtn.textContent = 'Выбрать другую';
+          } else {
+            applyRoomPreset(selectedRoom || ROOMS[1], true);
+            pickerChips.classList.remove('hidden');
+            togglePickerBtn.textContent = 'Свернуть';
+          }
+          document.getElementById('booking-feedback').classList.add('hidden');
+          openModal(bookingModal);
+          setTimeout(() => document.getElementById('client-name')?.focus(), 220);
+          return;
+        }
+        const closeBtn = e.target.closest('[data-close]');
+        if (closeBtn) {
+          closeModal(document.getElementById(closeBtn.dataset.close));
+        }
+      });
+
+      bookingModal.addEventListener('click', e => { if (e.target === bookingModal) closeModal(bookingModal); });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          if (bookingModal.classList.contains('is-open')) closeModal(bookingModal);
+        }
+      });
+
+      // Формирование заявки для отправки в WhatsApp / Telegram
+      document.getElementById('booking-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const form = e.target;
+        const msg = [
+          'Здравствуйте! Хочу забронировать в гостевом доме «У Арама»:',
+          `• Имя: ${form.name.value.trim()}`,
+          `• Телефон: ${form.phone.value.trim()}`,
+          `• Квартира: ${form.room.value}`,
+          `• Гостей: ${form.guests.value}`,
+          `• Заезд: ${form.checkin.value} — Выезд: ${form.checkout.value}`,
+          form.comment.value.trim() ? `• Комментарий: ${form.comment.value.trim()}` : ''
+        ].filter(Boolean).join('\n');
+
+        const encoded = encodeURIComponent(msg);
+        document.getElementById('send-wa-link').href = `https://wa.me/79044444491?text=${encoded}`;
+        document.getElementById('send-tg-link').href = 'https://t.me/+79044444491';
+        document.getElementById('booking-feedback').classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+      });
+    });
+  </script>
+</body>
+</html>
