@@ -1175,11 +1175,6 @@
           <button type="button" data-open-legal="consent" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Согласие на обработку данных</button>
           <span class="text-slate-300 dark:text-slate-700">·</span>
           <button type="button" data-open-legal="rules" class="hover:text-brand-600 dark:hover:text-brand-400 hover:underline transition-colors">Правила проживания</button>
-          <span class="text-slate-300 dark:text-slate-700">·</span>
-          <button type="button" data-open-push class="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400 hover:underline transition-colors">
-            <i data-lucide="settings" class="w-3.5 h-3.5"></i>
-            <span>Панель управления (Таблица и Пуш)</span>
-          </button>
         </div>
       </div>
 
@@ -1455,143 +1450,6 @@
         <button type="button" data-close="legal-modal" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold transition-colors">
           Понятно
         </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- МОДАЛЬНОЕ ОКНО: ПАНЕЛЬ ВЛАДЕЛЬЦА (GOOGLE ТАБЛИЦА + ПУШ-УВЕДОМЛЕНИЯ) -->
-  <div id="push-modal" class="modal-backdrop fixed inset-0 z-50 bg-brand-950/65 backdrop-blur-[4px] flex items-end sm:items-center justify-center p-0 sm:p-4" aria-hidden="true">
-    <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[560px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[92dvh] flex flex-col overflow-hidden">
-      <!-- Верхняя полоса-ручка на мобильном -->
-      <div class="pt-3 sm:hidden">
-        <div class="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-700 mx-auto" aria-hidden="true"></div>
-      </div>
-
-      <!-- Шапка окна -->
-      <div class="px-5 sm:px-6 pt-4 sm:pt-6 pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <div class="w-9 h-9 rounded-xl bg-brand-600/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0">
-            <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
-          </div>
-          <div class="min-w-0">
-            <h3 class="text-lg font-extrabold text-brand-900 dark:text-white tracking-tight leading-tight">
-              Панель управления
-            </h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
-              Google Таблица броней и Push-уведомления
-            </p>
-          </div>
-        </div>
-        <button type="button" data-close="push-modal" aria-label="Закрыть окно" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0 transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <!-- Переключатель вкладок панели -->
-      <div class="px-5 sm:px-6 pt-3 pb-2 border-b border-slate-100 dark:border-slate-800 flex gap-2 shrink-0 bg-slate-50/60 dark:bg-slate-900/40">
-        <button type="button" id="admin-tab-sheets-btn" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-xs transition-all flex items-center gap-1.5">
-          <i data-lucide="table" class="w-4 h-4"></i>
-          <span>Google Таблица</span>
-        </button>
-        <button type="button" id="admin-tab-push-btn" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition-all flex items-center gap-1.5">
-          <i data-lucide="bell" class="w-4 h-4"></i>
-          <span>Push-уведомления</span>
-        </button>
-      </div>
-
-      <!-- Тело окна: Вкладка Google Таблицы -->
-      <div id="admin-view-sheets" class="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-        <div class="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/80 space-y-1.5">
-          <div class="font-bold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
-            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0"></i>
-            <span>Автоматический учёт броней и блокировка дат</span>
-          </div>
-          <p class="text-xs text-slate-600 dark:text-slate-300">
-            Каждая новая заявка с сайта попадает на отдельный лист нужной квартиры со статусом <strong>«Ожидание»</strong>. Как только вы подтверждаете бронь и меняете статус на <strong>«Забронировано»</strong>, выбранные даты мгновенно блокируются на сайте!
-          </p>
-        </div>
-
-        <div class="space-y-2">
-          <label class="block text-xs font-bold text-brand-900 dark:text-white" for="admin-sheets-url">
-            URL веб-приложения Google Apps Script:
-          </label>
-          <input
-            id="admin-sheets-url"
-            type="url"
-            placeholder="https://script.google.com/macros/s/.../exec"
-            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-xs font-mono focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900"
-          />
-          <p class="text-[11px] text-slate-500 dark:text-slate-400">
-            Скопируйте URL веб-приложения после развертывания скрипта в вашей Google Таблице.
-          </p>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-2 pt-1">
-          <button type="button" id="save-sheets-url-btn" class="btn-sheen flex-1 py-2.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 text-center shadow-xs">
-            <i data-lucide="save" class="w-4 h-4"></i>
-            <span>Сохранить и подключить</span>
-          </button>
-          <button type="button" id="test-sheets-btn" class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-brand-900 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-1.5">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-            <span>Проверить связь</span>
-          </button>
-        </div>
-
-        <div id="admin-sheets-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
-
-        <!-- Краткая шпаргалка -->
-        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1">
-          <div class="font-bold text-slate-700 dark:text-slate-300">Как подключить таблицу (2 минуты):</div>
-          <ol class="list-decimal pl-4 space-y-0.5">
-            <li>Создайте таблицу в Google Таблицах ➔ «Расширения» ➔ «Apps Script».</li>
-            <li>Вставьте код из файла <code class="font-mono text-brand-600 dark:text-brand-400">google-apps-script.js</code>.</li>
-            <li>Нажмите «Развернуть» ➔ «Новое развертывание» ➔ Тип: «Веб-приложение».</li>
-            <li>Доступ: <strong>«Все» (Anyone)</strong> ➔ Развернуть ➔ Вставьте ссылку выше.</li>
-          </ol>
-        </div>
-      </div>
-
-      <!-- Тело окна: Вкладка Пуш-уведомлений -->
-      <div id="admin-view-push" class="hidden p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-        <div class="p-4 rounded-2xl bg-amber-50/80 dark:bg-slate-800/80 border border-amber-200/80 dark:border-slate-700 space-y-1.5">
-          <div class="font-bold text-amber-900 dark:text-amber-200 flex items-center gap-2">
-            <i data-lucide="zap" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"></i>
-            <span>Мгновенные оповещения о каждой брони:</span>
-          </div>
-          <p class="text-xs text-slate-600 dark:text-slate-300">
-            Каждый раз, когда гость отправляет заявку, на ваш телефон мгновенно приходит громкий push с именем, телефоном, квартирой и кнопками прямого звонка гостю или открытия чата WhatsApp!
-          </p>
-        </div>
-
-        <div class="space-y-2.5">
-          <div class="font-semibold text-brand-900 dark:text-white">Как подключить на свой телефон (1 минута):</div>
-          <ol class="list-decimal pl-5 space-y-2 text-xs text-slate-600 dark:text-slate-300">
-            <li>
-              Нажмите синюю кнопку ниже <strong>«Подписаться на push-уведомления»</strong> или установите бесплатное приложение <strong>ntfy</strong> (доступно в Google Play и App Store).
-            </li>
-            <li>
-              В приложении или на открывшейся странице нажмите <strong>«Подписаться» / «Subscribe»</strong> на канал:
-              <br/>
-              <code class="inline-block mt-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-brand-700 dark:text-brand-300 font-mono font-bold text-xs select-all">u-arama-hotel-shakhty-94</code>
-            </li>
-            <li>
-              Разрешите уведомления в телефоне. Готово! Теперь вы никогда не пропустите бронь.
-            </li>
-          </ol>
-        </div>
-
-        <div class="pt-2 flex flex-col sm:flex-row gap-2">
-          <a href="https://ntfy.sh/u-arama-hotel-shakhty-94" target="_blank" rel="noopener noreferrer" class="btn-sheen flex-1 py-2.5 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 text-center shadow-xs">
-            <i data-lucide="bell" class="w-4 h-4"></i>
-            <span>Подписаться на push-уведомления</span>
-          </a>
-          <button type="button" id="test-push-btn" class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-brand-900 dark:text-slate-200 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-1.5">
-            <i data-lucide="send" class="w-3.5 h-3.5"></i>
-            <span>Тестовый пуш</span>
-          </button>
-        </div>
-
-        <div id="test-push-status" class="hidden p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium"></div>
       </div>
     </div>
   </div>
@@ -2225,8 +2083,7 @@
       // =========================================================
       // ИНТЕГРАЦИЯ С GOOGLE ТАБЛИЦЕЙ (Apps Script Web App)
       // =========================================================
-      const SHEETS_STORAGE_KEY = 'uarama_google_sheet_url';
-      let GOOGLE_SHEET_API_URL = localStorage.getItem(SHEETS_STORAGE_KEY) || '';
+      const GOOGLE_SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbzswygMSywqmHjECSnGjeCNl_GL3PaUEhEPIcBADWSMg5SW3UUf5wcZy24t-6FkNBqxiw/exec';
       let BOOKED_DATES_CACHE = {}; // { 'studio-comfort': { daily: [...], hourly: [...] }, ... }
 
       function formatRuDateBadge(isoStr) {
@@ -2557,7 +2414,6 @@
       // Модальные окна с блокировкой прокрутки и Escape
       const bookingModal = document.getElementById('booking-modal');
       const legalModal = document.getElementById('legal-modal');
-      const pushModal = document.getElementById('push-modal');
 
       // =========================================================
       // ПУШ-УВЕДОМЛЕНИЯ О БРОНЯХ (NTFY.SH)
@@ -2729,12 +2585,6 @@
           return;
         }
 
-        const pushTrigger = e.target.closest('[data-open-push]');
-        if (pushTrigger) {
-          openModal(pushModal);
-          return;
-        }
-
         const bookBtn = e.target.closest('[data-action="open-booking"]');
         if (bookBtn) {
           const matchedRoom = bookBtn.dataset.roomId
@@ -2859,113 +2709,8 @@
         if (window.lucide) lucide.createIcons();
       });
 
-      // Переключение вкладок в панели администратора (Google Таблица / Пуш-уведомления)
-      const adminTabSheetsBtn = document.getElementById('admin-tab-sheets-btn');
-      const adminTabPushBtn = document.getElementById('admin-tab-push-btn');
-      const adminViewSheets = document.getElementById('admin-view-sheets');
-      const adminViewPush = document.getElementById('admin-view-push');
-
-      adminTabSheetsBtn?.addEventListener('click', () => {
-        adminTabSheetsBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-xs transition-all flex items-center gap-1.5';
-        adminTabPushBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition-all flex items-center gap-1.5';
-        adminViewSheets?.classList.remove('hidden');
-        adminViewPush?.classList.add('hidden');
-      });
-
-      adminTabPushBtn?.addEventListener('click', () => {
-        adminTabPushBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white shadow-xs transition-all flex items-center gap-1.5';
-        adminTabSheetsBtn.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition-all flex items-center gap-1.5';
-        adminViewPush?.classList.remove('hidden');
-        adminViewSheets?.classList.add('hidden');
-      });
-
-      // Настройка и проверка подключения Google Таблицы
-      const adminSheetsUrlInput = document.getElementById('admin-sheets-url');
-      if (adminSheetsUrlInput && GOOGLE_SHEET_API_URL) {
-        adminSheetsUrlInput.value = GOOGLE_SHEET_API_URL;
-      }
-
-      async function testSheetsConnection() {
-        const stEl = document.getElementById('admin-sheets-status');
-        if (!stEl) return;
-        const url = (adminSheetsUrlInput?.value || GOOGLE_SHEET_API_URL || '').trim();
-        if (!url) {
-          stEl.textContent = 'Пожалуйста, укажите URL веб-приложения Google Apps Script.';
-          stEl.className = 'p-3 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 text-xs text-amber-800 dark:text-amber-200 font-medium';
-          stEl.classList.remove('hidden');
-          return;
-        }
-
-        stEl.textContent = 'Подключение к Google Таблице...';
-        stEl.className = 'p-3 rounded-xl bg-brand-50 dark:bg-slate-800 text-xs text-brand-700 dark:text-brand-300 font-medium';
-        stEl.classList.remove('hidden');
-
-        try {
-          const res = await fetch(url, { method: 'GET', cache: 'no-store' });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const data = await res.json();
-          if (data && data.status === 'success') {
-            BOOKED_DATES_CACHE = data.booked || {};
-            let totalBooked = 0;
-            Object.values(BOOKED_DATES_CACHE).forEach(r => {
-              totalBooked += (r.daily?.length || 0) + (r.hourly?.length || 0);
-            });
-            stEl.textContent = `✅ Связь установлена! Таблица синхронизирована. Всего забронированных дат: ${totalBooked}.`;
-            stEl.className = 'p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium';
-            updateBookedDatesBanner();
-            checkDateAvailability();
-          } else {
-            throw new Error(data.message || 'Некорректный формат ответа');
-          }
-        } catch (err) {
-          stEl.textContent = `Ошибка подключения: ${err.message}. Убедитесь, что веб-приложение развернуто с доступом «Все» (Anyone) и ссылка оканчивается на /exec.`;
-          stEl.className = 'p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 text-xs text-rose-800 font-medium';
-        }
-      }
-
-      document.getElementById('save-sheets-url-btn')?.addEventListener('click', async () => {
-        const val = (adminSheetsUrlInput?.value || '').trim();
-        GOOGLE_SHEET_API_URL = val;
-        localStorage.setItem(SHEETS_STORAGE_KEY, val);
-        await testSheetsConnection();
-      });
-
-      document.getElementById('test-sheets-btn')?.addEventListener('click', testSheetsConnection);
-
-      // Отправка тестового пуша из окна настроек
-      document.getElementById('test-push-btn')?.addEventListener('click', () => {
-        const statusEl = document.getElementById('test-push-status');
-        if (statusEl) {
-          statusEl.textContent = 'Отправка тестового пуша...';
-          statusEl.className = 'p-3 rounded-xl bg-brand-50 dark:bg-slate-800 text-xs text-brand-700 dark:text-brand-300 font-medium';
-          statusEl.classList.remove('hidden');
-        }
-        sendPushNotification({
-          name: 'Тестовый гость (Проверка связи)',
-          phone: '+7 904 444 44 91',
-          room: 'Студия комфорт',
-          tariffLine: 'Посуточно (1 сутки)',
-          guests: '2',
-          comment: 'Это проверка пуш-уведомлений. Всё настроено и отлично работает!'
-        }).then(() => {
-          if (statusEl) {
-            statusEl.textContent = '✅ Тестовый пуш отправлен! Проверьте телефон или страницу ntfy.sh.';
-            statusEl.className = 'p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-800 dark:text-emerald-300 font-medium';
-          }
-        }).catch(() => {
-          if (statusEl) {
-            statusEl.textContent = 'Ошибка отправки тестового уведомления.';
-            statusEl.className = 'p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 text-xs text-rose-800 font-medium';
-          }
-        });
-      });
-
       // Фоновая загрузка занятых дат при старте страницы
       fetchBookedDates();
-
-      if (window.location.hash === '#push' || window.location.hash === '#admin') {
-        openModal(pushModal);
-      }
     });
   </script>
 </body>
