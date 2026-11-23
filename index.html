@@ -1308,6 +1308,19 @@
     <i data-lucide="arrow-up" class="w-4 h-4"></i>
   </button>
 
+  <!-- Всплывающее уведомление об успешной отправке заявки (вместо системного алерта) -->
+  <div
+    id="booking-success-toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300 inline-flex items-center gap-2.5 px-5 py-3.5 rounded-2xl bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 text-xs sm:text-sm font-bold shadow-2xl backdrop-blur-md border border-white/10 dark:border-slate-800/20 max-w-[92vw]"
+  >
+    <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+      <i data-lucide="check" class="w-4 h-4"></i>
+    </div>
+    <span id="booking-success-toast-text">Заявка успешно отправлена! Мы свяжемся с вами в течение 5 минут.</span>
+  </div>
+
   <!-- МОДАЛЬНОЕ ОКНО: БРОНИРОВАНИЕ (Обновлённый лаконичный дизайн) -->
   <div id="booking-modal" class="modal-backdrop fixed inset-0 z-50 bg-brand-950/65 backdrop-blur-[4px] flex items-end sm:items-center justify-center p-0 sm:p-4" aria-hidden="true">
     <div class="modal-panel bg-white dark:bg-[#0F182B] rounded-t-[28px] sm:rounded-[28px] max-w-[460px] w-full shadow-2xl border-t sm:border border-brand-100/90 dark:border-slate-800 max-h-[92dvh] overflow-y-auto">
@@ -2806,6 +2819,31 @@
         }
       });
 
+      function showBookingSuccessToast(msg) {
+        const toast = document.getElementById('booking-success-toast');
+        const textEl = document.getElementById('booking-success-toast-text');
+        if (!toast) return;
+        if (textEl && msg) textEl.textContent = msg;
+        toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        if (window.lucide) lucide.createIcons();
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 4000);
+      }
+
+      function showBookingError(msg) {
+        const errBox = document.getElementById('room-date-error');
+        const errText = document.getElementById('room-date-error-text');
+        if (errBox && errText) {
+          errText.textContent = msg;
+          errBox.classList.remove('hidden');
+          if (window.lucide) lucide.createIcons();
+          errBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+
       // Формирование заявки для отправки в WhatsApp / Telegram и Google Таблицу
       document.getElementById('booking-form').addEventListener('submit', e => {
         e.preventDefault();
@@ -2816,25 +2854,25 @@
         if (isHourly) {
           if (!hourlyDateInput.value || hourlyDateInput.value < today) {
             hourlyDateInput.value = today;
-            alert('Нельзя забронировать на прошедшую дату. Пожалуйста, укажите сегодняшнюю или будущую дату.');
+            showBookingError('Нельзя забронировать на прошедшую дату. Пожалуйста, укажите сегодняшнюю или будущую дату.');
             return;
           }
         } else {
           if (!form.checkin.value || form.checkin.value < today) {
             form.checkin.value = today;
-            alert('Дата заезда не может быть в прошлом.');
+            showBookingError('Дата заезда не может быть в прошлом.');
             return;
           }
           if (!form.checkout.value || form.checkout.value <= form.checkin.value) {
             form.checkout.value = getTomorrowStr(form.checkin.value);
-            alert('Дата выезда должна быть позже даты заезда.');
+            showBookingError('Дата выезда должна быть позже даты заезда.');
             return;
           }
         }
 
         // Проверка: свободна ли дата (заблокирована ли Арамом в Google Таблице)
         if (!checkDateAvailability()) {
-          alert('Внимание: выбранная дата в этой квартире уже забронирована. Пожалуйста, выберите другие свободные даты или другую квартиру.');
+          showBookingError('Внимание: выбранная дата в этой квартире уже забронирована. Пожалуйста, выберите другие свободные даты или другую квартиру.');
           return;
         }
 
@@ -2889,19 +2927,19 @@
           comment: form.comment.value.trim()
         });
 
-        // 3. Подтверждение отправки и закрытие окна
+        // 3. Подтверждение отправки и закрытие окна (без блокирующего браузерного popup alert)
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span>✅ Заявка отправлена!</span>`;
-        submitBtn.className = 'w-full py-3.5 rounded-2xl bg-emerald-600 text-white text-sm font-bold shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2';
+        submitBtn.innerHTML = `<span>✅ Заявка отправлена! Свяжемся за 5 мин</span>`;
+        submitBtn.className = 'w-full py-3.5 rounded-2xl bg-emerald-600 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all';
 
         setTimeout(() => {
-          alert('Спасибо! Ваша заявка успешно отправлена администратору. Мы свяжемся с вами в течение 5 минут для подтверждения.');
           closeModal(bookingModal);
           form.reset();
           submitBtn.disabled = false;
           submitBtn.className = 'btn-sheen w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2';
           applyRoomPreset(selectedRoom || ROOMS[0], true);
-        }, 350);
+          showBookingSuccessToast('Заявка успешно отправлена! Мы свяжемся с вами в течение 5 минут.');
+        }, 1200);
       });
 
       // Фоновая загрузка занятых дат при старте страницы
