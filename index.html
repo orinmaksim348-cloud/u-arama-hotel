@@ -38,9 +38,6 @@
   </script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-  <!-- Leaflet Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     :root {
       --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
@@ -1108,10 +1105,17 @@
             </button>
           </div>
 
-          <!-- Правая колонка: интерактивная карта с фирменными метками-логотипами -->
+          <!-- Правая колонка: интерактивная карта от Яндекс -->
           <div class="reveal lg:col-span-7 bg-white dark:bg-[#111B2E] rounded-3xl border border-brand-100 dark:border-slate-800 p-2 sm:p-3 shadow-sm flex flex-col" style="transition-delay: 90ms;">
             <div class="relative w-full flex-1 h-[340px] sm:h-[400px] lg:min-h-[460px] rounded-2xl overflow-hidden bg-brand-50 dark:bg-slate-900">
-              <div id="yandex-map" class="w-full h-full min-h-[340px] sm:min-h-[400px] lg:min-h-[460px] z-10" aria-label="Карта — Гостевой дом У Арама"></div>
+              <iframe
+                id="yandex-map-iframe"
+                class="yandex-map-frame w-full h-full min-h-[340px] sm:min-h-[400px] lg:min-h-[460px] rounded-xl border-0"
+                src="https://yandex.ru/map-widget/v1/?ll=40.212257%2C47.702806&z=14&pt=40.222390,47.705769,pm2blm~40.202124,47.699844,pm2blm"
+                allowfullscreen="true"
+                loading="lazy"
+                title="Интерактивная карта — Гостевой дом У Арама в Шахтах"
+              ></iframe>
             </div>
           </div>
         </div>
@@ -1287,12 +1291,9 @@
   <script>
     // =========================================================
     // 1. ЛОГОТИП С КАРТОЧКИ ЯНДЕКС КАРТ (https://yandex.ru/maps/-/CXcZISZ0)
-    // Белый скруглённый квадрат, объёмный серебристо-металлический круг
-    // с лёгким голубоватым кантом, чёрный силуэт домика с трубой слева
-    // и белой стрелкой/дверным проёмом внутри (без текста).
-    // Если захотите заменить на локальный файл: const BRAND_LOGO_URL = 'img/logo.png';
+    // Рендерится как чистый векторный SVG (buildBrandLogoSvg)
     // =========================================================
-    const BRAND_LOGO_URL = "data:image/png;base64,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W2/7l3/+7P/8g99/2zVvvuTVF5179hmnn3ryqSefdObpm15z8YVvedOVf/AH7/vbz/zNjTejeOunPvXJq9781pGVazPnP/v8ix/6yF9d82vX3f6tO2bnFozRxmXGasc8JAjBDMlrtxceITHpiJZWUjPGUEpkRMpkR47AR3akwKSjgpgfEBJVHhjpH1yJFyEElkCOJZDjke2AuUYTkMEAKr7YHeiD6YqjF154gVcHDFGGYF5GMuedUc58/ctfvPDCC/7oo395cLERDa0673Vv+PRnP/dvN3z1rz/+F69/wyXrDuelzMVJ0um06UJrY61LjU6tjo1upXGj0243ltNW3Sat4b7iay/a8qEPf+D6b1z/mc/+00WvfmOSFnfunP7Upz9/7XXvufuBH7eFScVLhZsH8MsfwiMRCIx4v6FeGFTyBQtSZtIdYigc+OXlZSoAhtlHHalE20KhiDcckb+1FgZ3xhjuyLXWyPEF5HhHAr344ovPPPMMQgi/aGKFLU0Q+s7J55969uq3vv33/+jPJupZsPq4S97yG1/48pf++R8/ff7Zp58d55xzNn/y05/5xje++cd//Htv/fVb3/fBD/5e11r15r/92xvf+e733HLLrX/4h3/82te+9v3v/9P/9f7f+O33vfFtb/71N1/9pnPP2bLh6KPWHf26q67+jXffcNVrXvO611/1hje+4W1vf/PZZ27ecOyG/w8AAP//73pE8Bw6sFEAAAAASUVORK5CYII=";
+    const BRAND_LOGO_URL = "";
 
     function buildBrandLogoSvg(uid) {
       return `
@@ -1645,9 +1646,6 @@
     // =========================================================
     // 6. РЕНДЕР КАРТОЧЕК АДРЕСОВ В БЛОКЕ КОНТАКТОВ
     // =========================================================
-    let leafletMap = null;
-    const mapMarkers = {};
-
     function renderAddressCards() {
       const addressCards = document.getElementById('address-cards');
       addressCards.innerHTML = MAP_POINTS.map((pt, idx) => `
@@ -1670,60 +1668,11 @@
         card.addEventListener('click', e => {
           if (e.target.closest('a')) return;
           const pt = MAP_POINTS.find(p => p.id === card.dataset.focusPoint);
-          if (pt && leafletMap && mapMarkers[pt.id]) {
-            leafletMap.flyTo(pt.coords, 16, { duration: 0.75 });
-            mapMarkers[pt.id].openPopup();
+          const iframe = document.getElementById('yandex-map-iframe');
+          if (pt && iframe) {
+            iframe.src = `https://yandex.ru/map-widget/v1/?ll=${pt.coords[1]}%2C${pt.coords[0]}&z=16&pt=${pt.coords[1]},${pt.coords[0]},pm2blm`;
           }
         });
-      });
-    }
-
-    function initCustomLogoMap() {
-      const mapEl = document.getElementById('yandex-map');
-      if (!mapEl || !window.L) return;
-
-      leafletMap = L.map(mapEl, {
-        center: [47.702806, 40.212257],
-        zoom: 14,
-        scrollWheelZoom: false
-      });
-
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19,
-        attribution: '© Esri'
-      }).addTo(leafletMap);
-
-      const logoSrc = BRAND_LOGO_URL || '';
-      const createLogoPinIcon = () => L.divIcon({
-        className: 'ua-map-pin-wrap',
-        html: `
-          <div class="ua-map-pin">
-            <div class="ua-map-pin-head">
-              <div class="ua-map-pin-logo">
-                ${logoSrc ? `<img src="${logoSrc}" alt="У Арама" />` : buildBrandLogoSvg('pin')}
-              </div>
-            </div>
-            <div class="ua-map-pin-tip"></div>
-          </div>
-        `,
-        iconSize: [46, 56],
-        iconAnchor: [23, 54],
-        popupAnchor: [0, -52]
-      });
-
-      MAP_POINTS.forEach(pt => {
-        const marker = L.marker(pt.coords, { icon: createLogoPinIcon() }).addTo(leafletMap);
-        marker.bindPopup(`
-          <div style="min-width:190px;">
-            <div style="font-weight:700;font-size:13px;color:#0B1F44;margin-bottom:3px;">${pt.name}</div>
-            <div style="font-size:12px;color:#475569;margin-bottom:8px;">${pt.address}</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-              <a href="${pt.phoneHref}" style="font-size:12px;font-weight:600;color:#1055D6;text-decoration:none;">${pt.phone}</a>
-              <a href="${pt.routeUrl}" target="_blank" rel="noopener noreferrer" style="font-size:11px;font-weight:600;color:#FFFFFF;background:#1055D6;padding:4px 9px;border-radius:8px;text-decoration:none;">Маршрут</a>
-            </div>
-          </div>
-        `);
-        mapMarkers[pt.id] = marker;
       });
     }
 
@@ -1778,22 +1727,9 @@
     // 9. ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ
     // =========================================================
     document.addEventListener('DOMContentLoaded', () => {
-      // Вставляем логотип «У Арама» (с уникальными ID градиентов для каждого слота)
+      // Вставляем фирменный векторный логотип «У Арама»
       document.querySelectorAll('.brand-logo-slot').forEach((slot, idx) => {
-        const svgMarkup = buildBrandLogoSvg(idx + 1);
-        if (BRAND_LOGO_URL) {
-          const img = document.createElement('img');
-          img.src = BRAND_LOGO_URL;
-          img.alt = 'У Арама';
-          img.className = 'w-full h-full object-cover scale-[1.08]';
-          img.addEventListener('error', () => {
-            slot.innerHTML = svgMarkup;
-          });
-          slot.innerHTML = '';
-          slot.appendChild(img);
-        } else {
-          slot.innerHTML = svgMarkup;
-        }
+        slot.innerHTML = buildBrandLogoSvg(idx + 1);
       });
 
       // Состояние и логика обновлённого окна бронирования
@@ -1908,9 +1844,6 @@
       renderAddressCards();
       if (window.lucide) lucide.createIcons();
       initScrollReveal();
-
-      // Инициализация карты с фирменными метками-логотипами
-      initCustomLogoMap();
 
       // Копирование номера телефона по клику + уведомление возле кнопки
       const copyPhoneBtn = document.getElementById('copy-phone-btn');
