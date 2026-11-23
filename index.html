@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>У Арама — Гостевой дом в Шахтах | Советская ул., 94</title>
+  <title>У Арама — Гостевой дом и апартаменты в Шахтах | Советская ул., 94 · Тюменский пер., 21</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="apple-touch-icon" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -653,7 +653,7 @@
               Уютно, как дома, удобно, как в отеле
             </p>
             <p class="text-[15px] sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-              Приезжаете в Шахты в командировку, проездом или по делам? Ждём вас в нашем гостевом доме в самом сердце города — на Советской улице, 94 (всего 8&nbsp;км от трассы М-4). Работаем круглосуточно, заезд возможен в любое время суток!
+              Приезжаете в Шахты в командировку, проездом или по делам? Ждём вас в нашем гостевом доме в самом сердце города — на Советской улице, 94 и в Тюменском переулке, 21 (всего 8&nbsp;км от трассы М-4). Работаем круглосуточно, заезд возможен в любое время суток!
             </p>
           </div>
 
@@ -1045,12 +1045,11 @@
 
         <!-- Фильтры категорий для быстрого переключения -->
         <div class="reveal flex flex-wrap items-center gap-2 mb-6 sm:mb-8 pb-1">
-          <button type="button" data-catalog-filter="all" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white border border-brand-600 shadow-sm transition-all">Все варианты (7)</button>
+          <button type="button" data-catalog-filter="all" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-600 text-white border border-brand-600 shadow-sm transition-all">Все варианты (6)</button>
           <button type="button" data-catalog-filter="studio" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">Студии и лофты (3)</button>
           <button type="button" data-catalog-filter="1room" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">1-комнатные (1)</button>
           <button type="button" data-catalog-filter="2room" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">2-комнатные (1)</button>
           <button type="button" data-catalog-filter="family" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">3-комнатные (1)</button>
-          <button type="button" data-catalog-filter="hourly" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border border-brand-200/80 dark:border-slate-700 hover:border-brand-400 transition-all">По часам (1)</button>
         </div>
 
         <!-- Карточки рендерятся из массива ROOMS с реальными фото и слайдерами -->
@@ -1228,10 +1227,27 @@
         <form id="booking-form" class="space-y-4">
           <input type="hidden" id="client-room" name="room" value="" />
           <input type="hidden" id="client-guests" name="guests" value="2" />
+          <input type="hidden" id="client-tariff" name="tariff" value="daily" />
 
-          <!-- Даты проживания -->
+          <!-- Выбор формата: Посуточно или По часам (для любой квартиры) -->
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+              Формат проживания
+            </label>
+            <div class="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700">
+              <button type="button" id="tariff-btn-daily" class="py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs">
+                Посуточно
+              </button>
+              <button type="button" id="tariff-btn-hourly" class="py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white">
+                По часам (от 3 ч)
+              </button>
+            </div>
+          </div>
+
+          <!-- Даты или часы проживания -->
           <div class="p-3.5 rounded-2xl bg-slate-50/90 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/70">
-            <div class="grid grid-cols-2 gap-3">
+            <!-- Посуточный блок дат -->
+            <div id="dates-daily-group" class="grid grid-cols-2 gap-3">
               <div>
                 <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-checkin">
                   <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
@@ -1245,6 +1261,30 @@
                   <span>Выезд</span>
                 </label>
                 <input id="client-checkout" name="checkout" type="date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900" />
+              </div>
+            </div>
+
+            <!-- Почасовой блок дат -->
+            <div id="dates-hourly-group" class="hidden grid grid-cols-2 gap-3">
+              <div>
+                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-hourly-date">
+                  <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                  <span>Дата</span>
+                </label>
+                <input id="client-hourly-date" type="date" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900" />
+              </div>
+              <div>
+                <label class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5" for="client-hourly-duration">
+                  <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                  <span>Длительность</span>
+                </label>
+                <select id="client-hourly-duration" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-brand-900 dark:text-white text-sm font-medium focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900">
+                  <option value="3" selected>3 часа (1 800 ₽)</option>
+                  <option value="4">4 часа (2 300 ₽)</option>
+                  <option value="5">5 часов (2 800 ₽)</option>
+                  <option value="6">6 часов (3 300 ₽)</option>
+                  <option value="more">От 6 часов (договорная)</option>
+                </select>
               </div>
             </div>
 
@@ -1364,7 +1404,7 @@
     // =========================================================
     // 2. КАТАЛОГ КВАРТИР С ОФИЦИАЛЬНОГО САЙТА
     // =========================================================
-    const AUTO_SLIDE = true;
+    const AUTO_SLIDE = false;
     const AUTO_SLIDE_MS = 4500;
 
     const ROOMS = [
@@ -1377,8 +1417,7 @@
         priceUnit: 'за сутки',
         guests: 'До 2 гостей',
         defaultGuests: '2',
-        isHourly: false,
-        area: 'Кухня и санузел',
+        feature: 'Своя кухня и душ',
         desc: 'Уютная и светлая студия со всеми удобствами в центре города Шахты. Кондиционер (сплит-система), полноценная кухня, быстрый Wi-Fi, современная душевая, ТВ и тихая домашняя обстановка.',
         slideLabels: ['Интерьер студии', 'Спальное место', 'Кухонный гарнитур', 'Обеденная зона', 'Санузел и душ'],
         images: [
@@ -1398,8 +1437,7 @@
         priceUnit: 'за сутки',
         guests: '2 спальных места',
         defaultGuests: '2',
-        isHourly: false,
-        area: '38–40 м²',
+        feature: 'Кухня и стиральная машина',
         desc: 'Комфортабельная 1-комнатная квартира со всеми удобствами: двуспальная кровать, сплит-система, оборудованная кухня, холодильник, плита, стиральная машина, Wi-Fi и ТВ.',
         slideLabels: ['Спальня и зона отдыха', 'Кухня и посуда', 'Прихожая', 'Санузел и душ'],
         images: [
@@ -1418,8 +1456,7 @@
         priceUnit: 'за сутки',
         guests: 'До 4 гостей',
         defaultGuests: '3',
-        isHourly: false,
-        area: '2 раздельные комнаты',
+        feature: '2 раздельные комнаты',
         desc: 'Просторная 2-комнатная квартира улучшенной планировки. Две изолированные комнаты, спальные места, зона отдыха с ТВ, полностью укомплектованная кухня, кондиционер и быстрый интернет.',
         slideLabels: ['Гостиная и зона отдыха', 'Вторая спальня', 'Оборудованная кухня', 'Ванная комната', 'Прихожая'],
         images: [
@@ -1439,8 +1476,7 @@
         priceUnit: 'за сутки',
         guests: 'До 6 гостей',
         defaultGuests: '4',
-        isHourly: false,
-        area: 'Большие апартаменты',
+        feature: 'Большая 3-комнатная',
         desc: 'Большие 3-комнатные апартаменты для семьи, рабочей бригады или компании. Несколько раздельных спален, большая кухня, кондиционер, стиральная машина, чистый санузел и закрытый двор.',
         slideLabels: ['Гостиная', 'Основная спальня', 'Вторая спальня', 'Обеденная зона и кухня', 'Ванная комната', 'Санузел'],
         images: [
@@ -1461,8 +1497,7 @@
         priceUnit: 'за сутки',
         guests: 'До 2 гостей',
         defaultGuests: '2',
-        isHourly: false,
-        area: 'Стильный дизайн',
+        feature: 'Дизайнерский ремонт',
         desc: 'Стильная студия в стиле лофт с кирпичной кладкой, атмосферной подсветкой и современной мебелью. Кухонный блок, сплит-система, скоростной интернет и смарт-ТВ.',
         slideLabels: ['Лофт-интерьер', 'Спальная зона', 'Кухонный гарнитур', 'Зона отдыха', 'Санузел'],
         images: [
@@ -1482,8 +1517,7 @@
         priceUnit: 'за сутки',
         guests: 'До 2 гостей',
         defaultGuests: '2',
-        isHourly: false,
-        area: 'Премиум апартаменты',
+        feature: 'Кровать King-Size',
         desc: 'Премиальная дизайнерская студия повышенной комфортности: кровать King-Size, дизайнерская мебель, многоуровневая подсветка, кухонный уголок и современная просторная душевая.',
         slideLabels: ['Премиум лофт', 'Кровать King-Size', 'Кухонная зона', 'Освещение и детали', 'Санузел премиум'],
         images: [
@@ -1492,25 +1526,6 @@
           'images/studio-loft-premium/3.jpg',
           'images/studio-loft-premium/4.jpg',
           'images/studio-loft-premium/5.jpg'
-        ]
-      },
-      {
-        id: 'hourly',
-        category: 'hourly',
-        badge: 'По часам',
-        title: 'Снять квартиру по часам',
-        price: 1800,
-        priceUnit: 'за 3 ч',
-        guests: 'До 2 гостей',
-        defaultGuests: '2',
-        isHourly: true,
-        area: 'От 3 часов',
-        desc: 'Минимум 3 часа от 1 800 ₽. Идеальный вариант для отдыха проездом с трассы М-4, короткого визита или командировки. Сплит-система, чистый душ, свежие полотенца и Wi-Fi.',
-        slideLabels: ['Уютная комната', 'Зона отдыха', 'Душ и удобства'],
-        images: [
-          'images/studio-comfort/1.jpg',
-          'images/studio-loft/1.jpg',
-          'images/room-1/1.jpg'
         ]
       }
     ];
@@ -1669,17 +1684,18 @@
             <div class="p-4 sm:p-6 flex-1 flex flex-col justify-between gap-4">
               <div class="space-y-2.5">
                 <h3 class="text-base sm:text-lg font-bold text-brand-900 dark:text-white leading-snug">${room.title}</h3>
-                <div class="flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                   <span class="inline-flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.guests}</span>
-                  <span class="inline-flex items-center gap-1"><i data-lucide="maximize-2" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.area}</span>
+                  <span class="inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.feature}</span>
+                  <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400"><i data-lucide="clock" class="w-3.5 h-3.5"></i>По часам от 1 800 ₽</span>
                 </div>
                 <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${room.desc}</p>
               </div>
 
               <div class="pt-4 border-t border-brand-100 dark:border-slate-800 flex items-center justify-between gap-3">
                 <div>
-                  <div class="text-lg sm:text-xl font-extrabold text-brand-900 dark:text-white">${room.price.toLocaleString('ru-RU')} ₽</div>
-                  <div class="text-[11px] text-slate-500 dark:text-slate-400">${room.priceUnit}</div>
+                  <div class="text-lg sm:text-xl font-extrabold text-brand-900 dark:text-white">${room.price.toLocaleString('ru-RU')} ₽ <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ сутки</span></div>
+                  <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">или от 1 800 ₽ по часам (от 3 ч)</div>
                 </div>
                 <button type="button" data-action="open-booking" data-room-id="${room.id}" data-room="${room.title}" class="btn-sheen px-4 py-2.5 min-h-[42px] rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold">
                   Забронировать
@@ -1841,10 +1857,48 @@
       const togglePickerBtn = document.getElementById('toggle-room-picker');
       const submitBtn = document.getElementById('booking-submit-btn');
 
-      let selectedRoom = ROOMS[1];
+      const tariffBtnDaily = document.getElementById('tariff-btn-daily');
+      const tariffBtnHourly = document.getElementById('tariff-btn-hourly');
+      const tariffInput = document.getElementById('client-tariff');
+      const datesDailyGroup = document.getElementById('dates-daily-group');
+      const datesHourlyGroup = document.getElementById('dates-hourly-group');
+      const hourlyDateInput = document.getElementById('client-hourly-date');
+      const hourlyDurationSelect = document.getElementById('client-hourly-duration');
+
+      let currentTariff = 'daily'; // 'daily' | 'hourly'
+      let selectedRoom = ROOMS[0];
 
       const getTodayStr = () => new Date().toISOString().slice(0, 10);
       const getTomorrowStr = () => new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+
+      function setTariff(mode) {
+        currentTariff = mode;
+        if (tariffInput) tariffInput.value = mode;
+        if (mode === 'daily') {
+          tariffBtnDaily.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs';
+          tariffBtnHourly.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white';
+          datesDailyGroup?.classList.remove('hidden');
+          datesHourlyGroup?.classList.add('hidden');
+          checkinInput?.setAttribute('required', 'required');
+          checkoutInput?.setAttribute('required', 'required');
+          hourlyDateInput?.removeAttribute('required');
+        } else {
+          tariffBtnHourly.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-xs';
+          tariffBtnDaily.className = 'py-2 px-3 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-brand-900 dark:hover:text-white';
+          datesDailyGroup?.classList.add('hidden');
+          datesHourlyGroup?.classList.remove('hidden');
+          checkinInput?.removeAttribute('required');
+          checkoutInput?.removeAttribute('required');
+          hourlyDateInput?.setAttribute('required', 'required');
+          if (hourlyDateInput && !hourlyDateInput.value) hourlyDateInput.value = getTodayStr();
+        }
+        updateStayCalculation();
+      }
+
+      tariffBtnDaily?.addEventListener('click', () => setTariff('daily'));
+      tariffBtnHourly?.addEventListener('click', () => setTariff('hourly'));
+      hourlyDateInput?.addEventListener('change', updateStayCalculation);
+      hourlyDurationSelect?.addEventListener('change', updateStayCalculation);
 
       function syncGuestPills(val) {
         guestsInput.value = val;
@@ -1860,19 +1914,29 @@
         const calcEl = document.getElementById('summary-stay-calc');
         if (!selectedRoom || !calcEl) return;
 
-        let baseTotal = selectedRoom.price;
-        let label = 'От 3 часов';
+        if (currentTariff === 'hourly') {
+          const val = hourlyDurationSelect ? hourlyDurationSelect.value : '3';
+          let hourlyTotal = 1800;
+          let durText = '3 часа';
+          if (val === '4') { hourlyTotal = 2300; durText = '4 часа'; }
+          else if (val === '5') { hourlyTotal = 2800; durText = '5 часов'; }
+          else if (val === '6') { hourlyTotal = 3300; durText = '6 часов'; }
+          else if (val === 'more') { hourlyTotal = 1800; durText = 'от 6 часов (договорная)'; }
 
-        if (!selectedRoom.isHourly) {
-          const d1 = new Date(checkinInput.value);
-          const d2 = new Date(checkoutInput.value);
-          const nights = (!isNaN(d1) && !isNaN(d2) && d2 > d1)
-            ? Math.max(1, Math.round((d2 - d1) / 86400000))
-            : 1;
-          baseTotal = selectedRoom.price * nights;
-          const nWord = nights === 1 ? 'сутки' : 'суток';
-          label = `${nights} ${nWord}`;
+          calcEl.textContent = `По часам (${durText}): ${hourlyTotal.toLocaleString('ru-RU')} ₽`;
+          submitBtn.innerHTML = `<span>Подтвердить · ${hourlyTotal.toLocaleString('ru-RU')} ₽</span>`;
+          return;
         }
+
+        let baseTotal = selectedRoom.price;
+        const d1 = new Date(checkinInput.value);
+        const d2 = new Date(checkoutInput.value);
+        const nights = (!isNaN(d1) && !isNaN(d2) && d2 > d1)
+          ? Math.max(1, Math.round((d2 - d1) / 86400000))
+          : 1;
+        baseTotal = selectedRoom.price * nights;
+        const nWord = nights === 1 ? 'сутки' : 'суток';
+        const label = `${nights} ${nWord}`;
 
         calcEl.textContent = `Итого (${label}): ${baseTotal.toLocaleString('ru-RU')} ₽`;
         submitBtn.innerHTML = `<span>Подтвердить · ${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
@@ -1890,10 +1954,10 @@
       }
 
       function applyRoomPreset(roomObj, autoFillDetails = true) {
-        selectedRoom = roomObj || ROOMS[1];
+        selectedRoom = roomObj || ROOMS[0];
         roomInput.value = selectedRoom.title;
         document.getElementById('summary-room-badge').textContent = selectedRoom.badge;
-        document.getElementById('summary-room-meta').textContent = `${selectedRoom.guests} · ${selectedRoom.area}`;
+        document.getElementById('summary-room-meta').textContent = `${selectedRoom.guests} · ${selectedRoom.feature}`;
         document.getElementById('summary-room-title').textContent = selectedRoom.title;
         document.getElementById('summary-room-price').textContent = `${selectedRoom.price.toLocaleString('ru-RU')} ₽`;
         document.getElementById('summary-room-unit').textContent = selectedRoom.priceUnit;
@@ -1901,14 +1965,8 @@
         if (autoFillDetails) {
           syncGuestPills(selectedRoom.defaultGuests || '2');
           checkinInput.value = getTodayStr();
-          checkoutInput.value = selectedRoom.isHourly ? getTodayStr() : getTomorrowStr();
-          if (selectedRoom.isHourly) {
-            if (!commentInput.value.trim() || commentInput.value.includes('Почасовая аренда')) {
-              commentInput.value = 'Почасовая аренда (от 3 часов)';
-            }
-          } else if (commentInput.value === 'Почасовая аренда (от 3 часов)') {
-            commentInput.value = '';
-          }
+          checkoutInput.value = getTomorrowStr();
+          if (hourlyDateInput) hourlyDateInput.value = getTodayStr();
         }
         renderRoomChips();
         updateStayCalculation();
@@ -2077,13 +2135,25 @@
       document.getElementById('booking-form').addEventListener('submit', e => {
         e.preventDefault();
         const form = e.target;
+        const isHourly = currentTariff === 'hourly';
+
+        let tariffLine = '';
+        if (isHourly) {
+          const durText = (hourlyDurationSelect && hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex])
+            ? hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex].text
+            : '3 часа (1 800 ₽)';
+          tariffLine = `• Тариф: Почасовая аренда (${durText})\n• Дата заезда: ${hourlyDateInput.value || getTodayStr()}`;
+        } else {
+          tariffLine = `• Тариф: Посуточно\n• Заезд: ${form.checkin.value} — Выезд: ${form.checkout.value}`;
+        }
+
         const msg = [
           'Здравствуйте! Хочу забронировать в гостевом доме «У Арама»:',
           `• Имя: ${form.name.value.trim()}`,
           `• Телефон: ${form.phone.value.trim()}`,
           `• Квартира: ${form.room.value}`,
+          tariffLine,
           `• Гостей: ${form.guests.value}`,
-          `• Заезд: ${form.checkin.value} — Выезд: ${form.checkout.value}`,
           form.comment.value.trim() ? `• Комментарий: ${form.comment.value.trim()}` : ''
         ].filter(Boolean).join('\n');
 
