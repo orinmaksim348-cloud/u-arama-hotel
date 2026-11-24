@@ -27,6 +27,7 @@ var ROOMS_CONFIG = [
   { id: 'room-1', name: '1-комнатная квартира' },
   { id: 'room-2-comfort', name: '2-х комнатная комфорт+' },
   { id: 'room-3-comfort', name: '3-х комнатная комфорт' },
+  { id: 'room-3-comfort-plus', name: '3-х комнатная комфорт+' },
   { id: 'studio-loft', name: 'Студия-лофт' },
   { id: 'studio-loft-premium', name: 'Студия-лофт премиум' }
 ];
@@ -313,7 +314,7 @@ function formatSheetHeader(sheet) {
 }
 
 /**
- * Автоматически создает листы для всех 6 комнат
+ * Автоматически создает листы для всех 7 комнат
  */
 function setupSheetsIfMissing(ss) {
   ROOMS_CONFIG.forEach(function(room) {

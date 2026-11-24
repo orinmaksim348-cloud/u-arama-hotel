@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>У Арама — Гостевой дом и апартаменты в Шахтах | Советская ул., 94 · Тюменский пер., 21</title>
+  <title>У Арама и Арт Апарт — Гостевые дома в Шахтах | ул. Советская 94 · пер. Тюменский 21</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="apple-touch-icon" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -781,7 +781,7 @@
               Уютно, как дома, удобно, как в отеле
             </p>
             <p class="text-[15px] sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-              Приезжаете в Шахты в командировку, проездом или по делам? Ждём вас в нашем гостевом доме в самом сердце города — на Советской улице, 94 и в Тюменском переулке, 21 (всего 8&nbsp;км от трассы М-4). Работаем круглосуточно, заезд возможен в любое время суток!
+              Приезжаете в Шахты в командировку, проездом или по делам? Ждём вас в гостевом доме «У&nbsp;Арама» в самом сердце города на улице Советской 94 (всего 8&nbsp;км от трассы М-4), а также в гостевом доме «Арт Апарт» — переулок Тюменский 21 (4–5&nbsp;км от трассы М-4). Работаем круглосуточно, заезд возможен в любое время суток!
             </p>
           </div>
 
@@ -796,73 +796,126 @@
             </a>
           </div>
 
-          <!-- Быстрая связь: крупный номер с копированием + иконки мессенджеров -->
-          <div class="hero-stagger hero-stagger-5 pt-2">
-            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5">Быстрая связь</div>
-            <div class="flex flex-wrap items-center gap-2.5">
-              <div class="relative w-full sm:w-auto inline-flex">
-                <button
-                  type="button"
-                  id="copy-phone-btn"
-                  data-copy-phone="+7 904 444 44 91"
-                  aria-label="Скопировать номер телефона +7 904 444 44 91"
-                  class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-4 sm:px-5 py-3 sm:py-2.5 rounded-2xl bg-brand-50 dark:bg-brand-900/45 hover:bg-brand-100/90 dark:hover:bg-brand-900/70 border-2 border-brand-300 dark:border-brand-600/80 hover:border-brand-500 text-brand-900 dark:text-white text-[15px] sm:text-[17px] font-extrabold tracking-tight shadow-sm shadow-brand-600/10 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
-                >
-                  <i data-lucide="phone-call" class="w-4 h-4 sm:w-[18px] sm:h-[18px] text-brand-600 dark:text-brand-400 shrink-0"></i>
-                  <span>+7 904 444 44 91</span>
-                  <i data-lucide="copy" id="copy-phone-icon" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-500/80 dark:text-brand-300/80 shrink-0 ml-0.5"></i>
-                </button>
-                <div
-                  id="copy-phone-toast"
-                  role="status"
-                  aria-live="polite"
-                  class="copy-toast absolute -top-11 left-1/2 z-30 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-900 dark:bg-white text-white dark:text-brand-950 text-xs font-bold shadow-lg whitespace-nowrap"
-                >
-                  <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600 shrink-0"></i>
-                  <span>Номер скопирован</span>
-                </div>
-              </div>
+          <!-- Быстрая связь: два адреса с отдельными телефонами и мессенджерами -->
+          <div class="hero-stagger hero-stagger-5 pt-2 space-y-2.5">
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Быстрая связь</div>
 
-              <div class="grid grid-cols-4 sm:inline-flex items-center gap-2 w-full sm:w-auto">
-                <a href="https://wa.me/79044444491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp (+7 904 444 44 91)" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-emerald-400 dark:hover:border-emerald-500/70 hover:bg-emerald-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
-                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
-                    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
-                  </svg>
-                </a>
-                <a href="https://t.me/+79044444491" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram (+7 904 444 44 91)" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-sky-400 dark:hover:border-sky-500/70 hover:bg-sky-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
-                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
-                    <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
-                  </svg>
-                </a>
-                <a href="https://web.max.ru/615748241" target="_blank" rel="noopener noreferrer" aria-label="MAX" title="MAX (Чат с владельцем)" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-violet-500 dark:hover:border-violet-500/70 hover:bg-violet-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
-                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 1000 1000" fill="none" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="maxHeroA" x1="117.847" x2="1000" y1="760.536" y2="500" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#4cf"/>
-                        <stop offset=".662" stop-color="#53e"/>
-                        <stop offset="1" stop-color="#93d"/>
-                      </linearGradient>
-                      <radialGradient id="maxHeroB" cx="-87.392" cy="1166.116" r="500" fx="-87.392" fy="1166.116" gradientTransform="rotate(51.356 1551.478 559.3) scale(2.42703433 1)" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#00f"/>
-                        <stop offset="1" stop-color="#00f" stop-opacity="0"/>
-                      </radialGradient>
-                    </defs>
-                    <rect width="1000" height="1000" rx="250" fill="url(#maxHeroA)"/>
-                    <rect width="1000" height="1000" rx="250" fill="url(#maxHeroB)"/>
-                    <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
-                  </svg>
-                </a>
-                <a href="https://vk.com/id94482760" target="_blank" rel="noopener noreferrer" aria-label="VK" title="ВКонтакте (id94482760)" class="w-full sm:w-12 h-12 rounded-2xl bg-white border border-brand-100 hover:border-blue-400 dark:hover:border-blue-500/70 hover:bg-blue-50/70 dark:hover:bg-slate-800 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
-                  <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
-                    <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
-                  </svg>
-                </a>
+            <!-- Адрес 1: У Арама · ул. Советская 94 -->
+            <div class="p-3 rounded-2xl bg-white/80 dark:bg-slate-900/60 border border-brand-100/90 dark:border-slate-800 space-y-2">
+              <div class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-800 dark:text-brand-300">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>У Арама · ул. Советская 94</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="relative w-full sm:w-auto inline-flex">
+                  <button
+                    type="button"
+                    data-copy-phone="+7 904 444 44 91"
+                    aria-label="Скопировать номер телефона +7 904 444 44 91 (У Арама · ул. Советская 94)"
+                    class="js-copy-phone-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-brand-50 dark:bg-brand-900/45 hover:bg-brand-100/90 dark:hover:bg-brand-900/70 border-2 border-brand-300 dark:border-brand-600/80 hover:border-brand-500 text-brand-900 dark:text-white text-sm sm:text-[15px] font-extrabold tracking-tight shadow-xs transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+                  >
+                    <i data-lucide="phone-call" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                    <span>+7 904 444 44 91</span>
+                    <i data-lucide="copy" class="w-3.5 h-3.5 text-brand-500/80 dark:text-brand-300/80 shrink-0"></i>
+                  </button>
+                  <div role="status" aria-live="polite" class="copy-toast absolute -top-11 left-1/2 z-30 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-900 dark:bg-white text-white dark:text-brand-950 text-xs font-bold shadow-lg whitespace-nowrap">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600 shrink-0"></i>
+                    <span>Номер скопирован</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-4 sm:inline-flex items-center gap-2 w-full sm:w-auto">
+                  <a href="https://wa.me/79044444491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ул. Советская 94" title="WhatsApp (+7 904 444 44 91)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                      <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                  <a href="https://t.me/+79044444491" target="_blank" rel="noopener noreferrer" aria-label="Telegram ул. Советская 94" title="Telegram (+7 904 444 44 91)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-sky-400 hover:bg-sky-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                      <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                  <a href="https://web.max.ru/615748241" target="_blank" rel="noopener noreferrer" aria-label="MAX" title="MAX (Чат с владельцем)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-violet-500 hover:bg-violet-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 1000 1000" fill="none" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="maxHeroA" x1="117.847" x2="1000" y1="760.536" y2="500" gradientUnits="userSpaceOnUse">
+                          <stop offset="0" stop-color="#4cf"/>
+                          <stop offset=".662" stop-color="#53e"/>
+                          <stop offset="1" stop-color="#93d"/>
+                        </linearGradient>
+                        <radialGradient id="maxHeroB" cx="-87.392" cy="1166.116" r="500" fx="-87.392" fy="1166.116" gradientTransform="rotate(51.356 1551.478 559.3) scale(2.42703433 1)" gradientUnits="userSpaceOnUse">
+                          <stop offset="0" stop-color="#00f"/>
+                          <stop offset="1" stop-color="#00f" stop-opacity="0"/>
+                        </radialGradient>
+                      </defs>
+                      <rect width="1000" height="1000" rx="250" fill="url(#maxHeroA)"/>
+                      <rect width="1000" height="1000" rx="250" fill="url(#maxHeroB)"/>
+                      <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                  <a href="https://vk.com/id94482760" target="_blank" rel="noopener noreferrer" aria-label="VK" title="ВКонтакте (id94482760)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
+                      <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
 
+            <!-- Адрес 2: Арт Апарт · пер. Тюменский 21 -->
+            <div class="p-3 rounded-2xl bg-white/80 dark:bg-slate-900/60 border border-brand-100/90 dark:border-slate-800 space-y-2">
+              <div class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-800 dark:text-brand-300">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                <span>Арт Апарт · пер. Тюменский 21</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="relative w-full sm:w-auto inline-flex">
+                  <button
+                    type="button"
+                    data-copy-phone="+7 961 304 76 03"
+                    aria-label="Скопировать номер телефона +7 961 304 76 03 (Арт Апарт · пер. Тюменский 21)"
+                    class="js-copy-phone-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-brand-50 dark:bg-brand-900/45 hover:bg-brand-100/90 dark:hover:bg-brand-900/70 border-2 border-brand-300 dark:border-brand-600/80 hover:border-brand-500 text-brand-900 dark:text-white text-sm sm:text-[15px] font-extrabold tracking-tight shadow-xs transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+                  >
+                    <i data-lucide="phone-call" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                    <span>+7 961 304 76 03</span>
+                    <i data-lucide="copy" class="w-3.5 h-3.5 text-brand-500/80 dark:text-brand-300/80 shrink-0"></i>
+                  </button>
+                  <div role="status" aria-live="polite" class="copy-toast absolute -top-11 left-1/2 z-30 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-900 dark:bg-white text-white dark:text-brand-950 text-xs font-bold shadow-lg whitespace-nowrap">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600 shrink-0"></i>
+                    <span>Номер скопирован</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-4 sm:inline-flex items-center gap-2 w-full sm:w-auto">
+                  <a href="https://wa.me/79613047603" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp пер. Тюменский 21" title="WhatsApp (+7 961 304 76 03)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                      <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                  <a href="https://t.me/+79613047603" target="_blank" rel="noopener noreferrer" aria-label="Telegram пер. Тюменский 21" title="Telegram (+7 961 304 76 03)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-sky-400 hover:bg-sky-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                      <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                  <a href="https://web.max.ru/615748241" target="_blank" rel="noopener noreferrer" aria-label="MAX" title="MAX (Чат с владельцем)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-violet-500 hover:bg-violet-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 1000 1000" fill="none" aria-hidden="true">
+                      <rect width="1000" height="1000" rx="250" fill="url(#maxHeroA)"/>
+                      <rect width="1000" height="1000" rx="250" fill="url(#maxHeroB)"/>
+                      <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
+                    </svg>
+                  </a>
+                  <a href="https://vk.com/id94482760" target="_blank" rel="noopener noreferrer" aria-label="VK" title="ВКонтакте (id94482760)" class="w-full sm:w-11 h-11 rounded-xl bg-white dark:bg-slate-800 border border-brand-100 dark:border-slate-700 hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-slate-700 flex items-center justify-center shadow-xs transition-all hover:-translate-y-0.5 active:scale-95">
+                    <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
+                      <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
           </div>
 
@@ -1196,55 +1249,96 @@
               </div>
 
               <div>
-                <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Телефон</div>
-                <a href="tel:+79044444491" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-brand-50 dark:bg-slate-800/90 hover:bg-brand-100 dark:hover:bg-slate-800 border border-brand-200/80 dark:border-slate-700 text-brand-900 dark:text-white font-semibold transition-colors">
-                  <span class="inline-flex items-center gap-2.5 text-sm sm:text-base">
-                    <i data-lucide="phone-call" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
-                    <span>+7 904 444 44 91</span>
-                  </span>
-                  <span class="text-xs text-brand-600 dark:text-brand-400 font-semibold shrink-0">Позвонить</span>
-                </a>
-              </div>
+                <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Телефоны и мессенджеры</div>
+                <div class="space-y-3">
+                  <!-- У Арама · ул. Советская 94 -->
+                  <div class="p-3 rounded-2xl bg-brand-50/80 dark:bg-slate-800/80 border border-brand-200/80 dark:border-slate-700 space-y-2.5">
+                    <div class="text-xs font-bold text-brand-800 dark:text-brand-300">У Арама · ул. Советская 94</div>
+                    <a href="tel:+79044444491" class="w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-brand-100/70 dark:hover:bg-slate-800 border border-brand-200/80 dark:border-slate-700 text-brand-900 dark:text-white font-semibold transition-colors">
+                      <span class="inline-flex items-center gap-2 text-sm sm:text-base">
+                        <i data-lucide="phone-call" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                        <span>+7 904 444 44 91</span>
+                      </span>
+                      <span class="text-xs text-brand-600 dark:text-brand-400 font-semibold shrink-0">Позвонить</span>
+                    </a>
+                    <div class="flex items-center gap-2">
+                      <a href="https://wa.me/79044444491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ул. Советская 94" title="WhatsApp (+7 904 444 44 91)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                          <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                      <a href="https://t.me/+79044444491" target="_blank" rel="noopener noreferrer" aria-label="Telegram ул. Советская 94" title="Telegram (+7 904 444 44 91)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-sky-400 hover:bg-sky-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                          <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                      <a href="https://web.max.ru/615748241" target="_blank" rel="noopener noreferrer" aria-label="MAX" title="MAX (Чат с владельцем)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-violet-500 hover:bg-violet-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 1000 1000" fill="none" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="maxContactA" x1="117.847" x2="1000" y1="760.536" y2="500" gradientUnits="userSpaceOnUse">
+                              <stop offset="0" stop-color="#4cf"/>
+                              <stop offset=".662" stop-color="#53e"/>
+                              <stop offset="1" stop-color="#93d"/>
+                            </linearGradient>
+                            <radialGradient id="maxContactB" cx="-87.392" cy="1166.116" r="500" fx="-87.392" fy="1166.116" gradientTransform="rotate(51.356 1551.478 559.3) scale(2.42703433 1)" gradientUnits="userSpaceOnUse">
+                              <stop offset="0" stop-color="#00f"/>
+                              <stop offset="1" stop-color="#00f" stop-opacity="0"/>
+                            </radialGradient>
+                          </defs>
+                          <rect width="1000" height="1000" rx="250" fill="url(#maxContactA)"/>
+                          <rect width="1000" height="1000" rx="250" fill="url(#maxContactB)"/>
+                          <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
+                        </svg>
+                      </a>
+                      <a href="https://vk.com/id94482760" target="_blank" rel="noopener noreferrer" aria-label="VK" title="ВКонтакте (id94482760)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
+                          <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
 
-              <div>
-                <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Мессенджеры и соцсети</div>
-                <div class="flex items-center gap-2.5">
-                  <a href="https://wa.me/79044444491" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp (+7 904 444 44 91)" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
-                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
-                      <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
-                    </svg>
-                  </a>
-                  <a href="https://t.me/+79044444491" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram (+7 904 444 44 91)" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-sky-400 hover:bg-sky-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
-                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
-                      <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
-                    </svg>
-                  </a>
-                  <a href="https://web.max.ru/615748241" target="_blank" rel="noopener noreferrer" aria-label="MAX" title="MAX (Чат с владельцем)" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-violet-500 hover:bg-violet-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
-                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 1000 1000" fill="none" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="maxContactA" x1="117.847" x2="1000" y1="760.536" y2="500" gradientUnits="userSpaceOnUse">
-                          <stop offset="0" stop-color="#4cf"/>
-                          <stop offset=".662" stop-color="#53e"/>
-                          <stop offset="1" stop-color="#93d"/>
-                        </linearGradient>
-                        <radialGradient id="maxContactB" cx="-87.392" cy="1166.116" r="500" fx="-87.392" fy="1166.116" gradientTransform="rotate(51.356 1551.478 559.3) scale(2.42703433 1)" gradientUnits="userSpaceOnUse">
-                          <stop offset="0" stop-color="#00f"/>
-                          <stop offset="1" stop-color="#00f" stop-opacity="0"/>
-                        </radialGradient>
-                      </defs>
-                      <rect width="1000" height="1000" rx="250" fill="url(#maxContactA)"/>
-                      <rect width="1000" height="1000" rx="250" fill="url(#maxContactB)"/>
-                      <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
-                    </svg>
-                  </a>
-                  <a href="https://vk.com/id94482760" target="_blank" rel="noopener noreferrer" aria-label="VK" title="ВКонтакте (id94482760)" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800/90 border border-brand-200 dark:border-slate-700 hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
-                    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
-                      <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
-                    </svg>
-                  </a>
+                  <!-- Арт Апарт · пер. Тюменский 21 -->
+                  <div class="p-3 rounded-2xl bg-brand-50/80 dark:bg-slate-800/80 border border-brand-200/80 dark:border-slate-700 space-y-2.5">
+                    <div class="text-xs font-bold text-brand-800 dark:text-brand-300">Арт Апарт · пер. Тюменский 21</div>
+                    <a href="tel:+79613047603" class="w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-brand-100/70 dark:hover:bg-slate-800 border border-brand-200/80 dark:border-slate-700 text-brand-900 dark:text-white font-semibold transition-colors">
+                      <span class="inline-flex items-center gap-2 text-sm sm:text-base">
+                        <i data-lucide="phone-call" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+                        <span>+7 961 304 76 03</span>
+                      </span>
+                      <span class="text-xs text-brand-600 dark:text-brand-400 font-semibold shrink-0">Позвонить</span>
+                    </a>
+                    <div class="flex items-center gap-2">
+                      <a href="https://wa.me/79613047603" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp пер. Тюменский 21" title="WhatsApp (+7 961 304 76 03)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M12.03 2C6.51 2 2.04 6.47 2.04 11.99c0 1.76.46 3.48 1.33 4.99L2 22l5.15-1.35a9.95 9.95 0 0 0 4.88 1.25h.01c5.51 0 9.99-4.47 9.99-9.99C22.03 6.47 17.55 2 12.03 2Z" fill="#25D366"/>
+                          <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                      <a href="https://t.me/+79613047603" target="_blank" rel="noopener noreferrer" aria-label="Telegram пер. Тюменский 21" title="Telegram (+7 961 304 76 03)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-sky-400 hover:bg-sky-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <circle cx="12" cy="12" r="10" fill="#26A5E4"/>
+                          <path d="M16.95 7.45 15.16 15.9c-.13.6-.49.75-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11l-6.28 3.95-2.7-.85c-.59-.18-.6-.59.12-.87l10.57-4.08c.49-.18.92.11.74.91Z" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                      <a href="https://web.max.ru/615748241" target="_blank" rel="noopener noreferrer" aria-label="MAX" title="MAX (Чат с владельцем)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-violet-500 hover:bg-violet-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 1000 1000" fill="none" aria-hidden="true">
+                          <rect width="1000" height="1000" rx="250" fill="url(#maxContactA)"/>
+                          <rect width="1000" height="1000" rx="250" fill="url(#maxContactB)"/>
+                          <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
+                        </svg>
+                      </a>
+                      <a href="https://vk.com/id94482760" target="_blank" rel="noopener noreferrer" aria-label="VK" title="ВКонтакте (id94482760)" class="w-11 h-11 rounded-xl bg-white dark:bg-slate-900 border border-brand-200 dark:border-slate-700 hover:border-blue-400 hover:bg-blue-50/70 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:-translate-y-0.5 active:scale-95">
+                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#0077FF"/>
+                          <path d="M12.78 16.4c-4.53 0-7.11-3.1-7.22-8.27h2.27c.08 3.79 1.75 5.4 3.08 5.73V8.13h2.14v3.27c1.31-.14 2.69-1.63 3.15-3.27h2.14c-.36 2.02-1.85 3.51-2.92 4.13 1.07.5 2.77 1.8 3.42 4.14h-2.36c-.5-1.57-1.76-2.79-3.43-2.96v2.96h-.27Z" fill="#FFFFFF"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1280,9 +1374,9 @@
         <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
           <span class="brand-logo-slot logo-frame w-10 h-10 rounded-2xl overflow-hidden bg-white ring-1 ring-slate-200/90 dark:ring-slate-700 flex items-center justify-center shrink-0 shadow-xs"></span>
           <div>
-            <div class="text-sm font-bold text-brand-900 dark:text-white">Гостевой дом «У Арама» · Шахты</div>
+            <div class="text-sm font-bold text-brand-900 dark:text-white">Гостевые дома «У Арама» и «Арт Апарт» · Шахты</div>
             <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Советская ул., 94 · Тюменский пер., 21 | Организация: Курехян Карине Ашотовна
+              ул. Советская, 94 · пер. Тюменский, 21 | Организация: Курехян Карине Ашотовна
             </div>
           </div>
         </div>
@@ -1402,8 +1496,8 @@
           <input type="hidden" id="client-guests" name="guests" value="2" />
           <input type="hidden" id="client-tariff" name="tariff" value="daily" />
 
-          <!-- Выбор формата: Посуточно или По часам (для любой квартиры) -->
-          <div>
+          <!-- Выбор формата: Посуточно или По часам (для студий, 1- и 2-комнатных) -->
+          <div id="tariff-selector-block">
             <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
               Формат проживания
             </label>
@@ -1415,6 +1509,10 @@
                 По часам (от 3 ч)
               </button>
             </div>
+          </div>
+          <div id="tariff-daily-only-note" class="hidden px-3 py-2 rounded-xl bg-brand-50/90 dark:bg-slate-800/80 border border-brand-200/80 dark:border-slate-700 text-xs font-semibold text-brand-800 dark:text-brand-300 flex items-center gap-2">
+            <i data-lucide="calendar-check" class="w-4 h-4 text-brand-600 dark:text-brand-400 shrink-0"></i>
+            <span>Трёхкомнатные апартаменты сдаются только посуточно (цена указана от 2 гостей)</span>
           </div>
 
           <!-- Даты или часы проживания (Удобный встроенный календарь) -->
@@ -1630,16 +1728,17 @@
         category: 'studio',
         addressKey: 'sovetskaya',
         addressBadge: 'ул. Советская, 94',
-        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
+        addressFull: 'У Арама · ул. Советская, 94',
         badge: 'Студия',
         title: 'Студия комфорт',
         price: 3000,
         priceUnit: 'за сутки',
+        allowHourly: true,
         guests: 'До 2 гостей',
         defaultGuests: '2',
         feature: 'Своя кухня и душ',
         desc: 'Уютная и светлая студия со всеми удобствами в центре города Шахты. Кондиционер (сплит-система), полноценная кухня, быстрый Wi-Fi, современная душевая, ТВ и тихая домашняя обстановка.',
-        slideLabels: ['Интерьер студии', 'Спальное место', 'Кухонный гарнитур', 'Обеденная зона', 'Санузел и душ'],
+        slideLabels: ['Диван и зона отдыха', 'Обеденная зона', 'Душевая и санузел', 'Кухонный гарнитур', 'Спальное место'],
         images: [
           'images/studio-comfort/1.jpg',
           'images/studio-comfort/2.jpg',
@@ -1653,16 +1752,17 @@
         category: '1room',
         addressKey: 'sovetskaya',
         addressBadge: 'ул. Советская, 94',
-        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
+        addressFull: 'У Арама · ул. Советская, 94',
         badge: '1 комнатная',
         title: '1-комнатная квартира',
         price: 2200,
         priceUnit: 'за сутки',
+        allowHourly: true,
         guests: '2 спальных места',
         defaultGuests: '2',
         feature: 'Кухня и стиральная машина',
         desc: 'Комфортабельная 1-комнатная квартира со всеми удобствами: двуспальная кровать, сплит-система, оборудованная кухня, холодильник, плита, стиральная машина, Wi-Fi и ТВ.',
-        slideLabels: ['Спальня и зона отдыха', 'Кухня и посуда', 'Прихожая', 'Санузел и душ'],
+        slideLabels: ['Спальня с кроватью', 'Зона отдыха и ТВ', 'Кухня и техника', 'Санузел'],
         images: [
           'images/room-1/1.jpg',
           'images/room-1/2.jpg',
@@ -1671,26 +1771,27 @@
         ]
       },
       {
-        id: 'room-2-comfort',
-        category: '2room',
-        addressKey: 'sovetskaya',
-        addressBadge: 'ул. Советская, 94',
-        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
-        badge: '2-х комнатная',
-        title: '2-х комнатная комфорт+',
+        id: 'room-3-comfort-plus',
+        category: 'family',
+        addressKey: 'tyumenskiy',
+        addressBadge: 'пер. Тюменский, 21',
+        addressFull: 'Арт Апарт · пер. Тюменский, 21',
+        badge: '3-х комнатная+',
+        title: '3-х комнатная комфорт+',
         price: 3500,
         priceUnit: 'за сутки',
-        guests: 'До 4 гостей',
-        defaultGuests: '3',
-        feature: '2 раздельные комнаты',
-        desc: 'Просторная 2-комнатная квартира улучшенной планировки. Две изолированные комнаты, спальные места, зона отдыха с ТВ, полностью укомплектованная кухня, кондиционер и быстрый интернет.',
-        slideLabels: ['Гостиная и зона отдыха', 'Вторая спальня', 'Оборудованная кухня', 'Ванная комната', 'Прихожая'],
+        allowHourly: false,
+        guests: 'До 6 гостей',
+        defaultGuests: '4',
+        feature: 'Только посуточно · 2 спальни + зал',
+        desc: 'Просторная 3-комнатная квартира улучшенной планировки в гостевом доме «Арт Апарт». Большой зал-гостиная с двумя диванами и обеденной зоной, две изолированные спальни с двуспальными кроватями, ТВ, сплит-система и быстрый Wi-Fi.',
+        slideLabels: ['Большой зал и гостиная', 'Основная спальня', 'Вторая спальня', 'Обеденная зона и ТВ', 'Санузел и душ'],
         images: [
-          'images/room-2-comfort/1.jpg',
-          'images/room-2-comfort/2.jpg',
-          'images/room-2-comfort/3.jpg',
-          'images/room-2-comfort/4.jpg',
-          'images/room-2-comfort/5.jpg'
+          'images/room-3-comfort-plus/1.jpg',
+          'images/room-3-comfort-plus/2.jpg',
+          'images/room-3-comfort-plus/3.jpg',
+          'images/room-3-comfort-plus/4.jpg',
+          'images/room-3-comfort-plus/5.jpg'
         ]
       },
       {
@@ -1698,23 +1799,23 @@
         category: 'family',
         addressKey: 'sovetskaya',
         addressBadge: 'ул. Советская, 94',
-        addressFull: 'ул. Советская, 94 (Центр · Закрытый двор)',
+        addressFull: 'У Арама · ул. Советская, 94',
         badge: '3-х комнатная',
         title: '3-х комнатная комфорт',
-        price: 4000,
+        price: 3500,
         priceUnit: 'за сутки',
+        allowHourly: false,
         guests: 'До 6 гостей',
         defaultGuests: '4',
-        feature: 'Большая 3-комнатная',
-        desc: 'Большие 3-комнатные апартаменты для семьи, рабочей бригады или компании. Несколько раздельных спален, большая кухня, кондиционер, стиральная машина, чистый санузел и закрытый двор.',
-        slideLabels: ['Гостиная', 'Основная спальня', 'Вторая спальня', 'Обеденная зона и кухня', 'Ванная комната', 'Санузел'],
+        feature: 'Только посуточно · Большой зал',
+        desc: 'Большие 3-комнатные апартаменты для семьи, рабочей бригады или компании. Просторный зал с обеденным столом и диванами, две раздельные спальни, сплит-система, стиральная машина, чистый санузел и закрытый двор.',
+        slideLabels: ['Большой зал со столом', 'Зона отдыха с диванами', 'Основная спальня', 'Вторая спальня', 'Санузел и душ'],
         images: [
           'images/room-3-comfort/1.jpg',
           'images/room-3-comfort/2.jpg',
           'images/room-3-comfort/3.jpg',
           'images/room-3-comfort/4.jpg',
-          'images/room-3-comfort/5.jpg',
-          'images/room-3-comfort/6.jpg'
+          'images/room-3-comfort/5.jpg'
         ]
       },
       {
@@ -1722,22 +1823,22 @@
         category: 'studio',
         addressKey: 'tyumenskiy',
         addressBadge: 'пер. Тюменский, 21',
-        addressFull: 'пер. Тюменский, 21 (Лофт-апартаменты)',
+        addressFull: 'Арт Апарт · пер. Тюменский, 21',
         badge: 'Студия-лофт',
         title: 'Студия-лофт',
         price: 3200,
         priceUnit: 'за сутки',
+        allowHourly: true,
         guests: 'До 2 гостей',
         defaultGuests: '2',
         feature: 'Дизайнерский ремонт',
-        desc: 'Стильная студия в стиле лофт с кирпичной кладкой, атмосферной подсветкой и современной мебелью. Кухонный блок, сплит-система, скоростной интернет и смарт-ТВ.',
-        slideLabels: ['Лофт-интерьер', 'Спальная зона', 'Кухонный гарнитур', 'Зона отдыха', 'Санузел'],
+        desc: 'Стильная студия в стиле лофт с атмосферной подсветкой, перегородкой и современной мебелью. Обеденная зона, диван, сплит-система, скоростной интернет, смарт-ТВ и душевая.',
+        slideLabels: ['Спальная зона с подсветкой', 'Общий вид студии', 'Зона отдыха и стол', 'Санузел и душ'],
         images: [
           'images/studio-loft/1.jpg',
           'images/studio-loft/2.jpg',
           'images/studio-loft/3.jpg',
-          'images/studio-loft/4.jpg',
-          'images/studio-loft/5.jpg'
+          'images/studio-loft/4.jpg'
         ]
       },
       {
@@ -1745,22 +1846,47 @@
         category: 'studio',
         addressKey: 'tyumenskiy',
         addressBadge: 'пер. Тюменский, 21',
-        addressFull: 'пер. Тюменский, 21 (Лофт Премиум)',
+        addressFull: 'Арт Апарт · пер. Тюменский, 21',
         badge: 'Лофт Премиум',
         title: 'Студия-лофт премиум',
         price: 3800,
         priceUnit: 'за сутки',
+        allowHourly: true,
         guests: 'До 2 гостей',
         defaultGuests: '2',
         feature: 'Кровать King-Size',
-        desc: 'Премиальная дизайнерская студия повышенной комфортности: кровать King-Size, дизайнерская мебель, многоуровневая подсветка, кухонный уголок и современная просторная душевая.',
-        slideLabels: ['Премиум лофт', 'Кровать King-Size', 'Кухонная зона', 'Освещение и детали', 'Санузел премиум'],
+        desc: 'Премиальная дизайнерская студия повышенной комфортности в гостевом доме «Арт Апарт»: кровать King-Size, дизайнерская мебель, многоуровневая подсветка, кухонный уголок и современная просторная душевая.',
+        slideLabels: ['Премиум лофт', 'Кровать King-Size', 'Обеденная зона', 'Студия и кухонный блок', 'Санузел премиум'],
         images: [
           'images/studio-loft-premium/1.jpg',
           'images/studio-loft-premium/2.jpg',
           'images/studio-loft-premium/3.jpg',
           'images/studio-loft-premium/4.jpg',
           'images/studio-loft-premium/5.jpg'
+        ]
+      },
+      {
+        id: 'room-2-comfort',
+        category: '2room',
+        addressKey: 'tyumenskiy',
+        addressBadge: 'пер. Тюменский, 21',
+        addressFull: 'Арт Апарт · пер. Тюменский, 21',
+        badge: '2-х комнатная+',
+        title: '2-х комнатная комфорт+',
+        price: 3500,
+        priceUnit: 'за сутки',
+        allowHourly: true,
+        guests: 'До 4 гостей',
+        defaultGuests: '2',
+        feature: '2 раздельные зоны',
+        desc: 'Светлая 2-комнатная квартира комфорт+ в гостевом доме «Арт Апарт». Изолированная спальня с двуспальной кроватью, просторная кухня-гостиная с диваном, обеденным столом, холодильником, сплит-системой и новым санузлом.',
+        slideLabels: ['Кухня-гостиная', 'Спальня', 'Зона отдыха с диваном', 'Вид на спальню и ТВ', 'Санузел и душ'],
+        images: [
+          'images/room-2-comfort/1.jpg',
+          'images/room-2-comfort/2.jpg',
+          'images/room-2-comfort/3.jpg',
+          'images/room-2-comfort/4.jpg',
+          'images/room-2-comfort/5.jpg'
         ]
       }
     ];
@@ -1780,7 +1906,7 @@
       },
       {
         id: 'point-2',
-        name: 'У Арама · Филиал 2 (Арт. Апарт)',
+        name: 'Гостевой дом «Арт Апарт»',
         address: 'Ростовская область, Шахты, Тюменский переулок, 21',
         phone: '+7 961 304 76 03',
         phoneHref: 'tel:+79613047603',
@@ -1938,15 +2064,18 @@
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                   <span class="inline-flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.guests}</span>
                   <span class="inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.feature}</span>
-                  <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400"><i data-lucide="clock" class="w-3.5 h-3.5"></i>По часам от 1 800 ₽</span>
+                  ${room.allowHourly !== false
+                    ? `<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400"><i data-lucide="clock" class="w-3.5 h-3.5"></i>По часам от 1 800 ₽</span>`
+                    : `<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-700 dark:text-brand-300"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>Только посуточно</span>`
+                  }
                 </div>
                 <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${room.desc}</p>
               </div>
 
               <div class="pt-4 border-t border-brand-100 dark:border-slate-800 flex items-center justify-between gap-3">
                 <div>
-                  <div class="text-lg sm:text-xl font-extrabold text-brand-900 dark:text-white">${room.price.toLocaleString('ru-RU')} ₽ <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ сутки</span></div>
-                  <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">или от 1 800 ₽ по часам (от 3 ч)</div>
+                  <div class="text-lg sm:text-xl font-extrabold text-brand-900 dark:text-white">от ${room.price.toLocaleString('ru-RU')} ₽ <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ сутки</span></div>
+                  <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">${room.allowHourly !== false ? 'или от 1 800 ₽ по часам (от 3 ч)' : 'от 2 гостей · только посуточно'}</div>
                 </div>
                 <button type="button" data-action="open-booking" data-room-id="${room.id}" data-room="${room.title}" class="btn-sheen px-4 py-2.5 min-h-[42px] rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-semibold">
                   Забронировать
@@ -2297,7 +2426,13 @@
         checkDateAvailability();
       }
 
+      const tariffSelectorBlock = document.getElementById('tariff-selector-block');
+      const tariffDailyOnlyNote = document.getElementById('tariff-daily-only-note');
+
       function setTariff(mode) {
+        if (mode === 'hourly' && selectedRoom && selectedRoom.allowHourly === false) {
+          mode = 'daily';
+        }
         currentTariff = mode;
         if (tariffInput) tariffInput.value = mode;
         const isHourly = mode === 'hourly';
@@ -2364,8 +2499,8 @@
           else if (val === '6') { hourlyTotal = 3300; durText = '6 часов'; }
           else if (val === 'more') { hourlyTotal = 1800; durText = 'от 6 часов (договорная)'; }
 
-          calcEl.textContent = `По часам (${durText}): ${hourlyTotal.toLocaleString('ru-RU')} ₽`;
-          submitBtn.innerHTML = `<span>Подтвердить · ${hourlyTotal.toLocaleString('ru-RU')} ₽</span>`;
+          calcEl.textContent = `По часам (${durText}): от ${hourlyTotal.toLocaleString('ru-RU')} ₽`;
+          submitBtn.innerHTML = `<span>Подтвердить · от ${hourlyTotal.toLocaleString('ru-RU')} ₽</span>`;
           return;
         }
 
@@ -2379,8 +2514,8 @@
         const nWord = nights === 1 ? 'сутки' : 'суток';
         const label = `${nights} ${nWord}`;
 
-        calcEl.textContent = `Итого (${label}): ${baseTotal.toLocaleString('ru-RU')} ₽`;
-        submitBtn.innerHTML = `<span>Подтвердить · ${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
+        calcEl.textContent = `Итого (${label}): от ${baseTotal.toLocaleString('ru-RU')} ₽`;
+        submitBtn.innerHTML = `<span>Подтвердить · от ${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
       }
 
       function formatRuDateBadge(isoStr) {
@@ -2517,7 +2652,7 @@
             isCur
               ? 'bg-brand-600 text-white border-brand-600'
               : 'bg-white dark:bg-slate-900 text-brand-900 dark:text-slate-200 border-brand-200/80 dark:border-slate-700 hover:border-brand-400'
-          }">${r.title} · ${r.addressBadge} · ${r.price.toLocaleString('ru-RU')} ₽</button>`;
+          }">${r.title} · ${r.addressBadge} · от ${r.price.toLocaleString('ru-RU')} ₽</button>`;
         }).join('');
       }
 
@@ -2527,10 +2662,17 @@
         document.getElementById('summary-room-badge').textContent = selectedRoom.badge;
         document.getElementById('summary-room-meta').textContent = `${selectedRoom.guests} · ${selectedRoom.feature}`;
         document.getElementById('summary-room-title').textContent = selectedRoom.title;
-        document.getElementById('summary-room-price').textContent = `${selectedRoom.price.toLocaleString('ru-RU')} ₽`;
-        document.getElementById('summary-room-unit').textContent = selectedRoom.priceUnit;
+        document.getElementById('summary-room-price').textContent = `от ${selectedRoom.price.toLocaleString('ru-RU')} ₽`;
+        document.getElementById('summary-room-unit').textContent = `${selectedRoom.priceUnit} (от 2 гостей)`;
         const summaryAddrEl = document.getElementById('summary-room-address');
         if (summaryAddrEl) summaryAddrEl.textContent = selectedRoom.addressFull || selectedRoom.addressBadge || '';
+
+        const hourlyAllowed = selectedRoom.allowHourly !== false;
+        tariffSelectorBlock?.classList.toggle('hidden', !hourlyAllowed);
+        tariffDailyOnlyNote?.classList.toggle('hidden', hourlyAllowed);
+        if (!hourlyAllowed && currentTariff === 'hourly') {
+          setTariff('daily');
+        }
 
         if (autoFillDetails) {
           syncGuestPills(selectedRoom.defaultGuests || '2');
@@ -2568,31 +2710,11 @@
       applyRoomPreset(ROOMS[0], true);
 
       renderRooms('all');
-
-      // Переключение фильтров категорий в каталоге
-      const filterBtns = document.querySelectorAll('.catalog-filter-btn');
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const filter = btn.dataset.catalogFilter;
-          filterBtns.forEach(b => {
-            const isTarget = b === btn;
-            b.className = `catalog-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm border transition-all ${
-              isTarget
-                ? 'bg-brand-600 text-white border-brand-600 shadow-sm font-bold'
-                : 'bg-white dark:bg-slate-800 text-brand-900 dark:text-slate-200 border-brand-200/80 dark:border-slate-700 hover:border-brand-400 font-semibold'
-            }`;
-          });
-          renderRooms(filter);
-        });
-      });
-
       renderAddressCards();
       if (window.lucide) lucide.createIcons();
       initScrollReveal();
 
-      // Копирование номера телефона по клику + уведомление возле кнопки
-      const copyPhoneBtn = document.getElementById('copy-phone-btn');
-      const copyPhoneToast = document.getElementById('copy-phone-toast');
+      // Копирование любого из номеров телефона по клику + уведомление возле кнопки
       let copyToastTimer = null;
 
       function copyTextReliable(text) {
@@ -2615,16 +2737,20 @@
         document.body.removeChild(ta);
       }
 
-      copyPhoneBtn?.addEventListener('click', () => {
-        const phone = copyPhoneBtn.dataset.copyPhone || '+7 904 444 44 91';
-        copyTextReliable(phone).finally(() => {
-          if (copyPhoneToast) {
-            copyPhoneToast.classList.add('is-shown');
-            clearTimeout(copyToastTimer);
-            copyToastTimer = setTimeout(() => {
-              copyPhoneToast.classList.remove('is-shown');
-            }, 2200);
-          }
+      document.querySelectorAll('.js-copy-phone-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const phone = btn.dataset.copyPhone || '+7 904 444 44 91';
+          const toastEl = btn.parentElement?.querySelector('.copy-toast');
+          copyTextReliable(phone).finally(() => {
+            document.querySelectorAll('.copy-toast.is-shown').forEach(t => t.classList.remove('is-shown'));
+            if (toastEl) {
+              toastEl.classList.add('is-shown');
+              clearTimeout(copyToastTimer);
+              copyToastTimer = setTimeout(() => {
+                toastEl.classList.remove('is-shown');
+              }, 2200);
+            }
+          });
         });
       });
 
@@ -2780,7 +2906,7 @@
               <p>Гостевой дом «У Арама» принимает гостей <strong>круглосуточно 24/7</strong> по предварительному согласованию. Стандартный расчётный час: заезд с 14:00, выезд до 12:00 (возможен ранний заезд или поздний выезд).</p>
 
               <h4 class="text-sm font-bold text-brand-900 dark:text-white">2. Почасовая аренда</h4>
-              <p>Для всех апартаментов доступна почасовая аренда от 3 часов (от 1 800 ₽). Идеально для отдыха проездом с трассы М-4 или коротких поездок.</p>
+              <p>Для студий, 1-комнатных и 2-комнатных апартаментов доступна почасовая аренда от 3 часов (от 1 800 ₽). Трёхкомнатные апартаменты сдаются только посуточно.</p>
 
               <h4 class="text-sm font-bold text-brand-900 dark:text-white">3. Правила дома</h4>
               <p>В помещениях запрещено курение (оборудованы зоны для курения на свежем воздухе во дворе). Просим соблюдать тишину с 23:00 до 07:00 и бережно относиться к имуществу.</p>
@@ -2901,7 +3027,7 @@
       document.getElementById('booking-form').addEventListener('submit', e => {
         e.preventDefault();
         const form = e.target;
-        const isHourly = currentTariff === 'hourly';
+        const isHourly = currentTariff === 'hourly' && (!selectedRoom || selectedRoom.allowHourly !== false);
         const today = getTodayStr();
 
         if (isHourly) {
