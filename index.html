@@ -1636,11 +1636,8 @@
           </label>
 
           <button type="submit" id="booking-submit-btn" class="btn-sheen w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
-            <span>Написать в MAX</span>
+            <span>Подтвердить бронирование</span>
           </button>
-          <p id="booking-max-note" class="text-[11px] text-center text-slate-500 dark:text-slate-400 leading-normal">
-            Данные не сохраняются на сторонних серверах — текст заявки скопируется автоматически и откроется чат в MAX для выбранного адреса.
-          </p>
         </form>
       </div>
     </div>
@@ -1949,19 +1946,6 @@
       }
     ];
 
-    // Чаты мессенджера MAX, привязанные к каждому адресу
-    const MAX_CHATS_BY_ADDRESS = {
-      sovetskaya: {
-        label: 'У Арама · ул. Советская, 94',
-        phone: '+7 904 444 44 91',
-        url: 'https://web.max.ru/615748241'
-      },
-      tyumenskiy: {
-        label: 'Арт Апарт · пер. Тюменский, 21',
-        phone: '+7 961 304 76 03',
-        url: 'https://web.max.ru/615748241'
-      }
-    };
 
     // =========================================================
     // 4. ГЕНЕРАЦИЯ ВЕКТОРНЫХ ИЛЛЮСТРАЦИЙ ДЛЯ СЛАЙДОВ
@@ -2675,7 +2659,7 @@
           else if (val === 'more') { hourlyTotal = 1800; durText = 'от 6 часов (договорная)'; }
 
           calcEl.textContent = `По часам (${durText}): от ${hourlyTotal.toLocaleString('ru-RU')} ₽`;
-          submitBtn.innerHTML = `<span>Написать в MAX · от ${hourlyTotal.toLocaleString('ru-RU')} ₽</span>`;
+          submitBtn.innerHTML = `<span>Подтвердить · от ${hourlyTotal.toLocaleString('ru-RU')} ₽</span>`;
           return;
         }
 
@@ -2696,7 +2680,7 @@
 
         if (dailyNightsLabel) dailyNightsLabel.textContent = label;
         calcEl.textContent = `Итого (${label}): ${prefix}${baseTotal.toLocaleString('ru-RU')} ₽`;
-        submitBtn.innerHTML = `<span>Написать в MAX · ${prefix}${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
+        submitBtn.innerHTML = `<span>Подтвердить · ${prefix}${baseTotal.toLocaleString('ru-RU')} ₽</span>`;
       }
 
       function formatRuDateBadge(isoStr) {
@@ -2814,6 +2798,18 @@
         }
       }
 
+      function sendBookingToGoogleSheet(bookingData) {
+        if (!GOOGLE_SHEET_API_URL) return Promise.resolve();
+        return fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(bookingData)
+        }).catch(err => {
+          console.warn('Google Sheets POST error:', err);
+        });
+      }
+
 
 
       function renderRoomChips() {
@@ -2839,11 +2835,7 @@
           : `${selectedRoom.priceUnit} (до 2 гостей)`;
         const summaryAddrEl = document.getElementById('summary-room-address');
         if (summaryAddrEl) summaryAddrEl.textContent = selectedRoom.addressFull || selectedRoom.addressBadge || '';
-        const maxNoteEl = document.getElementById('booking-max-note');
-        const targetMax = MAX_CHATS_BY_ADDRESS[selectedRoom.addressKey] || MAX_CHATS_BY_ADDRESS.sovetskaya;
-        if (maxNoteEl && targetMax) {
-          maxNoteEl.textContent = `Данные не сохраняются на серверах — текст заявки скопируется и откроется чат MAX (${targetMax.label}, ${targetMax.phone}).`;
-        }
+
 
         const hourlyAllowed = selectedRoom.allowHourly !== false;
         tariffSelectorBlock?.classList.toggle('hidden', !hourlyAllowed);
@@ -2956,6 +2948,53 @@
       // Модальные окна с блокировкой прокрутки и Escape
       const bookingModal = document.getElementById('booking-modal');
       const legalModal = document.getElementById('legal-modal');
+
+      // =========================================================
+      // ПУШ-УВЕДОМЛЕНИЯ О БРОНЯХ (NTFY.SH)
+      // =========================================================
+      const NTFY_TOPIC = 'u-arama-hotel-shakhty-94';
+
+      function sendPushNotification(booking) {
+        const cleanPhone = (booking.phone || '').replace(/[^0-9+]/g, '');
+        const messageParts = [
+          `👤 Имя: ${booking.name}`,
+          `📞 Телефон: ${booking.phone}`,
+          `🏠 Номер: ${booking.room}`,
+          booking.address ? `📍 Адрес: ${booking.address}` : '',
+          booking.tariffLine || '',
+          `👥 Гостей: ${booking.guests}`,
+          booking.comment ? `💬 Пожелания: ${booking.comment}` : ''
+        ].filter(Boolean);
+
+        const payload = {
+          topic: NTFY_TOPIC,
+          title: `🔔 Новая бронь в «У Арама»: ${booking.room}!`,
+          message: messageParts.join('\n'),
+          priority: 5,
+          tags: ['hotel', 'bell', 'sparkles'],
+          click: cleanPhone ? `tel:${cleanPhone}` : undefined,
+          actions: [
+            ...(cleanPhone ? [{
+              action: 'view',
+              label: '📞 Позвонить гостю',
+              url: `tel:${cleanPhone}`
+            }] : []),
+            ...(cleanPhone ? [{
+              action: 'view',
+              label: '💬 Написать в WhatsApp',
+              url: `https://wa.me/${cleanPhone.replace('+', '')}`
+            }] : [])
+          ]
+        };
+
+        return fetch('https://ntfy.sh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(err => {
+          console.warn('Push dispatch error:', err);
+        });
+      }
 
       const syncBodyLock = () => {
         const hasOpenModal = document.querySelector('.modal-backdrop.is-open');
@@ -3222,17 +3261,35 @@
           form.comment.value.trim() ? `• Комментарий: ${form.comment.value.trim()}` : ''
         ].filter(Boolean).join('\n');
 
-        // 1. Выбираем чат MAX, привязанный к адресу выбранной квартиры
-        const targetMax = MAX_CHATS_BY_ADDRESS[selectedRoom?.addressKey] || MAX_CHATS_BY_ADDRESS.sovetskaya;
-
-        // 2. Копируем готовый текст заявки в буфер обмена и открываем чат MAX (без отправки ПДн на зарубежные серверы)
-        copyTextReliable(msg).finally(() => {
-          window.open(targetMax.url, '_blank', 'noopener,noreferrer');
+        // 1. Автоматическая запись заявки в Google Таблицу на лист нужной квартиры со статусом «Ожидание»
+        sendBookingToGoogleSheet({
+          room: form.room.value,
+          name: form.name.value.trim(),
+          phone: form.phone.value.trim(),
+          tariff: currentTariff,
+          checkin: form.checkin.value,
+          checkout: form.checkout.value,
+          hourlyDate: hourlyDateInput ? hourlyDateInput.value : '',
+          hourlyDuration: (hourlyDurationSelect && hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex]) ? hourlyDurationSelect.options[hourlyDurationSelect.selectedIndex].text : '',
+          guests: form.guests.value,
+          price: priceCalcText,
+          comment: form.comment.value.trim()
         });
 
-        // 3. Подтверждение и подсказка для гостя
+        // 2. Мгновенная отправка Push-уведомления на телефон владельца через ntfy.sh
+        sendPushNotification({
+          name: form.name.value.trim(),
+          phone: form.phone.value.trim(),
+          room: form.room.value,
+          address: roomAddress,
+          tariffLine: tariffLine.replace(/^• /gm, ''),
+          guests: form.guests.value,
+          comment: form.comment.value.trim()
+        });
+
+        // 3. Подтверждение отправки и закрытие окна (без блокирующего браузерного popup alert)
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span>Чат MAX открыт · текст скопирован</span>`;
+        submitBtn.innerHTML = `<span>✅ Заявка отправлена! Свяжемся за 5 мин</span>`;
         submitBtn.className = 'w-full py-3.5 rounded-2xl bg-emerald-600 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all';
 
         setTimeout(() => {
@@ -3241,8 +3298,8 @@
           submitBtn.disabled = false;
           submitBtn.className = 'btn-sheen w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2';
           applyRoomPreset(selectedRoom || ROOMS[0], true);
-          showBookingSuccessToast(`Текст заявки скопирован — вставьте его в чат MAX (${targetMax.label}).`);
-        }, 1000);
+          showBookingSuccessToast('Заявка успешно отправлена! Мы свяжемся с вами в течение 5 минут.');
+        }, 1200);
       });
 
       // Фоновая загрузка занятых дат при старте страницы
