@@ -1833,7 +1833,7 @@
         allowHourly: false,
         guests: 'До 8 гостей',
         defaultGuests: '2',
-        feature: 'Только посуточно · Большой зал',
+        feature: 'Большой зал',
         desc: 'Большие 3-комнатные апартаменты для семьи, рабочей бригады или компании. Просторный зал с обеденным столом и диванами, две раздельные спальни, сплит-система, стиральная машина, чистый санузел и закрытый двор.',
         slideLabels: ['Большой зал со столом', 'Зона отдыха с диванами', 'Основная спальня', 'Вторая спальня', 'Санузел и душ'],
         images: [
@@ -1912,7 +1912,7 @@
         allowHourly: false,
         guests: 'До 8 гостей',
         defaultGuests: '2',
-        feature: 'Только посуточно · 2 спальни + зал',
+        feature: '2 спальни + зал',
         desc: 'Просторная 3-комнатная квартира улучшенной планировки в гостевом доме «Арт Апарт». Большой зал-гостиная с двумя диванами и обеденной зоной, две изолированные спальни с двуспальными кроватями, ТВ, сплит-система и быстрый Wi-Fi.',
         slideLabels: ['Большой зал и гостиная', 'Основная спальня', 'Вторая спальня', 'Обеденная зона и ТВ', 'Санузел и душ'],
         images: [
@@ -2073,10 +2073,12 @@
         : '';
 
       const staggerDelay = Math.min(cardIdx * 70, 350);
+      const hourlySubline = room.allowHourly !== false
+        ? `<div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">или от 1 800 ₽ по часам (от 3 ч)</div>`
+        : '';
       const priceNoteHtml = room.extraGuestPrice
-        ? `<div class="text-[11px] font-semibold text-brand-700 dark:text-brand-300 mt-0.5">за 2 чел. · доп. место ${room.extraGuestPrice} ₽</div>
-           <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">${room.allowHourly !== false ? 'или от 1 800 ₽ по часам (от 3 ч)' : 'только посуточно'}</div>`
-        : `<div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">${room.allowHourly !== false ? 'или от 1 800 ₽ по часам (от 3 ч)' : 'только посуточно'}</div>`;
+        ? `<div class="text-[11px] font-semibold text-brand-700 dark:text-brand-300 mt-0.5">за 2 чел. · доп. место ${room.extraGuestPrice} ₽</div>${hourlySubline}`
+        : hourlySubline;
 
       return `
         <article class="room-card room-card-enter rounded-3xl bg-white dark:bg-[#111B2E] border border-brand-100 dark:border-slate-800 overflow-hidden flex flex-col" style="animation-delay: ${staggerDelay}ms;">
@@ -2107,7 +2109,7 @@
                 <span class="inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>${room.feature}</span>
                 ${room.allowHourly !== false
                   ? `<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400"><i data-lucide="clock" class="w-3.5 h-3.5"></i>По часам от 1 800 ₽</span>`
-                  : `<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-700 dark:text-brand-300"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>Только посуточно</span>`
+                  : ''
                 }
               </div>
               <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${room.desc}</p>
